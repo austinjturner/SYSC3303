@@ -1,4 +1,4 @@
-package src.net;
+package src.main.net;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

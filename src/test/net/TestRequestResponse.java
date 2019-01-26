@@ -1,13 +1,20 @@
-package src.net;
+package src.test.net;
 
 import static org.junit.Assert.assertEquals;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class TestRequestResponse {
+import src.main.net.Message;
+import src.main.net.MessageAPI;
+import src.main.net.PacketException;
+import src.main.net.RequestMessage;
+import src.main.net.Requester;
+import src.main.net.Responder;
+
+public class TestRequestResponse {
 
 	private int testPort = 51515;
 	
@@ -15,7 +22,7 @@ class TestRequestResponse {
 	 * This test just checks that ports are being opened and closed correctly
 	 */
 	@Test
-	void testResponderBindsAndReleasesPort() {
+	public void testResponderBindsAndReleasesPort() {
 		// Test open port
 		Responder responder = new Responder(testPort);
 		assertEquals(responder.getPort(), testPort);
@@ -35,7 +42,7 @@ class TestRequestResponse {
 	 * 
 	 */
 	@Test
-	void testRequestReponse() {
+	public void testRequestReponse() {
 		// Initialize Requester and Responder to test
 		Requester requester = new Requester();
 		Responder responder = new Responder();
