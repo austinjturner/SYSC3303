@@ -1,4 +1,4 @@
-package src.net;
+package src.main.net;
 
 /**
  * A message is the data structure being send via the packets.

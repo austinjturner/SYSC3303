@@ -1,4 +1,4 @@
-package src.net;
+package src.main.net;
 
 /**
  * A PacketException will be thrown when errors are encountered in the package.

@@ -1,22 +1,22 @@
-package src.main;
+package src.main.elevator;
 
-import src.net.Message;
-import src.net.Requester;
-import src.net.Responder;
+import src.main.net.Message;
+import src.main.net.Requester;
+import src.main.net.Responder;
 
 
 public class Elevator {
 
 	public enum motor { UP, DOWN, STOP };
 	
-private int elevatorId;
-private int currentFloor;
-private boolean doorsOpen;
-private boolean buttons[];
-private boolean lamps[];
-private motor motor;
-private Requester requester;
-private Responder responder;
+	private int elevatorId;
+	private int currentFloor;
+	private boolean doorsOpen;
+	private boolean buttons[];
+	private boolean lamps[];
+	private motor motor;
+	private Requester requester;
+	private Responder responder;
 	
 	public Elevator(int id, int portNumber, int numberOfFloors) {
 		this.requester = new Requester();
@@ -71,8 +71,8 @@ private Responder responder;
 		this.buttons[buttonNum] = true;
 	}
 	
-	private void clearButton(int buttonNum) {
-		this.buttons[buttonNum] = false;
+	private void clearButton() {
+		this.buttons[currentFloor] = false;
 	}
 	
 	private void incrementFloor() {
