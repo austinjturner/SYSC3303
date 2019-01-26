@@ -9,14 +9,14 @@ public class Elevator {
 
 	public enum motor { UP, DOWN, STOP };
 	
-private int elevatorId;
-private int currentFloor;
-private boolean doorsOpen;
-private boolean buttons[];
-private boolean lamps[];
-private motor motor;
-private Requester requester;
-private Responder responder;
+	private int elevatorId;
+	private int currentFloor;
+	private boolean doorsOpen;
+	private boolean buttons[];
+	private boolean lamps[];
+	private motor motor;
+	private Requester requester;
+	private Responder responder;
 	
 	public Elevator(int id, int portNumber, int numberOfFloors) {
 		this.requester = new Requester();
@@ -34,10 +34,31 @@ private Responder responder;
 	private void messageHandler(Message message) {
 		int requestType = message.getRequestType();
 		switch (requestType) {
-			case 1: 
+			case 2001: // close doors
 				
 				break;
-			case 2: 
+			case 2002:  // open doors
+				
+				break;
+			case 2003:  // stop motor
+				
+				break;
+			case 2004:  // motor up
+				
+				break;
+			case 2005:  // motor down
+				
+				break;
+			case 2006:  // toggle button lamp
+				
+				break;
+			case 2007:  // press button
+				
+				break;
+			case 2008:  // clear doors
+				
+				break;
+			case 2009:  // requesting current floor
 				
 				break;
 		}
@@ -71,8 +92,8 @@ private Responder responder;
 		this.buttons[buttonNum] = true;
 	}
 	
-	private void clearButton(int buttonNum) {
-		this.buttons[buttonNum] = false;
+	private void clearButton() {
+		this.buttons[this.currentFloor] = false;
 	}
 	
 	private void incrementFloor() {
