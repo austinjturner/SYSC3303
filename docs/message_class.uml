@@ -1,0 +1,35 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+Requester o-- DatagramSocket
+
+Responder o-- DatagramSocket
+
+Message <|-- RequestMessage
+
+Message <-- Requester
+Message <-- Responder
+RequestMessage <-- Responder
+RequestMessage o-- Responder
+RequestMessage o-- DatagramPacket
+
+Message : #requestType : int
+Message : #value : int
+Message : +Message(requestType : int)
+Message : +Message(requestType : int, value : int)
+Message : +getRequestType() : int
+Message : +getValue() : int
+
+RequestMessage : +RequestMessage(packet : DatagramPacket, responder : Responder)
+RequestMessage : +sendResponse(respMsg : Message)
+
+Requester : +Requester()
+Requester : +Requester(port : int)
+Requester : +sendRequest(InetAddress : addr, int : port, Message : msg) : Message
+
+Responder : +Responder()
+Responder : +Responder(port : int)
+Responder : +receive() : RequestMessage
+Responder : +sendResponse(request : DatagramPacket, msg : Message)
+
+@enduml

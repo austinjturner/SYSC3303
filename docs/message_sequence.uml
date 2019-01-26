@@ -1,0 +1,44 @@
+@startuml
+
+participant Client
+participant Requester
+participant Responder
+participant Server
+
+activate Client
+activate Server
+Client->Requester: Create 1 Requester instance for client
+activate Requester
+Server->Responder: Create 1 Responder instance for server
+activate Responder
+deactivate Server
+Responder->Responder: Call receive()
+deactivate Responder
+
+== Initialization ==
+
+Client->Requester: Create new Message, then sendRequest()
+deactivate Client
+
+activate Requester
+Requester->Responder: Send packet via UDP/IP
+deactivate Requester
+
+activate Responder
+Responder->Server: Unblock server on Message arrival
+
+activate Server
+Server->Server: Process request and build response message
+Server->Responder: sendResponse()
+deactivate Server
+
+Responder->Requester: Send packet via UDP/IP
+deactivate Responder
+
+activate Requester
+Requester->Client: Unblock client on Message arrival
+deactivate Requester
+
+activate Client
+
+@enduml

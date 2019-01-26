@@ -3,13 +3,22 @@ package src.net;
 import java.io.*;
 import java.net.*;
 
+/**
+ * The Responder class is used to receive packets and return a Message
+ * to the sender.
+ * 
+ * When created Responder
+ * 
+ * @author austinjturner
+ *
+ */
 public class Responder {
 	
 	private DatagramSocket socket;
 	
 	private final int BUFFER_SIZE = 1024;
 	
-	public int GetPort() {
+	public int getPort() {
 		return this.socket.getLocalPort();
 	}
 	
@@ -30,6 +39,10 @@ public class Responder {
 		}
 	}
 	
+	public void Close() {
+		this.socket.close();
+	}
+	
 	public RequestMessage receive() {
 		byte data[] = new byte[this.BUFFER_SIZE];
 		DatagramPacket receivePacket = new DatagramPacket(data, data.length);
@@ -47,7 +60,8 @@ public class Responder {
 	}
 	
 	public void sendResponse(DatagramPacket request, Message msg) {
-		byte[] bytes = Common.intToByteArray(msg.getValue());
+		//byte[] bytes = Common.intToByteArray(msg.getValue());
+		byte[] bytes = Common.buildMessageBytes(msg);
 		DatagramPacket packet = new DatagramPacket(bytes, bytes.length, 
 				request.getAddress(), request.getPort());
 		try {

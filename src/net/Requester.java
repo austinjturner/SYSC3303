@@ -3,16 +3,36 @@ package src.net;
 import java.io.*;
 import java.net.*;
 
+/**
+ * The Requester class binds is used to send Messages to another part
+ * of the sub-system, then return a response Message.
+ * When created, it binds to a port (which may be specified).
+ * 
+ * Calls to sendRequest will use that port to send a UDP/IP packet,
+ * then wait for a packet to be returned on it's port.
+ * 
+ * Once the returned packet it receive, it is turned into a new Message
+ * and returned to the caller
+ * 
+ * @author austinjturner
+ *
+ */
 public class Requester {
-	private final int BUFFER_SIZE = 1024;
-	private final int BYTES_PER_INT = 4;
 	
+	private final int BUFFER_SIZE = 1024;
 	private DatagramSocket socket;
 	
+	/**
+	 * Create a new Requester
+	 */
  	public Requester() {
  		this(-1);
 	}
 	
+ 	/**
+ 	 * Create a new Requester on a specified port
+ 	 * @param port
+ 	 */
 	public Requester(int port) {
 		try {
 			if (port < 0) {
@@ -26,10 +46,26 @@ public class Requester {
 		}
 	}
 	
+	/**
+	 * Close the socket
+	 */
+	public void Close() {
+		this.socket.close();
+	}
+	
+	/**
+	 * Send a Message and return a Message
+	 * 
+	 * @param addr
+	 * @param port
+	 * @param msg
+	 * @return
+	 * @throws PacketException
+	 */
 	public Message sendRequest(InetAddress addr, int port, Message msg) throws PacketException {
 		
 		DatagramPacket sendPacket;
-		byte[] bytes = this.buildMessageBytes(msg);
+		byte[] bytes = Common.buildMessageBytes(msg);
 		
 		try {
 			sendPacket = new DatagramPacket(bytes, bytes.length, InetAddress.getLocalHost(), port);
@@ -49,6 +85,11 @@ public class Requester {
 	}
 	
 	
+	/**
+	 * 
+	 * @return
+	 * @throws PacketException
+	 */
 	private Message waitForResponse() throws PacketException {
 		byte data[] = new byte[this.BUFFER_SIZE];
 		DatagramPacket receivePacket = new DatagramPacket(data, data.length);
@@ -61,30 +102,6 @@ public class Requester {
 			throw new PacketException("Network failure.");
 		}
 		
-		return this.bytesToMsg(data);
+		return Common.bytesToMsg(data);
 	}
-	
-
-	private byte[] buildMessageBytes(Message msg) {
-		byte[] encodedBytes = new byte[2 * BYTES_PER_INT];
-
-		int index = 0;
-		for (byte b : Common.intToByteArray(msg.getRequestType())) {
-			encodedBytes[index++] = b;
-		}
-		for (byte b : Common.intToByteArray(msg.getValue())) {
-			encodedBytes[index++] = b;
-		}
-		return encodedBytes;
-	}
-	
-	
-	private Message bytesToMsg(byte[] b) {
-		return new Message(
-				Common.byteArrayToInt(new byte[]{b[0], b[1], b[2], b[3]}), 
-				Common.byteArrayToInt(new byte[] {b[4], b[5], b[6], b[7]})
-		);
-	}
-	
-
 }
