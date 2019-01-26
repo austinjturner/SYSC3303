@@ -1,17 +1,19 @@
-package src.main;
+package src.main.elevator;
 
-import src.net.Message;
-import src.net.Requester;
-import src.net.Responder;
+import src.main.net.Message;
+import src.main.net.MessageAPI;
+import src.main.net.RequestMessage;
+import src.main.net.Requester;
+import src.main.net.Responder;
 
 
-public class Elevator {
+public class Elevator implements Runnable {
 
 	public enum motor { UP, DOWN, STOP };
 	
 	private int elevatorId;
 	private int currentFloor;
-	private boolean doorsOpen;
+	private boolean doorOpen;
 	private boolean buttons[];
 	private boolean lamps[];
 	private motor motor;
@@ -22,7 +24,7 @@ public class Elevator {
 		this.requester = new Requester();
 		this.responder = new Responder(portNumber);
 		this.elevatorId = id;
-		doorsOpen = false;
+		doorOpen = false;
 		buttons = new boolean[numberOfFloors];
 		lamps = new boolean[numberOfFloors];
 		 	
@@ -31,81 +33,93 @@ public class Elevator {
 		}
 	}
 	
-	private void messageHandler(Message message) {
+	public void messageHandler(RequestMessage message) {
 		int requestType = message.getRequestType();
+		boolean sendEmptyResponse = true;
 		switch (requestType) {
 			case 2001: // close doors
-				
+				closeDoor();
 				break;
 			case 2002:  // open doors
-				
+				openDoor();
 				break;
 			case 2003:  // stop motor
-				
+				stop();
 				break;
 			case 2004:  // motor up
-				
+				goUp();
 				break;
 			case 2005:  // motor down
-				
+				goDown();
 				break;
 			case 2006:  // toggle button lamp
-				
+				toggleLamp(message.getValue());
 				break;
 			case 2007:  // press button
-				
+				pressButton(message.getValue());
 				break;
 			case 2008:  // clear doors
-				
+				clearButton();
 				break;
 			case 2009:  // requesting current floor
-				
+				sendEmptyResponse = false; 
+				message.sendResponse(new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor));
 				break;
+		}
+		
+		if(sendEmptyResponse) {
+			message.sendResponse(new Message(MessageAPI.MSG_EMPTY_RESPONSE, 0) );
 		}
 	}
 	
-	private void stop() {
+	public void stop() {
 		this.motor = motor.STOP;
 	}
 	
-	private void goUp() {
+	public void goUp() {
 		this.motor = motor.UP;
 	}
 	
-	private void goDown() {
+	public void goDown() {
 		this.motor = motor.DOWN;
 	}
 	
-	private void openDoors() {
-		this.doorsOpen = true;
+	public void openDoor() {
+		this.doorOpen = true;
 	}
 	
-	private void closeDoor() {
-		this.doorsOpen = false;
+	public void closeDoor() {
+		this.doorOpen = false;
 	}
 	
-	private void toggleLamp(int lampNum) {
+	public void toggleLamp(int lampNum) {
 		this.lamps[lampNum] = !this.lamps[lampNum];
 	}
 	
-	private void pressButton(int buttonNum) {
+	public void pressButton(int buttonNum) {
 		this.buttons[buttonNum] = true;
 	}
 	
-	private void clearButton() {
-		this.buttons[this.currentFloor] = false;
+	public void clearButton() {
+		this.buttons[currentFloor] = false;
 	}
 	
-	private void incrementFloor() {
+	public void incrementFloor() {
 		this.currentFloor += 1;
 	}
 	
-	private void deccrementFloor() {
+	public void deccrementFloor() {
 		this.currentFloor -= 1;
 	}
 	
-	private int getCurrentFloor() {
+	public int getCurrentFloor() {
 		return this.currentFloor;
 	}
+
+	@Override
+	public void run() {
+		// TODO Implement thread to calculate time taken to change floors
+	}
+	
 	
 }
