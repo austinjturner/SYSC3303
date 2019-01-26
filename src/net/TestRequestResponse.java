@@ -41,8 +41,8 @@ class TestRequestResponse {
 		Responder responder = new Responder();
 		
 		// Some values we will check are received correctly
-		int testValue1 = 12345; 
-		int testValue2 = 67890; 
+		int testValue1 = 12345;
+		int testValue2 = 67890;
 		
 		/**
 		 * This is the basic model for a server. It calls receive() in a loop,

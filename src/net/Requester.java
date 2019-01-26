@@ -67,12 +67,7 @@ public class Requester {
 		DatagramPacket sendPacket;
 		byte[] bytes = Common.buildMessageBytes(msg);
 		
-		try {
-			sendPacket = new DatagramPacket(bytes, bytes.length, InetAddress.getLocalHost(), port);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			throw new PacketException("Failed to create new DatagramPacket");
-		}
+		sendPacket = new DatagramPacket(bytes, bytes.length, addr, port);
 		
 		try {
 			socket.send(sendPacket);
