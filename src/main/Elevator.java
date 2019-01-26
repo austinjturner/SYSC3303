@@ -16,12 +16,15 @@ public class Elevator {
 	private DatagramPacket sendPacket, receivePacket;
 	private DatagramSocket sendSocket, receiveSocket;
 	
-	public Elevator(int id) {
+	public Elevator(int id, int portNumber, int numberOfFloors) {
 		this.elevatorId = id;
 		doorsOpen = false;
+		buttons = new boolean[numberOfFloors];
+		lamps = new boolean[numberOfFloors];
+		
 		
 		try {
-			receiveSocket = new DatagramSocket(69);
+			receiveSocket = new DatagramSocket(portNumber);
 		} catch (SocketException se) {
 			se.printStackTrace();
 			System.exit(1);
