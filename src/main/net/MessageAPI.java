@@ -7,7 +7,7 @@ package src.main.net;
  *
  */
 public class MessageAPI {
-	public static final int MSG_EMPTY_RESPONSE					= 0;
+	public static final int MSG_EMPTY_RESPONSE = 0;
 	
 	
 	public static final int MSG_TEST_SEND_REQUEST = 1000;
@@ -23,5 +23,8 @@ public class MessageAPI {
 	public static final int MSG_PRESS_ELEVATOR_BUTTON = 2007;
 	public static final int MSG_CLEAR_ELEVATOR_BUTTON = 2008;
 	public static final int MSG_CURRENT_FLOOR = 2009;
-	
+
+	public static final int MSG_ELEVATOR_BUTTON_PRESSED = 3001;
+	public static final int MSG_FLOOR_BUTTON_PRESSED = 3002;
+	public static final int MSG_FLOOR_SENSOR = 3003;
 }
