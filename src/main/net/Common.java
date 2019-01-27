@@ -24,13 +24,13 @@ public class Common {
 	
 	// Convert a Message to a byte array
 	public static byte[] buildMessageBytes(Message msg) {
-		byte[] encodedBytes = new byte[2 * BYTES_PER_INT];
+		byte[] encodedBytes = new byte[BYTES_PER_INT + msg.getData().length];
 
 		int index = 0;
 		for (byte b : Common.intToByteArray(msg.getRequestType())) {
 			encodedBytes[index++] = b;
 		}
-		for (byte b : Common.intToByteArray(msg.getValue())) {
+		for (byte b : msg.getData()) {
 			encodedBytes[index++] = b;
 		}
 		return encodedBytes;
@@ -38,9 +38,13 @@ public class Common {
 	
 	// Convert a byte array to a Message
 	public static Message bytesToMsg(byte[] b) {
+		byte[] data = new byte[b.length - Common.BYTES_PER_INT];
+		for (int i = 0; i < data.length; i++) {
+			data[i] = b[i + Common.BYTES_PER_INT];
+		}
 		return new Message(
 				Common.byteArrayToInt(new byte[]{b[0], b[1], b[2], b[3]}), 
-				Common.byteArrayToInt(new byte[] {b[4], b[5], b[6], b[7]})
+				data
 		);
 	}
 }

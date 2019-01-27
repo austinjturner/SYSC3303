@@ -26,7 +26,11 @@ public class RequestMessage extends Message {
 		byte[] msg = packet.getData();
 		
 		this.requestType = Common.byteArrayToInt(new byte[]{msg[0], msg[1], msg[2], msg[3]});
-		this.value = Common.byteArrayToInt(new byte[]{msg[4], msg[5], msg[6], msg[7]});
+		byte[] data = new byte[packet.getLength() - Common.BYTES_PER_INT];
+		for (int i = 0; i < data.length; i++) {
+			data[i] = msg[i + Common.BYTES_PER_INT];
+		}
+		this.data = data;
 	}
 	
 	public void sendResponse(Message respMsg) {
