@@ -9,7 +9,8 @@ package src.main.net;
  *
  */
 public class Message {
-	protected int requestType, value;
+	protected int requestType;
+	protected byte[] data; 
 	
 	/**
 	 * Create new Message with value
@@ -19,7 +20,12 @@ public class Message {
 	 */
 	public Message(int requestType, int value) {
 		this.requestType = requestType;
-		this.value = value;
+		this.data = Common.intToByteArray(value);
+	}
+	
+	public Message(int requestType, byte[] value) {
+		this.requestType = requestType;
+		this.data = value;
 	}
 
 	/**
@@ -42,6 +48,10 @@ public class Message {
 	 * @return value
 	 */
 	public int getValue() {
-		return this.value;
+		return Common.byteArrayToInt(new byte[]{data[0], data[1], data[2], data[3]});
+	}
+	
+	public byte[] getData(){
+		return this.data;
 	}
 }
