@@ -1,7 +1,11 @@
 package src.main.elevator;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import src.main.net.Message;
 import src.main.net.MessageAPI;
+import src.main.net.PacketException;
 import src.main.net.RequestMessage;
 import src.main.net.Requester;
 import src.main.net.Responder;
@@ -21,6 +25,7 @@ public class Elevator implements Runnable {
 	private Responder responder;
 	private Thread timerThread;
 	private int numberOfFloors;
+	private int addr;
 	
 	public Elevator(int id, int portNumber, int numberOfFloors) {
 		this.requester = new Requester();
@@ -119,12 +124,26 @@ public class Elevator implements Runnable {
 	public synchronized void incrementFloor() {
 		if(this.currentFloor < this.numberOfFloors) {
 			this.currentFloor += 1;
+			floorChangeAlert();
 		}
 	}
 	
 	public synchronized void decrementFloor() {
 		if(this.currentFloor > 1) {
 			this.currentFloor -= 1;
+			floorChangeAlert();
+		}
+	}
+	
+	public void floorChangeAlert() {
+		try {
+			this.requester.sendRequest(InetAddress.getLocalHost(), 8002,(new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor)));
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PacketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
