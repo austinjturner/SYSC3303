@@ -1,4 +1,4 @@
-package src.main.scheduler;
+package src.main.scheduler.elevator_fsm;
 
 import java.net.*;
 

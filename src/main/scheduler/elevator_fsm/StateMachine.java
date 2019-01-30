@@ -81,9 +81,7 @@ public class StateMachine {
 		
 		fsm.floorQueue.add(0, new Destination(targetFloor1, Destination.DestinationType.PICKUP));
 		fsm.newItemInQueue();
-		
 		for (int i = 2; i <= targetFloor1; i++) {
-			fsm.currentFloor = 8;
 			fsm.elevatorReachedFloor(i);
 		}
 		
