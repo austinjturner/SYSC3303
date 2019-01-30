@@ -17,5 +17,7 @@ public class MockRequestMessage extends RequestMessage {
 						Common.intToByteArray(value),
 						Common.BYTES_PER_INT), 
 				new MockResponder());
+		this.requestType = requestType;
+		this.data = Common.intToByteArray(value);
 	}
 }
