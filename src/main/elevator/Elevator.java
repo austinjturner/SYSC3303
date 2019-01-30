@@ -30,6 +30,7 @@ public class Elevator implements Runnable {
 		this.currentFloor = 1;
 		this.numberOfFloors = numberOfFloors;
 		doorOpen = false;
+		this.motor = motor.STOP;
 		buttons = new boolean[numberOfFloors];
 		lamps = new boolean[numberOfFloors];
 
@@ -45,31 +46,31 @@ public class Elevator implements Runnable {
 		int requestType = message.getRequestType();
 		boolean sendEmptyResponse = true;
 		switch (requestType) {
-			case 2001: // close doors
+			case 2001: 
 				closeDoor();
 				break;
-			case 2002:  // open doors
+			case 2002:
 				openDoor();
 				break;
-			case 2003:  // stop motor
+			case 2003:
 				stop();
 				break;
-			case 2004:  // motor up
+			case 2004:
 				goUp();
 				break;
-			case 2005:  // motor down
+			case 2005:
 				goDown();
 				break;
-			case 2006:  // toggle button lamp
+			case 2006: 
 				toggleLamp(message.getValue());
 				break;
-			case 2007:  // press button
+			case 2007: 
 				pressButton(message.getValue());
 				break;
-			case 2008:  // clear doors
+			case 2008:  
 				clearButton();
 				break;
-			case 2009:  // requesting current floor
+			case 2009:
 				sendEmptyResponse = false; 
 				message.sendResponse(new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor));
 				break;
@@ -132,7 +133,24 @@ public class Elevator implements Runnable {
 	synchronized int getCurrentFloor() {
 		return this.currentFloor;
 	}
+	
+	public boolean isDoorOpen() {
+		return this.doorOpen;
+	}
+	
+	public motor getMotorDirection() {
+		return this.motor;
+	}
+	
+	public boolean[] getLamps() {
+		return this.lamps;
+	}
+	
+	public boolean[] getButtons() {
+		return this.getButtons();
+	}
 
+	
 	@Override
 	public void run() {
 		// TODO Implement thread to calculate time taken to change floors

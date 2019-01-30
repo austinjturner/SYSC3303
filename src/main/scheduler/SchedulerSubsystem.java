@@ -140,7 +140,7 @@ public class SchedulerSubsystem {
 				new Message(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON, floorNum));
 	}
 	
-	public void sendClearFloorButtonMessage(int elevatorID, int floorNum, Destination.DestinationType d) {
+	public void sendClearFloorButtonMessage(int elevatorID, int floorNum, boolean goingUp) {
 		// TODO
 		//sendMessage(this.address, ELEVATOR_PORT, 
 		//		new Message(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON, floorNum));

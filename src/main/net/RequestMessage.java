@@ -14,10 +14,6 @@ public class RequestMessage extends Message {
 	private Responder responder;
 	private DatagramPacket receivePacket;
 	
-	public RequestMessage(int requestType, int value) {
-		super(requestType, value);
-	}
-	
 	public RequestMessage(DatagramPacket packet, Responder responder) {
 		super(0, 0);
 		
