@@ -102,4 +102,25 @@ public class TestElevator {
 
 		assertEquals(false, elevator.getButtons()[3]);
 	}
+	
+	/*
+	 * Test to check if buttons are being pressed and cleared
+	 */
+	@Test
+	public void messageHandler_testIncrementAndDecrementFloor() {
+		
+		elevator = new Elevator(1,portNumber + 4,2);
+		assertEquals(1, elevator.getCurrentFloor());
+		
+		//should not be able to decrement
+		elevator.decrementFloor();
+		assertEquals(1, elevator.getCurrentFloor());
+
+		elevator.incrementFloor();
+		assertEquals(2, elevator.getCurrentFloor());
+		
+		//should not be able to increment anymore
+		elevator.incrementFloor();
+		assertEquals(2, elevator.getCurrentFloor());
+	}
 }

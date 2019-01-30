@@ -116,19 +116,19 @@ public class Elevator implements Runnable {
 		this.buttons[buttonNum] = false;
 	}
 	
-	synchronized void incrementFloor() {
+	public synchronized void incrementFloor() {
 		if(this.currentFloor < this.numberOfFloors) {
 			this.currentFloor += 1;
 		}
 	}
 	
-	synchronized void decrementFloor() {
+	public synchronized void decrementFloor() {
 		if(this.currentFloor > 1) {
 			this.currentFloor -= 1;
 		}
 	}
 	
-	synchronized int getCurrentFloor() {
+	public synchronized int getCurrentFloor() {
 		return this.currentFloor;
 	}
 	
