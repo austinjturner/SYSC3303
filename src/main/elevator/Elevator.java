@@ -19,15 +19,23 @@ public class Elevator implements Runnable {
 	private motor motor;
 	private Requester requester;
 	private Responder responder;
+	private Thread timerThread;
+	private int motorDirection;
+	private int numberOfFloors;
 	
 	public Elevator(int id, int portNumber, int numberOfFloors) {
 		this.requester = new Requester();
 		this.responder = new Responder(portNumber);
 		this.elevatorId = id;
+		this.currentFloor = 1;
+		this.numberOfFloors = numberOfFloors;
 		doorOpen = false;
 		buttons = new boolean[numberOfFloors];
 		lamps = new boolean[numberOfFloors];
-		 	
+
+	}
+	
+	public void startElevator() {
 		while(true) {
 			messageHandler(this.responder.receive());
 		}
@@ -74,14 +82,19 @@ public class Elevator implements Runnable {
 	
 	public void stop() {
 		this.motor = motor.STOP;
+		timerThread.interrupt();
 	}
 	
 	public void goUp() {
 		this.motor = motor.UP;
+		timerThread = new Thread(this);
+		timerThread.start();
 	}
 	
 	public void goDown() {
 		this.motor = motor.DOWN;
+		timerThread = new Thread(this);
+		timerThread.start();
 	}
 	
 	public void openDoor() {
@@ -104,22 +117,67 @@ public class Elevator implements Runnable {
 		this.buttons[currentFloor] = false;
 	}
 	
-	public void incrementFloor() {
-		this.currentFloor += 1;
+	synchronized void incrementFloor() {
+		if(this.currentFloor < this.numberOfFloors) {
+			this.currentFloor += 1;
+		}
 	}
 	
-	public void deccrementFloor() {
-		this.currentFloor -= 1;
+	synchronized void decrementFloor() {
+		if(this.currentFloor > 1) {
+			this.currentFloor -= 1;
+		}
 	}
 	
-	public int getCurrentFloor() {
+	synchronized int getCurrentFloor() {
 		return this.currentFloor;
 	}
 
 	@Override
 	public void run() {
 		// TODO Implement thread to calculate time taken to change floors
+		while (this.motor != motor.STOP) {
+			try {
+				Thread.sleep(4990);
+				if(this.motor == motor.DOWN) {
+					this.decrementFloor();
+				}
+				else if (this.motor == motor.UP) {
+					this.incrementFloor();
+				}
+				System.out.println(this.getCurrentFloor() + " - id: " + Thread.currentThread().getId());
+			} catch (InterruptedException e) {
+				System.out.println("Stopping elevator...");
+				return;
+			}
+		}
 	}
 	
-	
+	// Testing elevator timer thread, will be removed later
+	public static void main(String[] args) {
+		Elevator elevator = new Elevator(1, 69, 6);
+		System.out.println("Starting elevator...");
+		System.out.println("Destination floor: 4");
+		System.out.println("Current Floor:\n" + elevator.getCurrentFloor());
+		elevator.goUp();
+		try {
+			Thread.sleep(35000);
+			elevator.stop();
+		} catch (InterruptedException e) {
+			System.out.println("Main thread interrupted");
+			e.printStackTrace();
+		}
+		System.out.println("Destination floor: 2");
+		elevator.goDown();
+		try {
+			Thread.sleep(20000);
+			elevator.stop();
+		} catch (InterruptedException e) {
+			System.out.println("Main thread interrupted");
+			e.printStackTrace();
+		}
+		System.out.println("Current Floor: " + elevator.getCurrentFloor());
+    }
 }
+
+
