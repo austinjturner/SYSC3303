@@ -25,7 +25,7 @@ import src.main.net.*;
  * @author austinjturner
  *
  */
-public class SchedulerSubsystem {
+public class SchedulerSubsystem extends Thread {
 	
 	private Requester requester;
 	private Responder responder;
@@ -35,19 +35,25 @@ public class SchedulerSubsystem {
 	private final int ELEVATOR_PORT = 8001;		// FIXME
 	private final int SCHEDULER_PORT = 8002;	// FIXME
 	
-	/**
-	 * Create an instance of the scheduler, bind 2 ports and start
-	 * receiving requests
-	 */
+	
+	public SchedulerSubsystem(Requester requester, Responder responder) {
+		this.requester = requester;
+		this.responder = responder;
+	}
+	
 	public SchedulerSubsystem() {
 		this.requester = new Requester();
 		this.responder = new Responder(SCHEDULER_PORT);
-		
-		
+	}
+	
+	/**
+	 * Starts the scheduler, bind 2 ports and start
+	 * receiving requests
+	 */
+	public void run() {
 		try {
 			this.address = InetAddress.getLocalHost();
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
