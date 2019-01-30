@@ -20,7 +20,6 @@ public class Elevator implements Runnable {
 	private Requester requester;
 	private Responder responder;
 	private Thread timerThread;
-	private int motorDirection;
 	private int numberOfFloors;
 	
 	public Elevator(int id, int portNumber, int numberOfFloors) {
@@ -29,7 +28,6 @@ public class Elevator implements Runnable {
 		this.elevatorId = id;
 		this.currentFloor = 1;
 		this.numberOfFloors = numberOfFloors;
-		doorOpen = false;
 		this.motor = motor.STOP;
 		buttons = new boolean[numberOfFloors];
 		lamps = new boolean[numberOfFloors];
@@ -68,7 +66,7 @@ public class Elevator implements Runnable {
 				pressButton(message.getValue());
 				break;
 			case 2008:  
-				clearButton();
+				clearButton(message.getValue());
 				break;
 			case 2009:
 				sendEmptyResponse = false; 
@@ -114,8 +112,8 @@ public class Elevator implements Runnable {
 		this.buttons[buttonNum] = true;
 	}
 	
-	public void clearButton() {
-		this.buttons[currentFloor] = false;
+	public void clearButton(int buttonNum) {
+		this.buttons[buttonNum] = false;
 	}
 	
 	synchronized void incrementFloor() {
@@ -147,7 +145,7 @@ public class Elevator implements Runnable {
 	}
 	
 	public boolean[] getButtons() {
-		return this.getButtons();
+		return this.buttons;
 	}
 
 	

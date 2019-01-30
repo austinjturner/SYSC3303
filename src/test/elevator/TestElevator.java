@@ -18,12 +18,8 @@ import src.main.net.RequestMessage;
 public class TestElevator {
 
 	private Elevator elevator;
+	private int portNumber = 1234;
 	
-	@Before
-	public void setup() {
-		elevator = new Elevator(1,66,6);
-	}
-
 
 	/*
 	 * Test to check if elevator door is opening and closing correctly
@@ -31,8 +27,8 @@ public class TestElevator {
 	@Test
 	public void messageHandler_testDoorOpenAndClose() {
 
+		elevator = new Elevator(1,portNumber,6);
 		assertEquals(false, elevator.isDoorOpen());
-
 		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_OPEN_DOORS,0);
 		elevator.messageHandler(message);
 		assertEquals(true, elevator.isDoorOpen());
@@ -48,6 +44,7 @@ public class TestElevator {
 	@Test
 	public void messageHandler_testMotorUpMotorDownAndStop() {
 
+		elevator = new Elevator(1,portNumber + 1,6);
 		assertEquals(motor.STOP, elevator.getMotorDirection());
 
 		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_MOTOR_UP,0);
@@ -72,6 +69,8 @@ public class TestElevator {
 	 */
 	@Test
 	public void messageHandler_testToggleLamp() {
+		
+		elevator = new Elevator(1,portNumber + 2,6);
 		//toggle lamp for floor 3
 		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_TOGGLE_ELEVATOR_LAMP,3);
 		elevator.messageHandler(message);
@@ -90,8 +89,10 @@ public class TestElevator {
 	 */
 	@Test
 	public void messageHandler_testPressButtonAndClearButton() {
+		
+		elevator = new Elevator(1,portNumber + 3,6);
 		//press button for floor 3
-		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_FLOOR_BUTTON_PRESSED,3);
+		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_PRESS_ELEVATOR_BUTTON,3);
 		elevator.messageHandler(message);
 
 		assertEquals(true, elevator.getButtons()[3]);
