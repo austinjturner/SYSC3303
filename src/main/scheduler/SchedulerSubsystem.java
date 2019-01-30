@@ -94,7 +94,7 @@ public class SchedulerSubsystem {
 	private void handleFloorSensorMessage(RequestMessage rm) {
 		// This will update the elevators floor number.
 		// If the elevator has reached it's destination, more
-		// actions will occer.
+		// actions will occur.
 	}
 	
 	
