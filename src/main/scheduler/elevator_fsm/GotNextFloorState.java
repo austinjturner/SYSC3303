@@ -11,10 +11,11 @@ class GotNextFloorState extends State {
 	 * Move the MotorStartedState
 	 */
 	@Override
+	// Note floorQueue.get(0) changed to .remove(size-1) removing the last element and adding new floors to FRONT of queue.
 	public State next() {	
 		int currentFloor = this.stateMachine.currentFloor;
-		int targetFloor = this.stateMachine.floorQueue.get(0).floorNum;
-		// TODO: Signal elevator to dectect a target floor
+		int targetFloor = this.stateMachine.floorQueue.remove(this.stateMachine.floorQueue.size() - 1).floorNum;
+		// TODO: Signal elevator to detect a target floor
 		
 		if (currentFloor < targetFloor) {
 			this.stateMachine.goingUp = true;

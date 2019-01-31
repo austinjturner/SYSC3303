@@ -1,4 +1,4 @@
-package src.main.scheduler;
+package src.main.scheduler.elevator_fsm;
 
 import java.net.*;
 
@@ -100,7 +100,7 @@ public class SchedulerSubsystem extends Thread {
 	private void handleFloorSensorMessage(RequestMessage rm) {
 		// This will update the elevators floor number.
 		// If the elevator has reached it's destination, more
-		// actions will occer.
+		// actions will occur.
 	}
 	
 	
