@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import src.main.elevator.Elevator;
-import src.main.elevator.Elevator.motor;
+import src.main.elevator.Elevator.motorState;
 import src.main.net.Message;
 import src.main.net.MessageAPI;
 import src.main.net.MockRequestMessage;
@@ -45,22 +45,22 @@ public class TestElevator {
 	public void messageHandler_testMotorUpMotorDownAndStop() {
 
 		elevator = new Elevator(1,portNumber + 1,6);
-		assertEquals(motor.STOP, elevator.getMotorDirection());
+		assertEquals(motorState.STOP, elevator.getMotorDirection());
 
 		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_MOTOR_UP,0);
 		elevator.messageHandler(message);
 
-		assertEquals(motor.UP, elevator.getMotorDirection());
+		assertEquals(motorState.UP, elevator.getMotorDirection());
 
 		message = new MockRequestMessage(MessageAPI.MSG_MOTOR_STOP,0);
 		elevator.messageHandler(message);
 
-		assertEquals(motor.STOP, elevator.getMotorDirection());
+		assertEquals(motorState.STOP, elevator.getMotorDirection());
 
 		message = new MockRequestMessage(MessageAPI.MSG_MOTOR_DOWN,0);
 		elevator.messageHandler(message);
 
-		assertEquals(motor.DOWN, elevator.getMotorDirection());
+		assertEquals(motorState.DOWN, elevator.getMotorDirection());
 	}
 
 	

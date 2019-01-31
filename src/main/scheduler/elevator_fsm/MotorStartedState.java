@@ -1,6 +1,6 @@
 package src.main.scheduler.elevator_fsm;
 
-class MotorStartedState extends State {
+public class MotorStartedState extends State {
 	
 	public MotorStartedState(StateMachine stateMachine) {
 		super(stateMachine);
@@ -19,7 +19,7 @@ class MotorStartedState extends State {
 					this.stateMachine.elevatorID);
 			return new MotorStoppedState(this.stateMachine);
 		} else {
-			return this;	
+			return this;
 		}
 	}
 }

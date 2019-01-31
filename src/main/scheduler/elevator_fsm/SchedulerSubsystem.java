@@ -32,18 +32,30 @@ public class SchedulerSubsystem extends Thread {
 	
 	private InetAddress address;
 	
-	private final int ELEVATOR_PORT = 8001;		// FIXME
-	private final int SCHEDULER_PORT = 8002;	// FIXME
+	private StateMachine stateMachine;
+	
+	private static final int ELEVATOR_PORT = 8001;		// FIXME
+	private static final int SCHEDULER_PORT = 8002;	// FIXME
 	
 	
 	public SchedulerSubsystem(Requester requester, Responder responder) {
 		this.requester = requester;
 		this.responder = responder;
+		this.stateMachine = new StateMachine(0, this);
+		
+		try {
+			this.address = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public SchedulerSubsystem() {
-		this.requester = new Requester();
-		this.responder = new Responder(SCHEDULER_PORT);
+		this(new Requester(), new Responder(SCHEDULER_PORT));
+	}
+	
+	public StateMachine getStateMachine() {
+		return this.stateMachine;
 	}
 	
 	/**
@@ -51,12 +63,7 @@ public class SchedulerSubsystem extends Thread {
 	 * receiving requests
 	 */
 	public void run() {
-		try {
-			this.address = InetAddress.getLocalHost();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		
+
 		for (;;) {
 			messageHandle(this.responder.receive());
 		}
@@ -78,7 +85,7 @@ public class SchedulerSubsystem extends Thread {
 		case MessageAPI.MSG_FLOOR_BUTTON_PRESSED:
 			handleFloorButtonPressedMessage(rm);
 			break;
-		case MessageAPI.MSG_FLOOR_SENSOR:
+		case MessageAPI.MSG_CURRENT_FLOOR:
 			handleFloorSensorMessage(rm);
 			break;
 		default:
@@ -101,6 +108,7 @@ public class SchedulerSubsystem extends Thread {
 		// This will update the elevators floor number.
 		// If the elevator has reached it's destination, more
 		// actions will occur.
+		this.stateMachine.elevatorReachedFloor(rm.getValue());
 	}
 	
 	

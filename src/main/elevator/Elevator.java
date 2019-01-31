@@ -64,10 +64,10 @@ public class Elevator implements Runnable {
 		this.motor = motorState.STOP;
 		buttons = new boolean[numberOfFloors];
 		lamps = new boolean[numberOfFloors];
-
 	}
 	
-	public void startElevator() {
+	@Override
+	public void run() {
 		while(true) {
 			messageHandler(this.responder.receive());
 		}
@@ -163,7 +163,7 @@ public class Elevator implements Runnable {
 		if(this.currentFloor < this.numberOfFloors) {
 			this.currentFloor += 1;
 			System.out.println("At floor: " + this.currentFloor);
-//			floorChangeAlert();
+			floorChangeAlert();
 		}
 	}
 	
@@ -171,13 +171,13 @@ public class Elevator implements Runnable {
 		if(this.currentFloor > 1) {
 			this.currentFloor -= 1;
 			System.out.println("At floor: " + this.currentFloor);
-//			floorChangeAlert();
+			floorChangeAlert();
 		}
 	}
 	
 	public void floorChangeAlert() {
 		try {
-			this.requester.sendRequest(InetAddress.getLocalHost(), 8002,(new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor)));
+			this.requester.sendRequest(InetAddress.getLocalHost(), 8002, new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor));
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -207,12 +207,6 @@ public class Elevator implements Runnable {
 		return this.buttons;
 	}
 	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	class MotorTimer implements Runnable {
 		
 		@Override
@@ -227,6 +221,7 @@ public class Elevator implements Runnable {
 						incrementFloor();
 					}
 				} catch (InterruptedException e) {
+					e.printStackTrace();
 					return;
 				}
 			}

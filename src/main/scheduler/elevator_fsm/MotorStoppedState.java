@@ -20,6 +20,6 @@ class MotorStoppedState extends State {
 				this.stateMachine.currentFloor,
 				this.stateMachine.goingUp);
 		
-		return new FloorLampSignalledState(this.stateMachine);
+		return new LampsSignaledState(this.stateMachine);
 	}
 }

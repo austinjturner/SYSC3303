@@ -24,24 +24,40 @@ public class StateMachine {
 		this.goingUp = true;
 	}
 	
+	public State getState() {
+		return this.state;
+	}
+	
+	private void printStateChange(State nextState) {
+		//System.out.println("Leaving state: " + this.state.getClass().getName());
+		//System.out.println("Entering state: " + nextState.getClass().getName());
+	}
+	
 	public void elevatorReachedFloor(int currentFloor) {
 		this.currentFloor = currentFloor;
-		this.state = this.state.elevatorReacherFloor();
+		State nextState = this.state.elevatorReacherFloor();
+		this.state = nextState;
 		go();
 	}
 	
 	public void floorButtonPressed() {
-		this.state = this.state.elevatorButtonPressed();
+		State nextState = this.state.elevatorButtonPressed();
+		printStateChange(nextState);
+		this.state = nextState;
 		go();
 	}
 	
 	public void newItemInQueue() {
-		this.state = this.state.newItemInQueue();
+		State nextState = this.state.newItemInQueue();
+		printStateChange(nextState);
+		this.state = nextState;
 		go();
 	}
 	
 	public void doorTimer() {
-		this.state = this.state.doorTimer();
+		State nextState = this.state.doorTimer();
+		printStateChange(nextState);
+		this.state = nextState;
 		go();
 	}
 	
@@ -49,19 +65,22 @@ public class StateMachine {
 	 * Go until we reach a stable state
 	 */
 	public void go() {
-		State nextState = this.state.next();
-		System.out.println("Starting State: " + this.state.getClass().getName());
-		while (nextState != this.state) {
-			this.state = nextState;
-			System.out.println("Entering new State: " + nextState.getClass().getName());
-			nextState = this.state.next();
+		for (;;) {
+			State currentState = this.state;
+			State nextState = this.state.next();
 			
-			//System.out.println("DEBUG: this.state = : " + this.state.getClass().getName());
-			//System.out.println("DEBUG: nextState = : " + nextState.getClass().getName());
+			if (currentState.getClass() == nextState.getClass()) {
+				//System.out.println("Remaining in state: " + currentState.getClass().getName());
+				break;
+			} else {
+				//System.out.println("Leaving state: " + currentState.getClass().getName());
+				//System.out.println("Entering state: " + nextState.getClass().getName());
+				this.state = nextState;
+			}
 		}
-		//this.state = nextState;
 	}
 	
+	/*
 	public static void main(String[] args) {
 		SchedulerSubsystem ss = new SchedulerSubsystem(new MockRequester(), new Responder());
 		ss.start();
@@ -86,5 +105,5 @@ public class StateMachine {
 			fsm.currentFloor = 8;
 			fsm.elevatorReachedFloor(i);
 		}
-	}
+	}*/
 }

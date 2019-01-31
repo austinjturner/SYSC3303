@@ -66,16 +66,14 @@ public class Requester {
 		
 		DatagramPacket sendPacket;
 		byte[] bytes = Common.buildMessageBytes(msg);
-		
+
 		sendPacket = new DatagramPacket(bytes, bytes.length, addr, port);
-		
 		try {
 			socket.send(sendPacket);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
 		return waitForResponse();
 	}
 	

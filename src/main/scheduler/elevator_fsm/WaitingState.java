@@ -1,6 +1,6 @@
 package src.main.scheduler.elevator_fsm;
 
-class WaitingState extends State {
+public class WaitingState extends State {
 	
 	public WaitingState(StateMachine stateMachine) {
 		super(stateMachine);
@@ -15,7 +15,6 @@ class WaitingState extends State {
 			this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
 					this.stateMachine.elevatorID);
 			return new DoorOpenedState(this.stateMachine);
-			
 		} 
 
 		return new GotNextFloorState(this.stateMachine);

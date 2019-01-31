@@ -1,6 +1,6 @@
 package src.main.scheduler.elevator_fsm;
 
-abstract class State {
+public abstract class State {
 	
 	protected StateMachine stateMachine;
 	
