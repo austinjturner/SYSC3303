@@ -1,6 +1,6 @@
 package src.main.scheduler.elevator_fsm;
 
-class Destination {
+public class Destination {
 	public enum DestinationType {
 		PICKUP, DROPOFF, PICKUP_AND_DROPOFF, WAIT
 	}

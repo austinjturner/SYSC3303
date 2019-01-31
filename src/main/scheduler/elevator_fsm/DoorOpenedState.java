@@ -4,6 +4,12 @@ public class DoorOpenedState extends State {
 
 	public DoorOpenedState(StateMachine stateMachine) {
 		super(stateMachine);
+		
+		/*
+		 * We start this timer to ensure the door is closed again after
+		 * a period of time.
+		 */
+		new DoorWaitTimer(this.stateMachine);
 	}
 	
 	public State next() {
