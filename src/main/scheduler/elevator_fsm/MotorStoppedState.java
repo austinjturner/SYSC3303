@@ -20,6 +20,10 @@ class MotorStoppedState extends State {
 				this.stateMachine.currentFloor,
 				this.stateMachine.goingUp);
 		
+		this.stateMachine.schedulerSubsystem.sendClearElevatorButtonMessage(
+				this.stateMachine.elevatorID,
+				this.stateMachine.currentFloor);
+		
 		return new LampsSignaledState(this.stateMachine);
 	}
 }
