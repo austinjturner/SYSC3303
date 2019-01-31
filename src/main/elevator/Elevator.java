@@ -28,33 +28,6 @@ public class Elevator implements Runnable {
 	private int addr;
 	private int host;
 	
-// 	TODO remove this later
-//	Testing elevator timer thread,
-//
-//	public static void main(String[] args) {
-//		Elevator elevator = new Elevator(1, 69, 6);
-//		System.out.println("Starting elevator...");
-//		System.out.println("Destination floor: 4");
-//		System.out.println("At Floor:" + elevator.getCurrentFloor());
-//		elevator.goUp();
-//		try {
-//			Thread.sleep(15000);
-//			elevator.stop();
-//		} catch (InterruptedException e) {
-//			System.out.println("Main thread interrupted");
-//			e.printStackTrace();
-//		}
-//		System.out.println("Destination floor: 2");
-//		elevator.goDown();
-//		try {
-//			Thread.sleep(15000);
-//			elevator.stop();
-//		} catch (InterruptedException e) {
-//			System.out.println("Main thread interrupted");
-//			e.printStackTrace();
-//		}
-//    }
-	
 	public Elevator(int id, int portNumber, int numberOfFloors) {
 		this.requester = new Requester();
 		this.responder = new Responder(portNumber);
@@ -145,17 +118,17 @@ public class Elevator implements Runnable {
 	}
 	
 	public void toggleLamp(int lampNum) {
-		this.lamps[lampNum] = !this.lamps[lampNum];
-		System.out.println("Lamp toggled: " + lampNum + ". Value: " + this.lamps[lampNum]);
+		this.lamps[lampNum - 1] = !this.lamps[lampNum - 1];
+		System.out.println("Lamp toggled: " + lampNum + ". Value: " + this.lamps[lampNum - 1]);
 	}
 	
 	public void pressButton(int buttonNum) {
-		this.buttons[buttonNum] = true;
+		this.buttons[buttonNum - 1] = true;
 		System.out.println("Button pressed: " + buttonNum);
 	}
 	
 	public void clearButton(int buttonNum) {
-		this.buttons[buttonNum] = false;
+		this.buttons[buttonNum - 1] = false;
 		System.out.println("Button cleared: " + buttonNum);
 	}
 	
@@ -179,10 +152,8 @@ public class Elevator implements Runnable {
 		try {
 			this.requester.sendRequest(InetAddress.getLocalHost(), 8002, new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor));
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (PacketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
