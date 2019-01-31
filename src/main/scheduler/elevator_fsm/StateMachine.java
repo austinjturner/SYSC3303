@@ -65,12 +65,6 @@ public class StateMachine {
 	public static void main(String[] args) {
 		SchedulerSubsystem ss = new SchedulerSubsystem(new MockRequester(), new Responder());
 		ss.start();
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		int elevatorID = 666;
 		int targetFloor1 = 10;
