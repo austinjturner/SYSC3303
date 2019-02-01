@@ -31,8 +31,8 @@ public class FloorSubsystem {
 	
 	public FloorSubsystem() throws Exception{
 		address = InetAddress.getByName("localhost");
-		schedulerPort = 40;
-		floorPort = 30;
+		schedulerPort = Common.PORT_SCHEDULER_SUBSYSTEM;
+		floorPort = Common.PORT_FLOOR_SUBSYSTEM;
 		msgArray = new inputVar[10];
 		lamp = new boolean[5];
 		txtLocation = new File("src//main//text//input.txt");
@@ -61,9 +61,9 @@ public class FloorSubsystem {
 			//Find the direction it's headed
 			byte[] c;
 			if(inputs[i].direction.toLowerCase() == "up") {
-				c = Common.intToByteArray(1);
+				c = Common.intToByteArray((int) 1);
 			} else {
-				c = Common.intToByteArray(0);
+				c = Common.intToByteArray((int) 0);
 			}
 			
 			//Make message containing the floor the request is coming from and the direction it's going
@@ -82,7 +82,7 @@ public class FloorSubsystem {
 			//receive packet once an elevator reaches this floor.
 			System.out.println("Waiting to receive response from Scheduler saying that elevator is here.");
 			socket.receive(packet);
-			Thread.sleep(10);
+			Thread.sleep(20);
 			
 			//make a message containing the destination floor
 			msg = Common.intToByteArray(inputs[i].destFloor);
@@ -90,7 +90,11 @@ public class FloorSubsystem {
 			System.out.println("Sending the destination floor to scheduler...");
 			socket.send(packet);
 			
-			Thread.sleep(20000);		// Delay the messages being sent by 20 seconds
+			System.out.println();
+			System.out.println("Waiting 10 seconds to not overload the scheduler");
+			System.out.println();
+			
+			Thread.sleep(10000);		// Delay the messages being sent by 10 seconds
 			
 		}
 		
@@ -144,7 +148,7 @@ public class FloorSubsystem {
 		}
 		br.close();
 	}
-	
+
 	private void printInformation(inputVar var){
 		System.out.print("The information about to be send to Scheduler: " + var.hh + ":" + var.mm + ":" + var.ss + "." + var.mmm + " " + var.floor + " " + var.direction + " " + var.destFloor + "\n");
 	}
