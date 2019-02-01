@@ -9,6 +9,12 @@ import java.nio.ByteOrder;
  * @author austinjturner
  */
 public class Common {
+	
+	// Constant port definitions for subsystems
+	public static final int PORT_SCHEDULER_SUBSYSTEM = 8000;
+	public static final int PORT_FLOOR_SUBSYSTEM = 8001;
+	public static final int PORT_ELEVATOR_SUBSYSTEM = 8002;
+	
 	// Number of bytes for int in Java
 	public static final int BYTES_PER_INT = 4;
 	
