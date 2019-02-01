@@ -35,7 +35,7 @@ public class FloorSubsystem {
 		floorPort = 30;
 		msgArray = new inputVar[10];
 		lamp = new boolean[5];
-		txtLocation = new File("C:\\Users\\Aulmo\\Documents\\GitHub\\SYSC3303\\src\\main\\text\\input.txt");
+		txtLocation = new File("src//main//text//input.txt");
 	}
 	
 	public void run() throws Exception{
@@ -89,6 +89,8 @@ public class FloorSubsystem {
 			packet = new DatagramPacket(msg, msg.length, address, schedulerPort);
 			System.out.println("Sending the destination floor to scheduler...");
 			socket.send(packet);
+			
+			Thread.sleep(20000);		// Delay the messages being sent by 20 seconds
 			
 		}
 		
