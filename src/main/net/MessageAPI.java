@@ -7,6 +7,11 @@ package src.main.net;
  *
  */
 public class MessageAPI {
+	
+	public static final int PORT_SCHEDULER_SUBSYSTEM = 8000;
+	public static final int PORT_FLOOR_SUBSYSTEM = 8001;
+	public static final int PORT_ELEVATOR_SUBSYSTEM = 8002;
+	
 	public static final int MSG_EMPTY_RESPONSE = 0;
 	
 	
