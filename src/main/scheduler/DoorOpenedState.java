@@ -36,6 +36,8 @@ public class DoorOpenedState extends State {
 	 * @return State Returns next state for the elevator.
 	 */
 	public State defaultEvent() {
+		String s = new String(getStateName());
+		System.out.println("This is transition state: " + s);
 		if (floorIsPickup()) {
 			return new WaitForElevatorButtonState(this.stateMachine);
 		} else {
@@ -50,6 +52,8 @@ public class DoorOpenedState extends State {
 	 */
 	public State doorTimerEvent() {
 		this.stateMachine.dequeue();
+		String s = new String(getStateName());
+		System.out.println("This is transition state: " + s);
 		return new FloorDequeuedState(this.stateMachine);
 	}
 }

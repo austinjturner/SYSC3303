@@ -31,6 +31,8 @@ class MotorStoppedState extends State {
 		if (isFloorWait()) {
 			// No need to open door. Move back to waiting state.
 			this.stateMachine.dequeue();
+			String s = new String(getStateName());
+			System.out.println("This is transition state: " + s);
 			return new WaitingState(this.stateMachine);
 		} else {
 			// Let the person off the elevator
