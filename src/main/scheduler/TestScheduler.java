@@ -1,4 +1,4 @@
-package src.test.scheduler;
+package src.main.scheduler;
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import java.net.*;
 import src.main.net.*;
-import src.main.scheduler.SchedulerSubsystem;
-import src.main.scheduler.StateMachine;
 
 /*
  * @author Nic Howes
