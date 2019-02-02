@@ -19,10 +19,14 @@ public class TestScheduler {
 	}
 	
 	@Test
-	public void transition_testStateTransition() {
+	public void transition_testOverallStateTransition() {
 		
 	}
 	
+	@Test
+	public void doorClosedToWait_testTransition() {
+		
+	}
 	
 	
 	
@@ -38,10 +42,10 @@ public class TestScheduler {
 		int elevatorID = 666;
 		int targetFloor1 = 10;
 		int targetFloor2 = 5;
-		int targetFloor3 = 5;
-		int targetFloor4 = 5;
-		int targetFloor5 = 5;
-		int targetFloor6 = 5;
+		int targetFloor3 = 2;
+		int targetFloor4 = 3;
+		int targetFloor5 = 7;
+		int targetFloor6 = 8;
 
 		StateMachine fsm  = ss.getStateMachine();
 		

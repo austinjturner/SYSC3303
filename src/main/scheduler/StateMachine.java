@@ -115,7 +115,7 @@ public class StateMachine {
 		fsm.floorButtonPressedEvent();
 		
 		for (int i = 9; i >= targetFloor2; i--) {
-			fsm.currentFloor = 8;
+			fsm.currentFloor = i;
 			fsm.elevatorReachedFloorEvent(i);
 		}
 	}
