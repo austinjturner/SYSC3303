@@ -50,7 +50,7 @@ public class StateMachine {
 		go();
 	}
 	
-	public void floorButtonPressedEvent() {
+	public void elevatorButtonPressedEvent() {
 		State nextState = this.state.elevatorButtonPressedEvent();
 		printStateChange(nextState);
 		this.state = nextState;
@@ -113,7 +113,7 @@ public class StateMachine {
 		//assertEqual(fsm.getState().getClass(), WaitForElevatorButtonState.class);
 		
 		fsm.floorQueue.add(0, new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
-		fsm.floorButtonPressedEvent();
+		fsm.elevatorButtonPressedEvent();
 		
 		for (int i = 9; i >= targetFloor2; i--) {
 			fsm.currentFloor = 8;
