@@ -7,9 +7,9 @@ public class WaitingState extends State {
 	}
 
 	@Override
-	public State newItemInQueue() {
+	public State enqueueFloorEvent() {
 		int currentFloor = this.stateMachine.currentFloor;
-		int targetFloor = this.stateMachine.floorQueue.get(0).floorNum;
+		int targetFloor = this.stateMachine.getQueueFront().floorNum;
 		
 		if (currentFloor == targetFloor) {
 			this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(

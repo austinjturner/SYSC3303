@@ -7,7 +7,7 @@ class DoorClosedState extends State {
 	}
 	// Note changed to floorQueue.isEmpty(), doesn't change functionality.
 	@Override
-	public State next() {
+	public State defaultEvent() {
 		if (this.stateMachine.floorQueue.isEmpty()) {
 			return new WaitingState(this.stateMachine);
 		} else {

@@ -17,23 +17,23 @@ public abstract class State {
 		return name.substring(name.lastIndexOf('.') + 1);
 	}
 	
-	public State next() {
+	public State defaultEvent() {
 		return this;
 	}
 	
-	public State elevatorReacherFloor() {
+	public State elevatorReachedFloorEvent() {
 		return this;
 	}
 	
-	public State elevatorButtonPressed() {
+	public State elevatorButtonPressedEvent() {
 		return this;
 	}
 	
-	public State newItemInQueue() {
+	public State enqueueFloorEvent() {
 		return this;
 	}
 	
-	public State doorTimer() {
+	public State doorTimerEvent() {
 		return this;
 	}
 }

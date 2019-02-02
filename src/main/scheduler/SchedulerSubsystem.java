@@ -107,7 +107,7 @@ public class SchedulerSubsystem extends Thread {
 		// This will update the elevators floor number.
 		// If the elevator has reached it's destination, more
 		// actions will occur.
-		this.stateMachine.elevatorReachedFloor(rm.getValue());
+		this.stateMachine.elevatorReachedFloorEvent(rm.getValue());
 	}
 	
 	

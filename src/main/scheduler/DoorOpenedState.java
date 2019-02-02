@@ -11,9 +11,13 @@ public class DoorOpenedState extends State {
 		new DoorWaitTimer(this.stateMachine).start();
 	}
 	
-	public State next() {
-		if (this.stateMachine.floorQueue.get(0).destinationType == Destination.DestinationType.PICKUP ||
-				this.stateMachine.floorQueue.get(0).destinationType == Destination.DestinationType.PICKUP_AND_DROPOFF) {
+	private boolean floorIsPickup() {
+		return this.stateMachine.getQueueFront().destinationType == Destination.DestinationType.PICKUP ||
+				this.stateMachine.getQueueFront().destinationType == Destination.DestinationType.PICKUP_AND_DROPOFF;
+	}
+	
+	public State defaultEvent() {
+		if (floorIsPickup()) {
 			return new WaitForElevatorButtonState(this.stateMachine);
 		} else {
 			return this;
@@ -21,8 +25,8 @@ public class DoorOpenedState extends State {
 	}
 
 	
-	public State doorTimer() {
-		this.stateMachine.floorQueue.remove(0);
-		return new FloorRemovedFromQueueState(this.stateMachine);
+	public State doorTimerEvent() {
+		this.stateMachine.dequeue();
+		return new FloorDequeuedState(this.stateMachine);
 	}
 }

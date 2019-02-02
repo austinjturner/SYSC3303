@@ -11,8 +11,8 @@ public class MotorStartedState extends State {
 	 * a signal from the elevator that it has reached the correct floors
 	 */
 	@Override
-	public State elevatorReacherFloor() {
-		int targetFloor = this.stateMachine.floorQueue.get(0).floorNum;
+	public State elevatorReachedFloorEvent() {
+		int targetFloor = this.stateMachine.getQueueFront().floorNum;
 		
 		if (this.stateMachine.currentFloor == targetFloor) {
 			this.stateMachine.schedulerSubsystem.sendMotorStopMessage(
@@ -22,4 +22,6 @@ public class MotorStartedState extends State {
 			return this;
 		}
 	}
+	
+	
 }

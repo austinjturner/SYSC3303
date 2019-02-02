@@ -12,7 +12,7 @@ class GotNextFloorState extends State {
 	 */
 	@Override
 	// Note floorQueue.get(0) changed to .remove(size-1) removing the last element and adding new floors to FRONT of queue.
-	public State next() {	
+	public State defaultEvent() {	
 		int currentFloor = this.stateMachine.currentFloor;
 		int targetFloor = this.stateMachine.floorQueue.get(0).floorNum;
 		

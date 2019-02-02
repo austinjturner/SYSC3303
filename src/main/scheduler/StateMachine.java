@@ -28,34 +28,44 @@ public class StateMachine {
 		return this.state;
 	}
 	
+	// dequeue operations to be used by states
+	public void dequeue() {
+		this.floorQueue.remove(0);
+	}
+	
+	// getFront operation to be used by states
+	public Destination getQueueFront() {
+		return this.floorQueue.get(0);
+	}
+	
 	private void printStateChange(State nextState) {
 		schedulerSubsystem.debug("Leaving state:      " + this.state.getStateName());
 		schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
 	}
 	
-	public void elevatorReachedFloor(int currentFloor) {
+	public void elevatorReachedFloorEvent(int currentFloor) {
 		this.currentFloor = currentFloor;
-		State nextState = this.state.elevatorReacherFloor();
+		State nextState = this.state.elevatorReachedFloorEvent();
 		this.state = nextState;
 		go();
 	}
 	
-	public void floorButtonPressed() {
-		State nextState = this.state.elevatorButtonPressed();
+	public void floorButtonPressedEvent() {
+		State nextState = this.state.elevatorButtonPressedEvent();
 		printStateChange(nextState);
 		this.state = nextState;
 		go();
 	}
 	
-	public void newItemInQueue() {
-		State nextState = this.state.newItemInQueue();
+	public void enqueueFloorEvent() {
+		State nextState = this.state.enqueueFloorEvent();
 		printStateChange(nextState);
 		this.state = nextState;
 		go();
 	}
 	
-	public void doorTimer() {
-		State nextState = this.state.doorTimer();
+	public void doorTimerEvent() {
+		State nextState = this.state.doorTimerEvent();
 		printStateChange(nextState);
 		this.state = nextState;
 		go();
@@ -67,7 +77,7 @@ public class StateMachine {
 	public void go() {
 		for (;;) {
 			State currentState = this.state;
-			State nextState = this.state.next();
+			State nextState = this.state.defaultEvent();
 			
 			if (currentState.getClass() == nextState.getClass()) {
 				schedulerSubsystem.debug("Remaining in state: " + currentState.getStateName());
@@ -94,20 +104,20 @@ public class StateMachine {
 		//fsm.go();
 		
 		fsm.floorQueue.add(0, new Destination(targetFloor1, Destination.DestinationType.PICKUP));
-		fsm.newItemInQueue();
+		fsm.enqueueFloorEvent();
 		for (int i = 2; i <= targetFloor1; i++) {
 			//assertEqual(fsm.getState().getClass(), MotorStartedSTate.class);
-			fsm.elevatorReachedFloor(i);
+			fsm.elevatorReachedFloorEvent(i);
 		}
 		
 		//assertEqual(fsm.getState().getClass(), WaitForElevatorButtonState.class);
 		
 		fsm.floorQueue.add(0, new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
-		fsm.floorButtonPressed();
+		fsm.floorButtonPressedEvent();
 		
 		for (int i = 9; i >= targetFloor2; i--) {
 			fsm.currentFloor = 8;
-			fsm.elevatorReachedFloor(i);
+			fsm.elevatorReachedFloorEvent(i);
 		}
 	}
 }

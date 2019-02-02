@@ -1,13 +1,13 @@
 package src.main.scheduler;
 
-public class FloorRemovedFromQueueState extends State {
+public class FloorDequeuedState extends State {
 
-	public FloorRemovedFromQueueState(StateMachine stateMachine) {
+	public FloorDequeuedState(StateMachine stateMachine) {
 		super(stateMachine);
 	}
 	
 	@Override
-	public State next() {
+	public State defaultEvent() {
 		this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(this.stateMachine.elevatorID);
 		return new DoorClosedState(this.stateMachine);
 	}

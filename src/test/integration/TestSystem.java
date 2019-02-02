@@ -35,7 +35,7 @@ public class TestSystem {
 		//fsm.go();
 		
 		fsm.floorQueue.add(0, new Destination(targetFloor1, Destination.DestinationType.PICKUP));
-		fsm.newItemInQueue();
+		fsm.enqueueFloorEvent();
 		
 		while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
 			try {
@@ -46,7 +46,7 @@ public class TestSystem {
 		}
 		
 		fsm.floorQueue.add(1, new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
-		fsm.floorButtonPressed();
+		fsm.floorButtonPressedEvent();
 		
 		while (! (fsm.getState() instanceof WaitingState)) {
 			try {

@@ -12,7 +12,7 @@ public class DoorWaitTimer extends Thread {
 	public void run() {
 		try {
 			Thread.sleep(this.WAIT_TIME_TO_EXIT_ELEVATOR);
-			stateMachine.doorTimer();
+			stateMachine.doorTimerEvent();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

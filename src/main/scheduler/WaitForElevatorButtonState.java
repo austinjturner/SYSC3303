@@ -7,13 +7,13 @@ public class WaitForElevatorButtonState extends State {
 	}
 
 	@Override
-	public State elevatorButtonPressed() {
-		this.stateMachine.floorQueue.remove(0);
-		return new FloorRemovedFromQueueState(this.stateMachine);
+	public State elevatorButtonPressedEvent() {
+		this.stateMachine.dequeue();
+		return new FloorDequeuedState(this.stateMachine);
 	}
 	
 	@Override
-	public State doorTimer() {
+	public State doorTimerEvent() {
 		return new FailedState(this.stateMachine);
 	}
 }

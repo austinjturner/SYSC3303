@@ -10,27 +10,27 @@ public class FailedState extends State {
 		System.out.println("ERROR: State machine in an unrecoverable state");
 	}
 	
-	public State next() {
+	public State defaultEvent() {
 		printErrorMessage();
 		return this;
 	}
 	
-	public State elevatorReacherFloor() {
+	public State elevatorReachedFloorEvent() {
 		printErrorMessage();
 		return this;
 	}
 	
-	public State elevatorButtonPressed() {
+	public State elevatorButtonPressedEvent() {
 		printErrorMessage();
 		return this;
 	}
 	
-	public State newItemInQueue() {
+	public State enqueueFloorEvent() {
 		printErrorMessage();
 		return this;
 	}
 	
-	public State doorTimer() {
+	public State doorTimerEvent() {
 		printErrorMessage();
 		return this;
 	}

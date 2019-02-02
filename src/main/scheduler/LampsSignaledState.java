@@ -6,7 +6,7 @@ class LampsSignaledState extends State {
 		super(stateMachine);
 	}
 	
-	public State next() {
+	public State defaultEvent() {
 		this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
 				this.stateMachine.elevatorID);
 		
