@@ -3,6 +3,7 @@ package src.main.elevator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import src.main.net.Common;
 import src.main.net.Message;
 import src.main.net.MessageAPI;
 import src.main.net.PacketException;
@@ -73,31 +74,31 @@ public class Elevator implements Runnable {
 		boolean sendEmptyResponse = true;
 		// Going through all possible cases for request messages, calling appropriate methods in response
 		switch (requestType) {
-			case 2001: 
+			case MessageAPI.MSG_CLOSE_DOORS: 
 				closeDoor();
 				break;
-			case 2002:
+			case MessageAPI.MSG_OPEN_DOORS:
 				openDoor();
 				break;
-			case 2003:
+			case MessageAPI.MSG_MOTOR_STOP:
 				stop();
 				break;
-			case 2004:
+			case MessageAPI.MSG_MOTOR_UP:
 				goUp();
 				break;
-			case 2005:
+			case MessageAPI.MSG_MOTOR_DOWN:
 				goDown();
 				break;
-			case 2006: 
+			case MessageAPI.MSG_TOGGLE_ELEVATOR_LAMP: 
 				toggleLamp(message.getValue());
 				break;
-			case 2007: 
+			case MessageAPI.MSG_PRESS_ELEVATOR_BUTTON: 
 				pressButton(message.getValue());
 				break;
-			case 2008:  
+			case MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON:  
 				clearButton(message.getValue());
 				break;
-			case 2009:
+			case MessageAPI.MSG_CURRENT_FLOOR:
 				// If a floor is requested for the elevator, response must contain requested floor.
 				// Otherwise an empty message can be sent to acknowledge elevator received scheduler message.
 				sendEmptyResponse = false; 
@@ -209,7 +210,7 @@ public class Elevator implements Runnable {
 	 */
 	public void floorChangeAlert() {
 		try {
-			this.requester.sendRequest(InetAddress.getLocalHost(), 8002, new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor));
+			this.requester.sendRequest(InetAddress.getLocalHost(), Common.PORT_SCHEDULER_SUBSYSTEM, new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor));
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (PacketException e) {

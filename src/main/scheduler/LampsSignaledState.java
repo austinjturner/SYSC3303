@@ -1,4 +1,4 @@
-package src.main.scheduler.elevator_fsm;
+package src.main.scheduler;
 
 class LampsSignaledState extends State {
 

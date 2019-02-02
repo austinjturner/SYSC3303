@@ -1,4 +1,4 @@
-package src.main.scheduler.elevator_fsm;
+package src.main.scheduler;
 
 public class DoorWaitTimer extends Thread {
 	public final int WAIT_TIME_TO_EXIT_ELEVATOR = 10000;

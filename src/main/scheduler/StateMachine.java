@@ -1,4 +1,4 @@
-package src.main.scheduler.elevator_fsm;
+package src.main.scheduler;
 
 import java.util.*;
 
@@ -29,8 +29,8 @@ public class StateMachine {
 	}
 	
 	private void printStateChange(State nextState) {
-		//System.out.println("Leaving state: " + this.state.getClass().getName());
-		//System.out.println("Entering state: " + nextState.getClass().getName());
+		schedulerSubsystem.debug("Leaving state:      " + this.state.getStateName());
+		schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
 	}
 	
 	public void elevatorReachedFloor(int currentFloor) {
@@ -70,17 +70,17 @@ public class StateMachine {
 			State nextState = this.state.next();
 			
 			if (currentState.getClass() == nextState.getClass()) {
-				//System.out.println("Remaining in state: " + currentState.getClass().getName());
+				schedulerSubsystem.debug("Remaining in state: " + currentState.getStateName());
 				break;
 			} else {
-				//System.out.println("Leaving state: " + currentState.getClass().getName());
-				//System.out.println("Entering state: " + nextState.getClass().getName());
+				schedulerSubsystem.debug("Leaving state:      " + currentState.getStateName());
+				schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
 				this.state = nextState;
 			}
 		}
 	}
 	
-	/*
+	
 	public static void main(String[] args) {
 		SchedulerSubsystem ss = new SchedulerSubsystem(new MockRequester(), new Responder());
 		ss.start();
@@ -89,14 +89,18 @@ public class StateMachine {
 		int targetFloor1 = 10;
 		int targetFloor2 = 5;
 
-		StateMachine fsm = new StateMachine(elevatorID, ss);
-		fsm.go();
+		StateMachine fsm  = ss.getStateMachine();
+		//StateMachine fsm = new StateMachine(elevatorID, ss);
+		//fsm.go();
 		
 		fsm.floorQueue.add(0, new Destination(targetFloor1, Destination.DestinationType.PICKUP));
 		fsm.newItemInQueue();
 		for (int i = 2; i <= targetFloor1; i++) {
+			//assertEqual(fsm.getState().getClass(), MotorStartedSTate.class);
 			fsm.elevatorReachedFloor(i);
 		}
+		
+		//assertEqual(fsm.getState().getClass(), WaitForElevatorButtonState.class);
 		
 		fsm.floorQueue.add(0, new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
 		fsm.floorButtonPressed();
@@ -105,5 +109,5 @@ public class StateMachine {
 			fsm.currentFloor = 8;
 			fsm.elevatorReachedFloor(i);
 		}
-	}*/
+	}
 }

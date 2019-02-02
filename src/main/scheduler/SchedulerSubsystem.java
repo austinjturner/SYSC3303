@@ -1,4 +1,4 @@
-package src.main.scheduler.elevator_fsm;
+package src.main.scheduler;
 
 import java.net.*;
 
@@ -27,16 +27,14 @@ import src.main.net.*;
  */
 public class SchedulerSubsystem extends Thread {
 	
+	private final boolean DEBUG = true;
+	
 	private Requester requester;
 	private Responder responder;
 	
 	private InetAddress address;
 	
 	private StateMachine stateMachine;
-	
-	private static final int ELEVATOR_PORT = 8001;		// FIXME
-	private static final int SCHEDULER_PORT = 8002;	// FIXME
-	
 	
 	public SchedulerSubsystem(Requester requester, Responder responder) {
 		this.requester = requester;
@@ -51,7 +49,7 @@ public class SchedulerSubsystem extends Thread {
 	}
 	
 	public SchedulerSubsystem() {
-		this(new Requester(), new Responder(SCHEDULER_PORT));
+		this(new Requester(), new Responder(Common.PORT_SCHEDULER_SUBSYSTEM));
 	}
 	
 	public StateMachine getStateMachine() {
@@ -75,6 +73,7 @@ public class SchedulerSubsystem extends Thread {
 	 * @param rm
 	 */
 	private void messageHandle(RequestMessage rm) {
+
 		int requestType = rm.getRequestType();
 		
 		switch (requestType) {
@@ -130,27 +129,27 @@ public class SchedulerSubsystem extends Thread {
 	}
 	
 	public void sendOpenDoorMessage(int elevatorID) {
-		sendMessage(this.address, ELEVATOR_PORT, new Message(MessageAPI.MSG_OPEN_DOORS));
+		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_OPEN_DOORS));
 	}
 	
 	public void sendCloseDoorMessage(int elevatorID) {
-		sendMessage(this.address, ELEVATOR_PORT, new Message(MessageAPI.MSG_CLOSE_DOORS));
+		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_CLOSE_DOORS));
 	}
 	
 	public void sendMotorUpMessage(int elevatorID) {
-		sendMessage(this.address, ELEVATOR_PORT, new Message(MessageAPI.MSG_MOTOR_UP));
+		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_UP));
 	}
 	
 	public void sendMotorDownMessage(int elevatorID) {
-		sendMessage(this.address, ELEVATOR_PORT, new Message(MessageAPI.MSG_MOTOR_DOWN));
+		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_DOWN));
 	}
 	
 	public void sendMotorStopMessage(int elevatorID) {
-		sendMessage(this.address, ELEVATOR_PORT, new Message(MessageAPI.MSG_MOTOR_STOP));
+		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_STOP));
 	}
 	
 	public void sendClearElevatorButtonMessage(int elevatorID, int floorNum) {
-		sendMessage(this.address, ELEVATOR_PORT, 
+		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, 
 				new Message(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON, floorNum));
 	}
 	
@@ -158,5 +157,15 @@ public class SchedulerSubsystem extends Thread {
 		// TODO
 		//sendMessage(this.address, ELEVATOR_PORT, 
 		//		new Message(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON, floorNum));
+	}
+	
+	public void print(String s) {
+		System.out.println("[ SCHEDULER ] " + s);
+	}
+	
+	public void debug(String s) {
+		if (this.DEBUG) {
+			print(s);
+		}
 	}
 }

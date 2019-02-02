@@ -3,13 +3,13 @@ package src.test.integration;
 import org.junit.*;
 
 import src.main.elevator.Elevator;
-import src.main.scheduler.elevator_fsm.*;
+import src.main.net.Common;
+import src.main.scheduler.*;
 
 public class TestSystem {
+	
 	int elevatorID = 666;
 	int numFloors = 10;
-	int elevatorPort = 8001;
-	
 	
 	@Test
 	public void testSystem() {
@@ -17,7 +17,7 @@ public class TestSystem {
 		int targetFloor1 = 10;
 		int targetFloor2 = 5;
 		
-		Elevator elevator = new Elevator(elevatorID, elevatorPort, numFloors);
+		Elevator elevator = new Elevator(elevatorID, Common.PORT_ELEVATOR_SUBSYSTEM, numFloors);
 		Thread elevatorThread = new Thread(elevator);
 		elevatorThread.start();
 		
