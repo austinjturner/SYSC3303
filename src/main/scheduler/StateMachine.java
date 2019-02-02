@@ -3,7 +3,6 @@ package src.main.scheduler;
 import java.util.*;
 
 import src.main.net.*;
-import src.main.scheduler.*;
 
 public class StateMachine {
 	public List<Destination> floorQueue;
@@ -116,7 +115,7 @@ public class StateMachine {
 		fsm.elevatorButtonPressedEvent();
 		
 		for (int i = 9; i >= targetFloor2; i--) {
-			fsm.currentFloor = 8;
+			fsm.currentFloor = i;
 			fsm.elevatorReachedFloorEvent(i);
 		}
 	}

@@ -18,10 +18,6 @@ public class Responder {
 	
 	private final int BUFFER_SIZE = 1024;
 	
-	public int getPort() {
-		return this.socket.getLocalPort();
-	}
-	
  	public Responder() {
  		this(-1);
 	}
@@ -39,7 +35,11 @@ public class Responder {
 		}
 	}
 	
-	public void Close() {
+	public int getPort() {
+		return this.socket.getLocalPort();
+	}
+	
+	public void close() {
 		this.socket.close();
 	}
 	
