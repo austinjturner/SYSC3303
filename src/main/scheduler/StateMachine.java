@@ -3,7 +3,6 @@ package src.main.scheduler;
 import java.util.*;
 
 import src.main.net.*;
-import src.main.scheduler.*;
 
 public class StateMachine {
 	public List<Destination> floorQueue;
