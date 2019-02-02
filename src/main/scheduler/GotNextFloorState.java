@@ -1,7 +1,18 @@
 package src.main.scheduler;
 
+/**
+ * State to signal motor to move elevator upwards or downwards towards destination floor.
+ * 
+ * @author austinjturner
+ *
+ */
 class GotNextFloorState extends State {
 	
+	/**
+	 * Constructor for the FloorDequeuedState.
+	 * 
+	 * @param stateMachine StateMachine object used to manipulate current state of elevator.
+	 */
 	public GotNextFloorState(StateMachine stateMachine) {
 		super(stateMachine);
 	}
@@ -9,6 +20,8 @@ class GotNextFloorState extends State {
 	/**
 	 * Start moving motor in the appropriate direction.
 	 * Move the MotorStartedState
+	 * 
+	 * @return State Returns next state for the elevator.
 	 */
 	@Override
 	public State defaultEvent() {	

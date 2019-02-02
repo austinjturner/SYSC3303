@@ -1,9 +1,19 @@
 package src.main.scheduler;
 
+/**
+ * Abstract class for all states to inherit from. 
+ * 
+ * @author austinjturner
+ */
 public abstract class State {
 	
 	protected StateMachine stateMachine;
 	
+	/**
+	 * Constructor for a State for initializing stateMachine for the state.
+	 * 
+	 * @param stateMachine StateMachine object used to manipulate current state of elevator.
+	 */
 	public State(StateMachine stateMachine) {
 		this.stateMachine = stateMachine;
 	}
