@@ -1,4 +1,5 @@
-package src.main.scheduler;
+package src.test.scheduler;
+import src.main.scheduler.*;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 import java.net.*;
 import src.main.net.*;
+import src.main.scheduler.Destination;
+import src.main.scheduler.MotorStartedState;
+import src.main.scheduler.SchedulerSubsystem;
+import src.main.scheduler.StateMachine;
+import src.main.scheduler.WaitForElevatorButtonState;
+import src.main.scheduler.WaitingState;
+import src.main.scheduler.Destination.DestinationType;
 
 /*
  * @author Nic Howes
