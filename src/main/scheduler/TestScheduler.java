@@ -12,6 +12,15 @@ import src.main.net.*;
  */
 public class TestScheduler {
 	
+	int elevatorID = 666;
+	int targetFloor1 = 10;
+	int targetFloor2 = 5;
+	int targetFloor3 = 2;
+	int targetFloor4 = 3;
+	int targetFloor5 = 7;
+	int targetFloor6 = 8;
+	
+	
 	
 	@Test
 	public void emptyQueue_testWaitingState(StateMachine machine) {
@@ -19,7 +28,21 @@ public class TestScheduler {
 	}
 	
 	@Test
-	public void transition_testOverallStateTransition() {
+	public void transition_testOverallStateTransition(StateMachine machine) {
+		
+		machine.floorQueue.add(new Destination(targetFloor1, Destination.DestinationType.PICKUP));
+		
+		machine.enqueueFloorEvent();
+		
+		assertEquals(machine.getState().getClass(), MotorStartedState.class);
+		for (int i = 2; i <= targetFloor1; i++) {
+			machine.elevatorReachedFloorEvent(i);
+		}
+		
+		assertEquals(machine.getState().getClass(), WaitForElevatorButtonState.class);
+		
+		machine.floorQueue.add(new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
+		machine.elevatorButtonPressedEvent();
 		
 	}
 	
@@ -39,13 +62,6 @@ public class TestScheduler {
 		SchedulerSubsystem ss = new SchedulerSubsystem(new MockRequester(), new Responder());
 		ss.start();
 		
-		int elevatorID = 666;
-		int targetFloor1 = 10;
-		int targetFloor2 = 5;
-		int targetFloor3 = 2;
-		int targetFloor4 = 3;
-		int targetFloor5 = 7;
-		int targetFloor6 = 8;
 
 		StateMachine fsm  = ss.getStateMachine();
 		

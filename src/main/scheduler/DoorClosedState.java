@@ -8,6 +8,10 @@ class DoorClosedState extends State {
 	// Note changed to floorQueue.isEmpty(), doesn't change functionality.
 	@Override
 	public State defaultEvent() {
+		
+		String s = new String(getStateName());
+		System.out.println("This is transition state: " + s);
+		
 		if (this.stateMachine.floorQueue.isEmpty()) {
 			return new WaitingState(this.stateMachine);
 		} else {
