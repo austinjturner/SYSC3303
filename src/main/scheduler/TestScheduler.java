@@ -14,8 +14,8 @@ public class TestScheduler {
 	
 	
 	@Test
-	public void emptyQueue_testWaitingState() {
-		
+	public void emptyQueue_testWaitingState(StateMachine machine) {
+		assertTrue(machine.floorQueue.isEmpty());
 	}
 	
 	@Test
