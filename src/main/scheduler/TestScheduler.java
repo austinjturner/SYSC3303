@@ -21,12 +21,17 @@ public class TestScheduler {
 	int targetFloor6 = 8;
 	
 	
-	
+	/* 
+	 * Test to ensure that the floorQueue is initially empty
+	 */
 	@Test
 	public void emptyQueue_testWaitingState(StateMachine machine) {
 		assertTrue(machine.floorQueue.isEmpty());
 	}
 	
+	/*
+	 * Test to show overall state sequence, note transition states shown via embedded print statements not assertEquals().
+	 */
 	@Test
 	public void transition_testOverallStateTransition(StateMachine machine) {
 		
@@ -44,15 +49,13 @@ public class TestScheduler {
 		machine.floorQueue.add(new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
 		machine.elevatorButtonPressedEvent();
 		
-	}
-	
-	@Test
-	public void doorClosedToWait_testTransition() {
+		assertEquals(machine.getState().getClass(), WaitingState.class);
 		
 	}
 	
 	
 	
+
 	
 	
 	
