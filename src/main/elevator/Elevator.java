@@ -33,8 +33,6 @@ public class Elevator implements Runnable {
 	private Responder responder;
 	private Thread motorTimerThread;
 	private int numberOfFloors;
-	private int addr;
-	private int host;
 	
 	/**
 	 * The constructor of the elevator.
@@ -223,7 +221,7 @@ public class Elevator implements Runnable {
 	 * 
 	 * @return currentFloor Integer for indicating the current floor.
 	 */
-	public synchronized int getCurrentFloor() {
+	public int getCurrentFloor() {
 		return this.currentFloor;
 	}
 	

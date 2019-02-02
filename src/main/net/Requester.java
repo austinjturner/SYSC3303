@@ -49,7 +49,7 @@ public class Requester {
 	/**
 	 * Close the socket
 	 */
-	public void Close() {
+	public void close() {
 		this.socket.close();
 	}
 	

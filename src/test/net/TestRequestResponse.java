@@ -28,10 +28,10 @@ public class TestRequestResponse {
 		assertEquals(responder.getPort(), testPort);
 		
 		// Test close port
-		responder.Close();
+		responder.close();
 		responder = new Responder(testPort);
 		assertEquals(responder.getPort(), testPort);
-		responder.Close();
+		responder.close();
 	}
 	
 	
