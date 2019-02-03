@@ -131,7 +131,7 @@ public class Elevator implements Runnable {
 		this.motor = motorState.STOP;
 		if(motorTimerThread.isAlive()) {
 			motorTimerThread.interrupt();
-			System.out.println("Elevator stopped...");
+			print("Stopped...");
 		}	
 	}
 	
@@ -142,7 +142,7 @@ public class Elevator implements Runnable {
 		this.motor = motorState.UP;
 		motorTimerThread = new Thread(new MotorTimer());
 		motorTimerThread.start();
-		System.out.println("Going up...");
+		print("Going up...");
 	}
 	/**
 	 * Creates and starts a motorTimer thread to decrement elevator current floor while motor is running.
@@ -151,21 +151,21 @@ public class Elevator implements Runnable {
 		this.motor = motorState.DOWN;
 		motorTimerThread = new Thread(new MotorTimer());
 		motorTimerThread.start();
-		System.out.println("Going down...");
+		print("Going down...");
 	}
 	/**
 	 * Sets elevator door to  open.
 	 */
 	public void openDoor() {
 		this.doorOpen = true;
-		System.out.println("Door opened");
+		print("Door opened");
 	}
 	/**
 	 * Closes elevator door
 	 */
 	public void closeDoor() {
 		this.doorOpen = false;
-		System.out.println("Door closed");
+		print("Door closed");
 	}
 	/**
 	 * toggles the lamp representing a floor within the elevator on or off (true or false).
@@ -174,7 +174,7 @@ public class Elevator implements Runnable {
 	 */
 	public void toggleLamp(int lampNum) {
 		this.lamps[lampNum - 1] = !this.lamps[lampNum - 1];
-		System.out.println("Lamp toggled: " + lampNum + ". Value: " + this.lamps[lampNum - 1]);
+		print("Lamp toggled: " + lampNum + ". Value: " + this.lamps[lampNum - 1]);
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class Elevator implements Runnable {
 	 */
 	public void pressButton(int buttonNum) {
 		this.buttons[buttonNum - 1] = true;
-		System.out.println("Button pressed: " + buttonNum);
+		print("Button pressed: " + buttonNum);
 	}
 	
 	/**
@@ -194,7 +194,7 @@ public class Elevator implements Runnable {
 	 */
 	public void clearButton(int buttonNum) {
 		this.buttons[buttonNum - 1] = false;
-		System.out.println("Button cleared: " + buttonNum);
+		print("Button cleared: " + buttonNum);
 	}
 	
 	/**
@@ -203,7 +203,7 @@ public class Elevator implements Runnable {
 	public synchronized void incrementFloor() {
 		if(this.currentFloor < this.numberOfFloors) {
 			this.currentFloor += 1;
-			System.out.println("At floor: " + this.currentFloor);
+			print("At floor: " + this.currentFloor);
 			floorChangeAlert();
 		}
 	}
@@ -214,7 +214,7 @@ public class Elevator implements Runnable {
 	public synchronized void decrementFloor() {
 		if(this.currentFloor > 1) {
 			this.currentFloor -= 1;
-			System.out.println("At floor: " + this.currentFloor);
+			print("At floor: " + this.currentFloor);
 			floorChangeAlert();
 		}
 	}
@@ -276,6 +276,10 @@ public class Elevator implements Runnable {
 	public boolean[] getButtons() {
 		return this.buttons;
 	}
+    public void print(String s) {
+        System.out.println("[ ELEVATOR  ] " + s);
+    }
+    
 	
 	/**
 	 * MotorTimer is used to simulate the movement of an elevator between floors. ]
