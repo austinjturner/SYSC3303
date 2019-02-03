@@ -37,9 +37,8 @@ class GotNextFloorState extends State {
 			this.stateMachine.schedulerSubsystem.sendMotorDownMessage(
 					this.stateMachine.elevatorID);			
 		}
-		String s = new String(getStateName());
-		System.out.println("This is transition state: " + s);
 		
+		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new MotorStartedState(this.stateMachine);
 	}
 }

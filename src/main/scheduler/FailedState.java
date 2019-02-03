@@ -18,7 +18,7 @@ public class FailedState extends State {
 	}
 	
 	private void printErrorMessage() {
-		System.out.println("ERROR: State machine in an unrecoverable state");
+		this.stateMachine.schedulerSubsystem.print("ERROR: State machine in an unrecoverable state");
 	}
 
 	public State defaultEvent() {

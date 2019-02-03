@@ -26,7 +26,7 @@ class DoorClosedState extends State {
 	@Override
 	public State defaultEvent() {
 		String s = new String(getStateName());
-		System.out.println("This is transition state: " + s);
+		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + s);
 		
 		if (this.stateMachine.floorQueue.isEmpty()) {
 			return new WaitingState(this.stateMachine);

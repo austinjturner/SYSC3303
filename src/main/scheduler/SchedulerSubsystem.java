@@ -27,6 +27,7 @@ import src.main.net.*;
  */
 public class SchedulerSubsystem extends Thread {
 	
+	// Enables verbose logging for the scheduler subsystem 
 	private final boolean DEBUG = true;
 	
 	private Requester requester;

@@ -25,15 +25,22 @@ public class TestScheduler {
 	public static int targetFloor2 = 5;
 	public static int targetFloor3 = 2;
 	
+	public StateMachine fsm;
 	
 	
+	@Before
+	public void setUp() {
+		SchedulerSubsystem ss = new SchedulerSubsystem(new MockRequester(), new Responder());
+		ss.start();
+		this.fsm  = ss.getStateMachine();
+	}
 	
 	/* 
 	 * Test to ensure that the floorQueue is initially empty
 	 */
 	@Test
-	public static void emptyQueue_testWaitingState(StateMachine machine) {
-		assertTrue(machine.floorQueue.isEmpty());
+	public void emptyQueue_testWaitingState() {
+		assertTrue(fsm.floorQueue.isEmpty());
 	}
 	
 	/*
@@ -41,23 +48,28 @@ public class TestScheduler {
 	 * Simulates someone getting picked up at a floor and pressing a button in the elevator then going to that floor.
 	 */
 	@Test
-	public static void transition_testOverallStateTransition(StateMachine machine) {
+	public void transition_testOverallStateTransition() {
 		
-		machine.floorQueue.add(new Destination(targetFloor1, Destination.DestinationType.PICKUP));
+		fsm.floorQueue.add(new Destination(targetFloor1, Destination.DestinationType.PICKUP));
 		
-		machine.enqueueFloorEvent();
+		fsm.enqueueFloorEvent();
 		
-		assertEquals(machine.getState().getClass(), MotorStartedState.class);
+		assertEquals(fsm.getState().getClass(), MotorStartedState.class);
 		for (int i = 2; i <= targetFloor1; i++) {
-			machine.elevatorReachedFloorEvent(i);
+			fsm.elevatorReachedFloorEvent(i);
 		}
 		
-		assertEquals(machine.getState().getClass(), WaitForElevatorButtonState.class);
+		assertEquals(fsm.getState().getClass(), WaitForElevatorButtonState.class);
 		
-		machine.floorQueue.add(new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
-		machine.elevatorButtonPressedEvent();
+		fsm.floorQueue.add(1, new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
+		fsm.elevatorButtonPressedEvent();
 		
-		assertEquals(machine.getState().getClass(), WaitingState.class);
+		for (int i = targetFloor1; i >= targetFloor2; i--) {
+			fsm.elevatorReachedFloorEvent(i);
+		}
+		
+		fsm.doorTimerEvent();
+		assertEquals(fsm.getState().getClass(), WaitingState.class);
 		
 	}
 	
@@ -65,34 +77,16 @@ public class TestScheduler {
 	 * Test to show the MotorStoppedState goes to the WaitingState when destinationType is wait.
 	 */
 	@Test 
-	public static void motorStoppedState_testNextState(StateMachine machine) {
+	public void motorStoppedState_testNextState() {
 		
-		machine.floorQueue.add(new Destination(targetFloor3, Destination.DestinationType.WAIT));
-		machine.enqueueFloorEvent();
+		fsm.floorQueue.add(new Destination(targetFloor3, Destination.DestinationType.WAIT));
+		fsm.enqueueFloorEvent();
 		
 		for (int i = 2; i <= targetFloor3; i++) {
-			machine.elevatorReachedFloorEvent(i);
+			fsm.elevatorReachedFloorEvent(i);
 		}
 		
-		assertEquals(machine.getState().getClass(), WaitingState.class);
+		assertEquals(fsm.getState().getClass(), WaitingState.class);
 		
 	}
-	
-	
-	
-	
-	// main program to set up the SchedulerSubsystem and statemachine objects for testing.
-	public static void main(String[] args) {
-		SchedulerSubsystem ss = new SchedulerSubsystem(new MockRequester(), new Responder());
-		ss.start();
-		StateMachine fsm  = ss.getStateMachine();
-		
-		emptyQueue_testWaitingState(fsm);
-		
-		transition_testOverallStateTransition(fsm);
-		
-		motorStoppedState_testNextState(fsm);
-		
-	}
-	
 }

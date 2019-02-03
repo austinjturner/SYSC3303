@@ -13,9 +13,18 @@ public class TestSystem {
 	int elevatorID = 666;
 	int numFloors = 10;
 	
+	private void sleep(int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	
 	@Test
-	public void testSystemBasicUseCase() {
+	public void testSystemBasicUseCases() {
 	
 		Elevator elevator = new Elevator(elevatorID, Common.PORT_ELEVATOR_SUBSYSTEM, numFloors);
 		Thread elevatorThread = new Thread(elevator);
@@ -25,12 +34,7 @@ public class TestSystem {
 		schedulerSubsystem.start();
 			
 		// Wait for Elevator and Scheduler threads to stabilize
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		sleep(100);
 		StateMachine fsm = schedulerSubsystem.getStateMachine();
 		
 		/*
@@ -73,12 +77,10 @@ public class TestSystem {
 			
 			// Simulate button state once WaitForElevatorButtonState reached
 			while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				sleep(100);
 			}
+			
+			sleep(5000);	// simulate someone getting in the elevator
 			
 			// button press
 			fsm.floorQueue.add(1, tp.destDest);
@@ -87,11 +89,7 @@ public class TestSystem {
 		
 		// Wait for final request
 		while (! (fsm.getState() instanceof WaitingState)) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			sleep(100);
 		}
 		
 		System.out.println("Part 1 Complete!");
@@ -106,11 +104,7 @@ public class TestSystem {
 		
 		// Wait for arrival
 		while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			sleep(100);
 		}
 		
 		// Drop person off at floor 1 AND pickup next person
@@ -118,22 +112,14 @@ public class TestSystem {
 		fsm.elevatorButtonPressedEvent();
 		
 		while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			sleep(100);
 		}
 		
 		fsm.floorQueue.add(1, new Destination(3, Destination.DestinationType.DROPOFF));
 		fsm.elevatorButtonPressedEvent();
 		
 		while (! (fsm.getState() instanceof WaitingState)) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			sleep(100);
 		}
 
 		System.out.println("Part 2 Complete!");		

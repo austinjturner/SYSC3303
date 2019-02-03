@@ -2,6 +2,13 @@ package src.main.net;
 
 import java.net.*;
 
+/**
+ * This class can be used to send mock responses with requiring
+ * any other subsystem to be running.
+ * 
+ * @author austinjturner
+ *
+ */
 public class MockRequestMessage extends RequestMessage {
 	
 	static class MockResponder extends Responder {

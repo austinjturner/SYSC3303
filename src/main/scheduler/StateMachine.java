@@ -4,14 +4,24 @@ import java.util.*;
 
 import src.main.net.*;
 
+/**
+ * This class represents the schedulers view of a Elevator state machine.
+ * The state machine processes a list of floors from a queue.
+ * 
+ * The state machine will remove floors once visited, but is NOT
+ * Responsible for managing the queue.
+ * 
+ * @author austinjturner
+ *
+ */
 public class StateMachine {
 	public List<Destination> floorQueue;
 	public int currentFloor;
 
-	SchedulerSubsystem schedulerSubsystem;
-	State state;
-	int elevatorID;
-	boolean goingUp;
+	public SchedulerSubsystem schedulerSubsystem;
+	public State state;
+	public int elevatorID;
+	public boolean goingUp;
 	
 	public StateMachine(int elevatorID, SchedulerSubsystem schedulerSubsystem) {
 		this.elevatorID = elevatorID;
@@ -38,8 +48,8 @@ public class StateMachine {
 	}
 	
 	private void printStateChange(State nextState) {
-		schedulerSubsystem.debug("Leaving state:      " + this.state.getStateName());
-		schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
+		//schedulerSubsystem.debug("Leaving state:      " + this.state.getStateName());
+		//schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
 	}
 	
 	public void elevatorReachedFloorEvent(int currentFloor) {
@@ -79,11 +89,11 @@ public class StateMachine {
 			State nextState = this.state.defaultEvent();
 			
 			if (currentState.getClass() == nextState.getClass()) {
-				schedulerSubsystem.debug("Remaining in state: " + currentState.getStateName());
+				//schedulerSubsystem.debug("Remaining in state: " + currentState.getStateName());
 				break;
 			} else {
-				schedulerSubsystem.debug("Leaving state:      " + currentState.getStateName());
-				schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
+				//schedulerSubsystem.debug("Leaving state:      " + currentState.getStateName());
+				//schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
 				this.state = nextState;
 			}
 		}
@@ -91,32 +101,7 @@ public class StateMachine {
 	
 	
 	public static void main(String[] args) {
-		SchedulerSubsystem ss = new SchedulerSubsystem(new MockRequester(), new Responder());
+		SchedulerSubsystem ss = new SchedulerSubsystem(new Requester(), new Responder());
 		ss.start();
-		
-		int elevatorID = 666;
-		int targetFloor1 = 10;
-		int targetFloor2 = 5;
-
-		StateMachine fsm  = ss.getStateMachine();
-		//StateMachine fsm = new StateMachine(elevatorID, ss);
-		//fsm.go();
-		
-		fsm.floorQueue.add(0, new Destination(targetFloor1, Destination.DestinationType.PICKUP));
-		fsm.enqueueFloorEvent();
-		for (int i = 2; i <= targetFloor1; i++) {
-			//assertEqual(fsm.getState().getClass(), MotorStartedSTate.class);
-			fsm.elevatorReachedFloorEvent(i);
-		}
-		
-		//assertEqual(fsm.getState().getClass(), WaitForElevatorButtonState.class);
-		
-		fsm.floorQueue.add(0, new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
-		fsm.elevatorButtonPressedEvent();
-		
-		for (int i = 9; i >= targetFloor2; i--) {
-			fsm.currentFloor = i;
-			fsm.elevatorReachedFloorEvent(i);
-		}
 	}
 }

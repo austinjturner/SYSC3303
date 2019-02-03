@@ -24,9 +24,8 @@ class LampsSignaledState extends State {
 	public State defaultEvent() {
 		this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
 				this.stateMachine.elevatorID);
-		String s = new String(getStateName());
-		System.out.println("This is transition state: " + s);
 		
+		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new DoorOpenedState(this.stateMachine);
 	}
 

@@ -18,6 +18,10 @@ public class DoorOpenedState extends State {
 		 * We start this timer to ensure the door is closed again after
 		 * a period of time.
 		 */
+		startDoorWaitTimer();
+	}
+	
+	private void startDoorWaitTimer() {
 		new DoorWaitTimer(this.stateMachine).start();
 	}
 	/**
@@ -37,7 +41,7 @@ public class DoorOpenedState extends State {
 	 */
 	public State defaultEvent() {
 		String s = new String(getStateName());
-		System.out.println("This is transition state: " + s);
+		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + s);
 		if (floorIsPickup()) {
 			return new WaitForElevatorButtonState(this.stateMachine);
 		} else {
@@ -53,7 +57,7 @@ public class DoorOpenedState extends State {
 	public State doorTimerEvent() {
 		this.stateMachine.dequeue();
 		String s = new String(getStateName());
-		System.out.println("This is transition state: " + s);
+		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + s);
 		return new FloorDequeuedState(this.stateMachine);
 	}
 }
