@@ -35,7 +35,7 @@ public class Elevator implements Runnable {
 	private int numberOfFloors;
 	
 	/**
-	 * The constructor of the elevator.
+	 * Constructor of the elevator.
 	 * 
 	 * @param id The id of the elevator given by the scheduler.
 	 * @param portNumber The port number given to the elevator to receive scheduler UDP messages over the network.
@@ -46,6 +46,15 @@ public class Elevator implements Runnable {
 				new Requester(), new Responder(portNumber));
 	}
 	
+/**
+ * Constructor of the elevator, usable for testing with passing in a MockRequester and Responder.
+ * 
+ * @param id The id of the elevator given by the scheduler.
+ * @param portNumber The port number given to the elevator to receive scheduler UDP messages over the network.
+ * @param numberOfFloors The number of floors the elevator operates.
+ * @param requester MockRequester for testing purposes so elevator does not hang waiting for responses.
+ * @param responder Responder for testing purposes
+ */
 	public Elevator(int id, int portNumber, int numberOfFloors, 
 			Requester requester, Responder responder) {
 		
@@ -294,7 +303,6 @@ public class Elevator implements Runnable {
 						incrementFloor();
 					}
 				} catch (InterruptedException e) {
-					e.printStackTrace();
 					return;
 				}
 			}

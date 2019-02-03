@@ -10,7 +10,10 @@ import src.main.elevator.Elevator.motorState;
 import src.main.net.Message;
 import src.main.net.MessageAPI;
 import src.main.net.MockRequestMessage;
+import src.main.net.MockRequester;
 import src.main.net.RequestMessage;
+import src.main.net.Requester;
+import src.main.net.Responder;
 
 /*
  * @author nikolaerak
@@ -51,7 +54,7 @@ public class TestElevator {
 		elevator.messageHandler(message);
 
 		assertEquals(motorState.UP, elevator.getMotorDirection());
-
+		
 		message = new MockRequestMessage(MessageAPI.MSG_MOTOR_STOP,0);
 		elevator.messageHandler(message);
 
@@ -69,18 +72,17 @@ public class TestElevator {
 	 */
 	@Test
 	public void messageHandler_testToggleLamp() {
-		
+
 		elevator = new Elevator(1,portNumber + 2,6);
 		//toggle lamp for floor 3
 		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_TOGGLE_ELEVATOR_LAMP,3);
 		elevator.messageHandler(message);
-
-		assertEquals(true, elevator.getLamps()[3]);
+		assertEquals(true, elevator.getLamps()[2]);
 
 		message = new MockRequestMessage(MessageAPI.MSG_TOGGLE_ELEVATOR_LAMP,3);
 		elevator.messageHandler(message);
 
-		assertEquals(false, elevator.getLamps()[3]);
+		assertEquals(false, elevator.getLamps()[2]);
 	}
 
 	
@@ -95,12 +97,12 @@ public class TestElevator {
 		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_PRESS_ELEVATOR_BUTTON,3);
 		elevator.messageHandler(message);
 
-		assertEquals(true, elevator.getButtons()[3]);
+		assertEquals(true, elevator.getButtons()[2]);
 
 		message = new MockRequestMessage(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON,3);
 		elevator.messageHandler(message);
 
-		assertEquals(false, elevator.getButtons()[3]);
+		assertEquals(false, elevator.getButtons()[2]);
 	}
 	
 	/*
@@ -108,8 +110,9 @@ public class TestElevator {
 	 */
 	@Test
 	public void messageHandler_testIncrementAndDecrementFloor() {
-		
-		elevator = new Elevator(1,portNumber + 4,2);
+		MockRequester mockRequester = new MockRequester();
+		Responder responder = new Responder();
+		elevator = new Elevator(1,portNumber + 4,2, mockRequester, responder);
 		assertEquals(1, elevator.getCurrentFloor());
 		
 		//should not be able to decrement

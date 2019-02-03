@@ -23,7 +23,7 @@ File Structure:
 
 Responsibilities:
 
-	Sam - Did the elevator subsytem
+	Sam - Did the elevator subsystem
 	Nikola - Helped with elevator subsystem, wrote elevator test cases, made UML
 	Austin - Created the messaging system, worked on scheduler subsystem, wrote integration tests, made state machine diagram
 	Nic - Worked on scheduler subsystem and wrote test cases
