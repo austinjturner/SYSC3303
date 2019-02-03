@@ -42,8 +42,15 @@ public class Elevator implements Runnable {
 	 * @param numberOfFloors The number of floors the elevator operates.
 	 */
 	public Elevator(int id, int portNumber, int numberOfFloors) {
-		this.requester = new Requester();
-		this.responder = new Responder(portNumber);
+		this(id, portNumber, numberOfFloors, 
+				new Requester(), new Responder(portNumber));
+	}
+	
+	public Elevator(int id, int portNumber, int numberOfFloors, 
+			Requester requester, Responder responder) {
+		
+		this.requester = requester;
+		this.responder = responder;
 		this.elevatorId = id;
 		this.currentFloor = 1;
 		this.numberOfFloors = numberOfFloors;
