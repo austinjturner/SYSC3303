@@ -1,6 +1,8 @@
 package src.main.scheduler;
 
 import java.net.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import src.main.net.*;
 
@@ -161,7 +163,7 @@ public class SchedulerSubsystem extends Thread {
 	}
 	
 	public void print(String s) {
-		System.out.println("[ SCHEDULER ] " + s);
+		System.out.println("[" + DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS").format(LocalDateTime.now()) + "][ SCHEDULER ] " + s);
 	}
 	
 	public void debug(String s) {

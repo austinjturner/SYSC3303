@@ -2,6 +2,13 @@ package src.main.elevator;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.util.Date;
+import java.util.Locale;
 
 import src.main.net.Common;
 import src.main.net.Message;
@@ -33,7 +40,6 @@ public class Elevator implements Runnable {
 	private Responder responder;
 	private Thread motorTimerThread;
 	private int numberOfFloors;
-	
 	/**
 	 * Constructor of the elevator.
 	 * 
@@ -277,7 +283,7 @@ public class Elevator implements Runnable {
 		return this.buttons;
 	}
     public void print(String s) {
-        System.out.println("[ ELEVATOR  ] " + s);
+        System.out.println("[" + DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS").format(LocalDateTime.now()) + "][ ELEVATOR  ] " + s);
     }
     
 	
