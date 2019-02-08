@@ -10,6 +10,12 @@ import java.nio.ByteOrder;
  */
 public class Common {
 	
+	/*
+	 * ==============================================================================
+	 *                              Common Constants
+	 * ==============================================================================
+	 */
+	
 	// Constant port definitions for subsystems
 	public static final int PORT_SCHEDULER_SUBSYSTEM = 8000;
 	public static final int PORT_FLOOR_SUBSYSTEM = 8001;
@@ -18,15 +24,45 @@ public class Common {
 	// Number of bytes for int in Java
 	public static final int BYTES_PER_INT = 4;
 	
+	
+	
+	/*
+	 * ==============================================================================
+	 *                              Common Functions
+	 * ==============================================================================
+	 */
+	
+	
 	// Convert and int to a byte array
 	public static byte[] intToByteArray(int value){
 	    return ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(value).array();
 	}
+	
+	
+	// convert int to byte array, then copy into the provided array at the index
+	public static void intToByteArrayAtIndex(int value, byte[] array, int index){
+	    byte[] intBytes = intToByteArray(value);
+	    for (int i = 0; i < BYTES_PER_INT; i++) {
+	    	array[index + i] = intBytes[i];
+	    }
+	}
+
 
 	// Convert a byte array to an int
 	public static int byteArrayToInt(byte[] byteArray){
-	    return ByteBuffer.wrap(byteArray).order(ByteOrder.LITTLE_ENDIAN).getInt();
+		return byteArrayToIntAtIndex(byteArray, 0);
 	}
+	
+
+	// Convert 4 bytes of an array to an int from the given index
+	public static int byteArrayToIntAtIndex(byte[] byteArray, int index){
+		byte[] bytes = new byte[BYTES_PER_INT];
+		for (int i = 0; i < BYTES_PER_INT; i++) {
+			bytes[i] = byteArray[i + index];
+		}
+	    return ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
+	}
+	
 	
 	// Convert a Message to a byte array
 	public static byte[] buildMessageBytes(Message msg) {
@@ -41,6 +77,7 @@ public class Common {
 		}
 		return encodedBytes;
 	}
+	
 	
 	// Convert a byte array to a Message
 	public static Message bytesToMsg(byte[] b) {
