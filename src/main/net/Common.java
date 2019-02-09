@@ -47,6 +47,12 @@ public class Common {
 	public static final int BYTES_PER_INT = 4;
 	
 	
+	// Number of Elevators
+	public static final int numberOfElevators = 4;
+	
+	// Number of Elevator Floors 
+	public static final int numberOfFloors = 6;
+
 	
 	/*
 	 * ==============================================================================
