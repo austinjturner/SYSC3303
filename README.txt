@@ -41,7 +41,7 @@ File Structure:
 		
 Responsibilities:
 
-	Sam - Write what you did
+	Sam - Updated elevator for running as a thread. Created ElevatorSubsystem to handle elevator creation.
 	Nikola - Updated elevator to use ElevatorMessage. Wrote Handlers for toggling the lamps, UML.
 	Austin - Write what you did
 	Nic - Write what you did
