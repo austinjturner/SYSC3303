@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import src.main.net.Common;
+import src.main.net.ElevatorMessage;
 import src.main.net.Message;
 import src.main.net.MessageAPI;
 import src.main.net.PacketException;
@@ -92,42 +93,51 @@ public class Elevator implements Runnable {
 	public void messageHandler(RequestMessage message) {
 		int requestType = message.getRequestType();
 		boolean sendEmptyResponse = true;
+		ElevatorMessage responseMessage = null;
 		// Going through all possible cases for request messages, calling appropriate methods in response
 		switch (requestType) {
 			case MessageAPI.MSG_CLOSE_DOORS: 
 				closeDoor();
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_OPEN_DOORS:
 				openDoor();
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId,0));
 				break;
 			case MessageAPI.MSG_MOTOR_STOP:
 				stop();
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_MOTOR_UP:
 				goUp();
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_MOTOR_DOWN:
 				goDown();
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_TOGGLE_ELEVATOR_LAMP: 
 				toggleLamp(message.getValue());
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_PRESS_ELEVATOR_BUTTON: 
 				pressButton(message.getValue());
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON:  
 				clearButton(message.getValue());
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_CURRENT_FLOOR:
 				// If a floor is requested for the elevator, response must contain requested floor.
 				// Otherwise an empty message can be sent to acknowledge elevator received scheduler message.
 				sendEmptyResponse = false; 
-				message.sendResponse(new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor));
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, currentFloor));
 				break;
 		}
 		
 		if(sendEmptyResponse) {
-			message.sendResponse(new Message(MessageAPI.MSG_EMPTY_RESPONSE, 0) );
+			message.sendResponse(new ElevatorMessage(MessageAPI.MSG_EMPTY_RESPONSE, elevatorId, 0));
 		}
 	}
 	/**
