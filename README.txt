@@ -1,4 +1,4 @@
-Iteration 1
+-----------------------------------Iteration 1-----------------------------------
 
 Instructions to run program:
 
@@ -28,3 +28,22 @@ Responsibilities:
 	Austin - Created the messaging system, worked on scheduler subsystem, wrote integration tests, made state machine diagram
 	Nic - Worked on scheduler subsystem and wrote test cases
 	Devon - Worked on floor subsystem and wrote test cases
+
+
+-----------------------------------Iteration 2-----------------------------------
+
+Instructions to run the program are the same as iteration 1
+
+File Structure:
+
+	Changes made after Iteration 1:
+		- New package "settings" has been added. This is used for any configurable constants such as number of floors and number of elevators.
+		
+Responsibilities:
+
+	Sam - Write what you did
+	Nikola - Updated elevator to use ElevatorMessage. Wrote Handlers for toggling the lamps, UML.
+	Austin - Write what you did
+	Nic - Write what you did
+	Devon - Write what you did
+

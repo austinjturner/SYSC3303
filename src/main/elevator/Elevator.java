@@ -259,9 +259,7 @@ public class Elevator implements Runnable {
 	 */
 	public void floorChangeAlert() {
 		try {
-			this.requester.sendRequest(InetAddress.getLocalHost(), Common.PORT_SCHEDULER_SUBSYSTEM, new Message(MessageAPI.MSG_CURRENT_FLOOR, currentFloor));
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			this.requester.sendRequest(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_SCHEDULER_SUBSYSTEM, new ElevatorMessage(MessageAPI.MSG_CURRENT_FLOOR, elevatorId, currentFloor));
 		} catch (PacketException e) {
 			e.printStackTrace();
 		}
