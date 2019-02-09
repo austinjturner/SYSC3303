@@ -1,5 +1,7 @@
 package src.main.net;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -20,6 +22,26 @@ public class Common {
 	public static final int PORT_SCHEDULER_SUBSYSTEM = 8000;
 	public static final int PORT_FLOOR_SUBSYSTEM = 8001;
 	public static final int PORT_ELEVATOR_SUBSYSTEM = 8002;
+	public static InetAddress IP_SCHEDULER_SUBSYSTEM, IP_FLOOR_SUBSYSTEM, IP_ELEVATOR_SUBSYSTEM;
+	
+	/*
+	 * Statically initializing the InetAdddress object for each subsystem
+	 * If we get an error here, System.exit(1)
+	 * 
+	 * Is this code too bad!?
+	 */
+	static {
+		try {
+			IP_SCHEDULER_SUBSYSTEM = InetAddress.getLocalHost();
+			IP_FLOOR_SUBSYSTEM = InetAddress.getLocalHost();
+			IP_ELEVATOR_SUBSYSTEM = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
 	
 	// Number of bytes for int in Java
 	public static final int BYTES_PER_INT = 4;

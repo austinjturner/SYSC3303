@@ -26,6 +26,11 @@ public class TestSystem {
 	@Test
 	public void testSystemBasicUseCases() {
 	
+		System.out.println("=====================================");
+		System.out.println("HEY! This test is broken for now, until we wire up multiple elevators.");
+		System.out.println("=====================================");
+		System.out.println();
+		
 		Elevator elevator = new Elevator(elevatorID, Common.PORT_ELEVATOR_SUBSYSTEM, numFloors);
 		Thread elevatorThread = new Thread(elevator);
 		elevatorThread.start();

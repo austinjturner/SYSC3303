@@ -17,7 +17,8 @@ public class TestFloorButtonMessage {
 		Responder responder = new Responder();
 		
 		// Some values we will check are received correctly
-		int floorNum = 6;
+		int pickUpFloorNum = 6;
+		int dropOffFloorNum = 7;
 		boolean goingUp = true;
 		
 		/**
@@ -36,7 +37,8 @@ public class TestFloorButtonMessage {
 					
 					case MessageAPI.MSG_FLOOR_BUTTON_PRESSED:
 						FloorButtonMessage fbm = new FloorButtonMessage(msgIn);
-						assertEquals(fbm.getFloorNumber(), floorNum);
+						assertEquals(fbm.getPickUpFloorNumber(), pickUpFloorNum);
+						assertEquals(fbm.getDropOffFloorNumber(), dropOffFloorNum);
 						assertEquals(fbm.getGoingUp(), goingUp);
 						break;
 					}
@@ -59,8 +61,7 @@ public class TestFloorButtonMessage {
 		 */
 		class TestClient extends Thread{
 			public void run(){
-				//Message msgIn = new Message(MessageAPI.MSG_TEST_SEND_REQUEST, testValue1);
-				Message msgIn = new FloorButtonMessage(floorNum, goingUp);
+				Message msgIn = new FloorButtonMessage(pickUpFloorNum, dropOffFloorNum, goingUp);
 				Message msgOut = null;
 				try {
 					msgOut = requester.sendRequest(InetAddress.getLocalHost(), responder.getPort(), msgIn);
@@ -71,7 +72,6 @@ public class TestFloorButtonMessage {
 				}
 
 				assertEquals(MessageAPI.MSG_TEST_SEND_RESPONSE, msgOut.getRequestType());
-				//assertEquals(testValue2, msgOut.getValue());
 			}
 		}
 		

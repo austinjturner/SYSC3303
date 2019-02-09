@@ -1,10 +1,12 @@
 package src.main.scheduler;
 
 import java.net.*;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import src.main.net.*;
+import src.main.settings.Settings;
 
 /**
  * 
@@ -29,34 +31,29 @@ import src.main.net.*;
  */
 public class SchedulerSubsystem extends Thread {
 	
-	// Enables verbose logging for the scheduler subsystem 
-	private final boolean DEBUG = true;
-	
 	private Requester requester;
 	private Responder responder;
-	
-	private InetAddress address;
-	
-	private StateMachine stateMachine;
+
+	private Algorithm algorithm;
+	private List<StateMachine> stateMachineList;
 	
 	public SchedulerSubsystem(Requester requester, Responder responder) {
 		this.requester = requester;
 		this.responder = responder;
-		this.stateMachine = new StateMachine(0, this);
-		
-		try {
-			this.address = InetAddress.getLocalHost();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+		this.stateMachineList = new ArrayList<StateMachine>();
+		for (int i = 0; i < Settings.NUMBER_OF_ELEVATOR; i++) {
+			this.stateMachineList.add(new StateMachine(i, this));
 		}
+		this.algorithm = new DefaultAlgorithm(this.stateMachineList);
 	}
 	
 	public SchedulerSubsystem() {
 		this(new Requester(), new Responder(Common.PORT_SCHEDULER_SUBSYSTEM));
 	}
 	
+	// FIX ME -- I think this is used in a test?
 	public StateMachine getStateMachine() {
-		return this.stateMachine;
+		return this.stateMachineList.get(0);
 	}
 	
 	/**
@@ -81,36 +78,31 @@ public class SchedulerSubsystem extends Thread {
 		
 		switch (requestType) {
 		
-		case MessageAPI.MSG_ELEVATOR_BUTTON_PRESSED:
-			handleElevatorButtonPressedMessage(rm);
-			break;
 		case MessageAPI.MSG_FLOOR_BUTTON_PRESSED:
-			handleFloorButtonPressedMessage(rm);
+			handleFloorButtonPressedMessage(new FloorButtonMessage(rm));
 			break;
 		case MessageAPI.MSG_CURRENT_FLOOR:
 			handleFloorSensorMessage(rm);
 			break;
 		default:
-			System.out.println("ERROR: Unexpected message received by sheduler");
+			print("ERROR: Unexpected message received by scheduler");
 		}
 		
 		rm.sendResponse(new Message(MessageAPI.MSG_EMPTY_RESPONSE));
 	}
 	
-
-	private void handleElevatorButtonPressedMessage(RequestMessage rm) {
+	private void handleFloorButtonPressedMessage(FloorButtonMessage fbm) {
 		// This will need to feed into a scheduling algorithm
-	}
-	
-	private void handleFloorButtonPressedMessage(RequestMessage rm) {
-		// This will need to feed into a scheduling algorithm
+		this.algorithm.handleFloorButtonEvent(
+				fbm.getPickUpFloorNumber(), fbm.getDropOffFloorNumber(), fbm.getGoingUp());
 	}
 	
 	private void handleFloorSensorMessage(RequestMessage rm) {
 		// This will update the elevators floor number.
 		// If the elevator has reached it's destination, more
 		// actions will occur.
-		this.stateMachine.elevatorReachedFloorEvent(rm.getValue());
+		//this.stateMachine.elevatorReachedFloorEvent(rm.getValue());
+		this.algorithm.handleFloorSensorEvent(rm.getValue(), 0); // FIXME - 0
 	}
 	
 	
@@ -132,27 +124,27 @@ public class SchedulerSubsystem extends Thread {
 	}
 	
 	public void sendOpenDoorMessage(int elevatorID) {
-		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_OPEN_DOORS));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_OPEN_DOORS));
 	}
 	
 	public void sendCloseDoorMessage(int elevatorID) {
-		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_CLOSE_DOORS));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_CLOSE_DOORS));
 	}
 	
 	public void sendMotorUpMessage(int elevatorID) {
-		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_UP));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_UP));
 	}
 	
 	public void sendMotorDownMessage(int elevatorID) {
-		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_DOWN));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_DOWN));
 	}
 	
 	public void sendMotorStopMessage(int elevatorID) {
-		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_STOP));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_STOP));
 	}
 	
 	public void sendClearElevatorButtonMessage(int elevatorID, int floorNum) {
-		sendMessage(this.address, Common.PORT_ELEVATOR_SUBSYSTEM, 
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, 
 				new Message(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON, floorNum));
 	}
 	
@@ -167,7 +159,7 @@ public class SchedulerSubsystem extends Thread {
 	}
 	
 	public void debug(String s) {
-		if (this.DEBUG) {
+		if (Settings.DEBUG_SCHEDULER) {
 			print(s);
 		}
 	}
