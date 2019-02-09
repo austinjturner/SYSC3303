@@ -144,6 +144,7 @@ public class Elevator implements Runnable {
 			message.sendResponse(new ElevatorMessage(MessageAPI.MSG_EMPTY_RESPONSE, elevatorId, 0));
 		}
 	}
+	
 	/**
 	 * Interrupts the motor timer thread to stop calls incrementing or decrementing elevator's current floor.
 	 */
@@ -164,6 +165,7 @@ public class Elevator implements Runnable {
 		motorTimerThread.start();
 		print("Going up...");
 	}
+	
 	/**
 	 * Creates and starts a motorTimer thread to decrement elevator current floor while motor is running.
 	 */
@@ -173,6 +175,7 @@ public class Elevator implements Runnable {
 		motorTimerThread.start();
 		print("Going down...");
 	}
+	
 	/**
 	 * Sets elevator door to  open.
 	 */
@@ -180,6 +183,7 @@ public class Elevator implements Runnable {
 		this.doorOpen = true;
 		print("Door opened");
 	}
+	
 	/**
 	 * Closes elevator door
 	 */
@@ -199,7 +203,7 @@ public class Elevator implements Runnable {
 	}
 	
 	/**
-	 * turns on the lamp representing a floor within the elevator (true)
+	 * turns off the lamp representing a floor within the elevator (false)
 	 * 
 	 * @param lampNum number representing the floor the lamp corresponds to.
 	 */
@@ -300,13 +304,14 @@ public class Elevator implements Runnable {
 	}
 	
 	/**
-	 * Getter for array of foor buttons.
+	 * Getter for array of door buttons.
 	 * 
 	 * @return buttons Boolean array of floor buttons corresponding to floors. 
 	 */
 	public boolean[] getButtons() {
 		return this.buttons;
 	}
+	
     public void print(String s) {
         System.out.println("[" + DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS").format(LocalDateTime.now()) + "][ ELEVATOR  ] " + s);
     }
