@@ -36,7 +36,7 @@ public class TestFloorButtonMessage {
 					switch (msgIn.getRequestType()) {
 					
 					case MessageAPI.MSG_FLOOR_BUTTON_PRESSED:
-						FloorButtonMessage fbm = new FloorButtonMessage(msgIn);
+						FloorButtonPressMessage fbm = new FloorButtonPressMessage(msgIn);
 						assertEquals(fbm.getPickUpFloorNumber(), pickUpFloorNum);
 						assertEquals(fbm.getDropOffFloorNumber(), dropOffFloorNum);
 						assertEquals(fbm.getGoingUp(), goingUp);
@@ -61,7 +61,7 @@ public class TestFloorButtonMessage {
 		 */
 		class TestClient extends Thread{
 			public void run(){
-				Message msgIn = new FloorButtonMessage(pickUpFloorNum, dropOffFloorNum, goingUp);
+				Message msgIn = new FloorButtonPressMessage(pickUpFloorNum, dropOffFloorNum, goingUp);
 				Message msgOut = null;
 				try {
 					msgOut = requester.sendRequest(InetAddress.getLocalHost(), responder.getPort(), msgIn);

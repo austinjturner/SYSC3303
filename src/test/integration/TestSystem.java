@@ -81,9 +81,9 @@ public class TestSystem {
 		for (TestPerson tp: testPeople) {
 			
 			// Simulate button state once WaitForElevatorButtonState reached
-			while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
-				sleep(100);
-			}
+			//while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
+			//	sleep(100);
+			//}
 			
 			sleep(5000);	// simulate someone getting in the elevator
 			
@@ -108,17 +108,17 @@ public class TestSystem {
 		fsm.enqueueFloorEvent();
 		
 		// Wait for arrival
-		while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
-			sleep(100);
-		}
+		//while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
+		//	sleep(100);
+		//}
 		
 		// Drop person off at floor 1 AND pickup next person
 		fsm.floorQueue.add(1, new Destination(1, Destination.DestinationType.PICKUP_AND_DROPOFF));
 		fsm.elevatorButtonPressedEvent();
 		
-		while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
-			sleep(100);
-		}
+		//while (! (fsm.getState() instanceof WaitForElevatorButtonState)) {
+		//	sleep(100);
+		//}
 		
 		fsm.floorQueue.add(1, new Destination(3, Destination.DestinationType.DROPOFF));
 		fsm.elevatorButtonPressedEvent();

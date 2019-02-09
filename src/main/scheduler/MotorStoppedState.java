@@ -36,7 +36,6 @@ class MotorStoppedState extends State {
 		} else {
 			// Let the person off the elevator
 			this.stateMachine.schedulerSubsystem.sendClearFloorButtonMessage(
-					this.stateMachine.elevatorID,
 					this.stateMachine.currentFloor,
 					this.stateMachine.goingUp);
 			

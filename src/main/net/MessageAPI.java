@@ -35,6 +35,8 @@ public class MessageAPI {
 	public static final int MSG_CLEAR_ELEVATOR_BUTTON = 2008;
 	public static final int MSG_CURRENT_FLOOR = 2009;
 	public static final int MSG_FLOOR_SENSOR = 2010;
+	public static final int MSG_TURN_ON_ELEVATOR_LAMP = 2011;
+	public static final int MSG_TURN_OFF_ELEVATOR_LAMP = 2012;
 
 	
 	/*
@@ -42,4 +44,5 @@ public class MessageAPI {
 	 */
 	public static final int MSG_ELEVATOR_BUTTON_PRESSED = 3001;
 	public static final int MSG_FLOOR_BUTTON_PRESSED = 3002;
+	public static final int MSG_CLEAR_FLOOR_BUTTON = 3003;
 }

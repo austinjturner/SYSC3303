@@ -8,7 +8,7 @@ package src.main.net;
  * @author austinjturner
  *
  */
-public class FloorButtonMessage extends Message {
+public class FloorButtonPressMessage extends Message {
 
 	private int pickUpFloorNumber, dropOffFloorNumber;
 	private boolean goingUp;
@@ -20,7 +20,7 @@ public class FloorButtonMessage extends Message {
 	 * @param floorNumber
 	 * @param goingUp
 	 */
-	public FloorButtonMessage(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {
+	public FloorButtonPressMessage(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {
 		super(MessageAPI.MSG_FLOOR_BUTTON_PRESSED);
 		this.pickUpFloorNumber = pickUpFloorNumber;
 		this.dropOffFloorNumber = dropOffFloorNumber;
@@ -36,7 +36,7 @@ public class FloorButtonMessage extends Message {
 	 * 
 	 * @param msg
 	 */
-	public FloorButtonMessage(Message msg) {
+	public FloorButtonPressMessage(Message msg) {
 		super(msg.requestType);
 		
 		// Parse values from msg.data

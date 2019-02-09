@@ -7,13 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import java.net.*;
 import src.main.net.*;
-import src.main.scheduler.Destination;
-import src.main.scheduler.MotorStartedState;
-import src.main.scheduler.SchedulerSubsystem;
-import src.main.scheduler.StateMachine;
-import src.main.scheduler.WaitForElevatorButtonState;
-import src.main.scheduler.WaitingState;
-import src.main.scheduler.Destination.DestinationType;
+import src.main.scheduler.*;
 
 /*
  * @author Nic Howes
@@ -51,6 +45,7 @@ public class TestScheduler {
 	public void transition_testOverallStateTransition() {
 		
 		fsm.floorQueue.add(new Destination(targetFloor1, Destination.DestinationType.PICKUP));
+		fsm.floorQueue.add(1, new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
 		
 		fsm.enqueueFloorEvent();
 		
@@ -59,16 +54,20 @@ public class TestScheduler {
 			fsm.elevatorReachedFloorEvent(i);
 		}
 		
-		assertEquals(fsm.getState().getClass(), WaitForElevatorButtonState.class);
-		
-		fsm.floorQueue.add(1, new Destination(targetFloor2, Destination.DestinationType.DROPOFF));
-		fsm.elevatorButtonPressedEvent();
+		assertEquals(fsm.getState().getClass(), DoorOpenedState.class);
+		fsm.doorTimerEvent();
+		assertEquals(fsm.getState().getClass(), FloorDequeuedState.class);
+		fsm.doorTimerEvent();
 		
 		for (int i = targetFloor1; i >= targetFloor2; i--) {
 			fsm.elevatorReachedFloorEvent(i);
 		}
 		
+		assertEquals(fsm.getState().getClass(), DoorOpenedState.class);
 		fsm.doorTimerEvent();
+		assertEquals(fsm.getState().getClass(), FloorDequeuedState.class);
+		fsm.doorTimerEvent();
+		
 		assertEquals(fsm.getState().getClass(), WaitingState.class);
 		
 	}

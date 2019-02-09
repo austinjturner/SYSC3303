@@ -79,7 +79,7 @@ public class SchedulerSubsystem extends Thread {
 		switch (requestType) {
 		
 		case MessageAPI.MSG_FLOOR_BUTTON_PRESSED:
-			handleFloorButtonPressedMessage(new FloorButtonMessage(rm));
+			handleFloorButtonPressedMessage(new FloorButtonPressMessage(rm));
 			break;
 		case MessageAPI.MSG_CURRENT_FLOOR:
 			handleFloorSensorMessage(rm);
@@ -91,7 +91,7 @@ public class SchedulerSubsystem extends Thread {
 		rm.sendResponse(new Message(MessageAPI.MSG_EMPTY_RESPONSE));
 	}
 	
-	private void handleFloorButtonPressedMessage(FloorButtonMessage fbm) {
+	private void handleFloorButtonPressedMessage(FloorButtonPressMessage fbm) {
 		// This will need to feed into a scheduling algorithm
 		this.algorithm.handleFloorButtonEvent(
 				fbm.getPickUpFloorNumber(), fbm.getDropOffFloorNumber(), fbm.getGoingUp());
@@ -148,10 +148,10 @@ public class SchedulerSubsystem extends Thread {
 				new Message(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON, floorNum));
 	}
 	
-	public void sendClearFloorButtonMessage(int elevatorID, int floorNum, boolean goingUp) {
+	public void sendClearFloorButtonMessage(int floorNum, boolean goingUp) {
 		// TODO
-		//sendMessage(this.address, ELEVATOR_PORT, 
-		//		new Message(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON, floorNum));
+		sendMessage(Common.IP_FLOOR_SUBSYSTEM, Common.PORT_FLOOR_SUBSYSTEM, 
+				new FloorButtonClearMessage(floorNum, goingUp));
 	}
 	
 	public void print(String s) {
