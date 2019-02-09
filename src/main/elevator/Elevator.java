@@ -83,7 +83,9 @@ public class Elevator implements Runnable {
 	@Override
 	public void run() {
 		try {
-			this.requester.sendRequest(Common.IP_SCHEDULER_SUBSYSTEM, Common.PORT_SCHEDULER_SUBSYSTEM, new ElevatorMessage(MessageAPI.MSG_ELEVATOR_STARTED, elevatorId, 0));
+			this.requester.sendRequest(
+					Common.IP_SCHEDULER_SUBSYSTEM, Common.PORT_SCHEDULER_SUBSYSTEM, 
+					new ElevatorMessage(MessageAPI.MSG_ELEVATOR_STARTED, elevatorId, this.responder.getPort()));
 		} catch (PacketException e) {
 			e.printStackTrace();
 		}
@@ -91,6 +93,8 @@ public class Elevator implements Runnable {
 			messageHandler(this.responder.receive());
 		}
 	}
+	
+	
 	/**
 	 * Interprets message received by elevator according to MessageAPI and performs corresponding action(s).
 	 * 

@@ -11,15 +11,16 @@ import java.util.*;
  *
  */
 abstract class Algorithm {
-	List<StateMachine> stateMachineList;
+	Map<Integer, StateMachine> stateMachineMap;
 	
-	public Algorithm(List<StateMachine> stateMachineList) {
-		this.stateMachineList = stateMachineList;
+	public Algorithm(Map<Integer, StateMachine> stateMachineMap) {
+		this.stateMachineMap = stateMachineMap;
 	}
 	
 	public abstract void handleFloorButtonEvent(
 			int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp);
 	
 	public abstract void handleFloorSensorEvent(
-			int floorNumber, int ElevatorNumber);
+			int floorNumber, int elevatorID);
+	
 }

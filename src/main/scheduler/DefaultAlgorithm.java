@@ -1,11 +1,11 @@
 package src.main.scheduler;
 
-import java.util.List;
+import java.util.*;
 
 public class DefaultAlgorithm extends Algorithm {
 
-	public DefaultAlgorithm(List<StateMachine> stateMachineList) {
-		super(stateMachineList);
+	public DefaultAlgorithm(Map<Integer, StateMachine> stateMachineMap) {
+		super(stateMachineMap);
 	}
 
 	@Override
@@ -14,10 +14,14 @@ public class DefaultAlgorithm extends Algorithm {
 		
 	}
 
+	
+	/**
+	 * This method might not need to do anything else.
+	 * For now just passes the floor info the the appropriate state machines
+	 */
 	@Override
-	public void handleFloorSensorEvent(int floorNumber, int ElevatorNumber) {
-		// TODO Auto-generated method stub
-		
+	public void handleFloorSensorEvent(int floorNumber, int elevatorID) {
+		this.stateMachineMap.get(elevatorID).elevatorReachedFloorEvent(floorNumber);
 	}
 
 }

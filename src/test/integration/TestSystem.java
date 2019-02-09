@@ -40,7 +40,10 @@ public class TestSystem {
 			
 		// Wait for Elevator and Scheduler threads to stabilize
 		sleep(100);
-		StateMachine fsm = schedulerSubsystem.getStateMachine();
+		StateMachine fsm = null;
+		for (Map.Entry<Integer, StateMachine> entry : schedulerSubsystem.getStateMachineMap().entrySet()) {
+			fsm = entry.getValue();
+		}
 		
 		/*
 		 * Starting part 1 of test

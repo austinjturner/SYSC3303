@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.net.*;
+import java.util.Map;
+
 import src.main.net.*;
 import src.main.scheduler.*;
 
@@ -26,7 +28,9 @@ public class TestScheduler {
 	public void setUp() {
 		SchedulerSubsystem ss = new SchedulerSubsystem(new MockRequester(), new Responder());
 		ss.start();
-		this.fsm  = ss.getStateMachine();
+		for (Map.Entry<Integer, StateMachine> entry : ss.getStateMachineMap().entrySet()) {
+			this.fsm = entry.getValue();
+		}
 	}
 	
 	/* 

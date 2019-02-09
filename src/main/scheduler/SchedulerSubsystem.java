@@ -16,6 +16,7 @@ import src.main.settings.Settings;
  *   MSG_ELEVATOR_BUTTON_PRESSED 	- Adds a destination to the elevator specified
  *   MSG_FLOOR_BUTTON_PRESSED		- Adds a destination to an arbitrary elevator
  *   MSG_FLOOR_SENSOR				- Update the current level of an elevator
+ *   MSG_ELEVATOR_STARTED			- Record new elevator ID and port
  *   
  * OUTPUTS
  *   MSG_OPEN_DOORS					- Instruct elevator to open doors
@@ -35,26 +36,21 @@ public class SchedulerSubsystem extends Thread {
 	private Responder responder;
 
 	private Algorithm algorithm;
-	private List<StateMachine> stateMachineList;
+	private Map<Integer, Integer> elevatorPortMap;			// Key is elevatorID, values are portNumber
+	private Map<Integer, StateMachine> stateMachineMap;		// Key is elevatorID, values are stateMachine
 	
 	public SchedulerSubsystem(Requester requester, Responder responder) {
 		this.requester = requester;
 		this.responder = responder;
-		this.stateMachineList = new ArrayList<StateMachine>();
-		for (int i = 0; i < Settings.NUMBER_OF_ELEVATORS; i++) {
-			this.stateMachineList.add(new StateMachine(i, this));
-		}
-		this.algorithm = new DefaultAlgorithm(this.stateMachineList);
+		this.elevatorPortMap = new HashMap<Integer, Integer>();
+		this.stateMachineMap = new HashMap<Integer, StateMachine>();
+		this.algorithm = new DefaultAlgorithm(this.stateMachineMap);
 	}
 	
 	public SchedulerSubsystem() {
 		this(new Requester(), new Responder(Common.PORT_SCHEDULER_SUBSYSTEM));
 	}
-	
-	// FIX ME -- I think this is used in a test?
-	public StateMachine getStateMachine() {
-		return this.stateMachineList.get(0);
-	}
+
 	
 	/**
 	 * Starts the scheduler, bind 2 ports and start
@@ -82,7 +78,10 @@ public class SchedulerSubsystem extends Thread {
 			handleFloorButtonPressedMessage(new FloorButtonPressMessage(rm));
 			break;
 		case MessageAPI.MSG_CURRENT_FLOOR:
-			handleFloorSensorMessage(rm);
+			handleFloorSensorMessage(new ElevatorMessage(rm));
+			break;
+		case MessageAPI.MSG_ELEVATOR_STARTED:
+			handleElevatorStartedMessage(new ElevatorMessage(rm));
 			break;
 		default:
 			print("ERROR: Unexpected message received by scheduler");
@@ -91,18 +90,29 @@ public class SchedulerSubsystem extends Thread {
 		rm.sendResponse(new Message(MessageAPI.MSG_EMPTY_RESPONSE));
 	}
 	
+	public Map<Integer, StateMachine> getStateMachineMap() {
+		return this.stateMachineMap;
+	}
+	
+	
 	private void handleFloorButtonPressedMessage(FloorButtonPressMessage fbm) {
 		// This will need to feed into a scheduling algorithm
 		this.algorithm.handleFloorButtonEvent(
 				fbm.getPickUpFloorNumber(), fbm.getDropOffFloorNumber(), fbm.getGoingUp());
 	}
 	
-	private void handleFloorSensorMessage(RequestMessage rm) {
+	private void handleFloorSensorMessage(ElevatorMessage em) {
 		// This will update the elevators floor number.
 		// If the elevator has reached it's destination, more
 		// actions will occur.
 		//this.stateMachine.elevatorReachedFloorEvent(rm.getValue());
-		this.algorithm.handleFloorSensorEvent(rm.getValue(), 0); // FIXME - 0
+		this.algorithm.handleFloorSensorEvent(em.getValue(), em.getElevatorID());
+	}
+	
+	private void handleElevatorStartedMessage(ElevatorMessage em) {
+		// Should we check if elevator already exists?
+		this.elevatorPortMap.put(em.getElevatorID(), em.getValue());
+		this.stateMachineMap.put(em.getElevatorID(), new StateMachine(em.getElevatorID(), this));
 	}
 	
 	
@@ -118,43 +128,41 @@ public class SchedulerSubsystem extends Thread {
 		try {
 			this.requester.sendRequest(addr, port, msg);
 		} catch (PacketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public void sendOpenDoorMessage(int elevatorID) {
-		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_OPEN_DOORS));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_OPEN_DOORS));
 	}
 	
 	public void sendCloseDoorMessage(int elevatorID) {
-		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_CLOSE_DOORS));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_CLOSE_DOORS));
 	}
 	
 	public void sendMotorUpMessage(int elevatorID) {
-		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_UP));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_MOTOR_UP));
 	}
 	
 	public void sendMotorDownMessage(int elevatorID) {
-		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_DOWN));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_MOTOR_DOWN));
 	}
 	
 	public void sendMotorStopMessage(int elevatorID) {
-		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, new Message(MessageAPI.MSG_MOTOR_STOP));
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_MOTOR_STOP));
 	}
 	
 	public void sendClearElevatorButtonMessage(int elevatorID, int floorNum) {
-		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, 
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), 
 				new Message(MessageAPI.MSG_TURN_OFF_ELEVATOR_LAMP, floorNum));
 	}
 	
 	public void sendSetElevatorButtonMessage(int elevatorID, int floorNum) {
-		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, 
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), 
 				new Message(MessageAPI.MSG_TURN_ON_ELEVATOR_LAMP, floorNum));
 	}
 	
 	public void sendClearFloorButtonMessage(int floorNum, boolean goingUp) {
-		// TODO
 		sendMessage(Common.IP_FLOOR_SUBSYSTEM, Common.PORT_FLOOR_SUBSYSTEM, 
 				new FloorButtonClearMessage(floorNum, goingUp));
 	}

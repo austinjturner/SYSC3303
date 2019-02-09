@@ -10,7 +10,7 @@ import src.main.settings.Settings;
  * @author Samuel English
  *
  */
-public class ElevatorSubsystem {
+public class ElevatorSubsystem extends Thread {
 	private Thread[] elevatorThreads = new Thread[Settings.NUMBER_OF_ELEVATORS];
 	
 	public ElevatorSubsystem() {
@@ -22,5 +22,13 @@ public class ElevatorSubsystem {
 			 elevatorThreads[i] = new Thread(new Elevator(i, 0, Settings.NUMBER_OF_FLOORS,  new Requester(), new Responder()));
 			 elevatorThreads[i].start();
 		 }
+	}
+	
+	public void run() {
+		new ElevatorSubsystem().start();
+	}
+	
+	public static void main(String[] args) {
+		new ElevatorSubsystem().start();
 	}
 }
