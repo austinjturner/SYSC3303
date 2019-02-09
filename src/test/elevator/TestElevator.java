@@ -75,11 +75,11 @@ public class TestElevator {
 
 		elevator = new Elevator(1,portNumber + 2,6);
 		//toggle lamp for floor 3
-		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_TOGGLE_ELEVATOR_LAMP,3);
+		RequestMessage message = new MockRequestMessage(MessageAPI.MSG_TURN_ON_ELEVATOR_LAMP,3);
 		elevator.messageHandler(message);
 		assertEquals(true, elevator.getLamps()[2]);
 
-		message = new MockRequestMessage(MessageAPI.MSG_TOGGLE_ELEVATOR_LAMP,3);
+		message = new MockRequestMessage(MessageAPI.MSG_TURN_OFF_ELEVATOR_LAMP,3);
 		elevator.messageHandler(message);
 
 		assertEquals(false, elevator.getLamps()[2]);

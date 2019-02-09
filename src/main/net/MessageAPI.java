@@ -30,13 +30,12 @@ public class MessageAPI {
 	public static final int MSG_MOTOR_STOP = 2003; 
 	public static final int MSG_MOTOR_UP = 2004; 
 	public static final int MSG_MOTOR_DOWN = 2005; 
-	public static final int MSG_TOGGLE_ELEVATOR_LAMP = 2006; 
-	public static final int MSG_PRESS_ELEVATOR_BUTTON = 2007;
-	public static final int MSG_CLEAR_ELEVATOR_BUTTON = 2008;
-	public static final int MSG_CURRENT_FLOOR = 2009;
-	public static final int MSG_FLOOR_SENSOR = 2010;
-	public static final int MSG_TURN_ON_ELEVATOR_LAMP = 2011;
-	public static final int MSG_TURN_OFF_ELEVATOR_LAMP = 2012;
+	public static final int MSG_PRESS_ELEVATOR_BUTTON = 2006;
+	public static final int MSG_CLEAR_ELEVATOR_BUTTON = 2007;
+	public static final int MSG_CURRENT_FLOOR = 2008;
+	public static final int MSG_FLOOR_SENSOR = 2009;
+	public static final int MSG_TURN_ON_ELEVATOR_LAMP = 2010;
+	public static final int MSG_TURN_OFF_ELEVATOR_LAMP = 2011;
 
 	
 	/*

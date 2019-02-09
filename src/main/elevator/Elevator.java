@@ -116,8 +116,12 @@ public class Elevator implements Runnable {
 				goDown();
 				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
-			case MessageAPI.MSG_TOGGLE_ELEVATOR_LAMP: 
-				toggleLamp(message.getValue());
+			case MessageAPI.MSG_TURN_OFF_ELEVATOR_LAMP: 
+				turnOffLamp(message.getValue());
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
+				break;
+			case MessageAPI.MSG_TURN_ON_ELEVATOR_LAMP:
+				turnOnLamp(message.getValue());
 				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_PRESS_ELEVATOR_BUTTON: 
@@ -183,14 +187,25 @@ public class Elevator implements Runnable {
 		this.doorOpen = false;
 		print("Door closed");
 	}
+	
 	/**
-	 * toggles the lamp representing a floor within the elevator on or off (true or false).
+	 * turns on the lamp representing a floor within the elevator (true)
 	 * 
 	 * @param lampNum number representing the floor the lamp corresponds to.
 	 */
-	public void toggleLamp(int lampNum) {
-		this.lamps[lampNum - 1] = !this.lamps[lampNum - 1];
-		print("Lamp toggled: " + lampNum + ". Value: " + this.lamps[lampNum - 1]);
+	public void turnOnLamp(int lampNum) {
+		this.lamps[lampNum - 1] = true;
+		print("Lamp turned on: " + lampNum + ". Value: " + this.lamps[lampNum - 1]);
+	}
+	
+	/**
+	 * turns on the lamp representing a floor within the elevator (true)
+	 * 
+	 * @param lampNum number representing the floor the lamp corresponds to.
+	 */
+	public void turnOffLamp(int lampNum) {
+		this.lamps[lampNum - 1] = false;
+		print("Lamp turned off: " + lampNum + ". Value: " + this.lamps[lampNum - 1]);
 	}
 
 	/**
