@@ -14,9 +14,10 @@ public class DoorOpenedState extends State {
 	 */
 	public DoorOpenedState(StateMachine stateMachine) {
 		super(stateMachine);
+		
 		/*
-		 * We start this timer to ensure the door is closed again after
-		 * a period of time.
+		 * We start this timer to ensure the door represent the door opening
+		 * and allow people to leave.
 		 */
 		startDoorWaitTimer();
 	}
@@ -24,30 +25,7 @@ public class DoorOpenedState extends State {
 	private void startDoorWaitTimer() {
 		new DoorWaitTimer(this.stateMachine).start();
 	}
-	/**
-	 * Checks if state object at front of queue has destinationType matching up with certain types.
-	 * 
-	 * @return boolean Returns boolean of destinationType comparison
-	 */
-	private boolean floorIsPickup() {
-		return this.stateMachine.getQueueFront().destinationType == Destination.DestinationType.PICKUP ||
-				this.stateMachine.getQueueFront().destinationType == Destination.DestinationType.PICKUP_AND_DROPOFF;
-	}
-	
-	/**
-	 * Conditional check for the following state transition.
-	 * 
-	 * @return State Returns next state for the elevator.
-	 */
-	public State defaultEvent() {
-		String s = new String(getStateName());
-		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + s);
-		if (floorIsPickup()) {
-			return new WaitForElevatorButtonState(this.stateMachine);
-		} else {
-			return this;
-		}
-	}
+
 
 	/**
 	 * Moves elevator state into FloorDequeuedState.
@@ -56,8 +34,7 @@ public class DoorOpenedState extends State {
 	 */
 	public State doorTimerEvent() {
 		this.stateMachine.dequeue();
-		String s = new String(getStateName());
-		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + s);
+		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new FloorDequeuedState(this.stateMachine);
 	}
 }

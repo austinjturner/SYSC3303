@@ -15,6 +15,15 @@ public class FloorDequeuedState extends State {
 	 */
 	public FloorDequeuedState(StateMachine stateMachine) {
 		super(stateMachine);
+		
+		/*
+		 * We start this timer to represent the time it takes to close the door
+		 */
+		startDoorWaitTimer();
+	}
+	
+	private void startDoorWaitTimer() {
+		new DoorWaitTimer(this.stateMachine).start();
 	}
 	
 	/**
@@ -23,7 +32,7 @@ public class FloorDequeuedState extends State {
 	 * @return State Returns next state for the elevator.
 	 */
 	@Override
-	public State defaultEvent() {
+	public State doorTimerEvent() {
 		this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(this.stateMachine.elevatorID);
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new DoorClosedState(this.stateMachine);
