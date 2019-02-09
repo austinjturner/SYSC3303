@@ -41,7 +41,7 @@ public class SchedulerSubsystem extends Thread {
 		this.requester = requester;
 		this.responder = responder;
 		this.stateMachineList = new ArrayList<StateMachine>();
-		for (int i = 0; i < Settings.NUMBER_OF_ELEVATOR; i++) {
+		for (int i = 0; i < Settings.NUMBER_OF_ELEVATORS; i++) {
 			this.stateMachineList.add(new StateMachine(i, this));
 		}
 		this.algorithm = new DefaultAlgorithm(this.stateMachineList);
