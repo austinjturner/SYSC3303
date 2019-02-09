@@ -36,6 +36,7 @@ public class MessageAPI {
 	public static final int MSG_FLOOR_SENSOR = 2009;
 	public static final int MSG_TURN_ON_ELEVATOR_LAMP = 2010;
 	public static final int MSG_TURN_OFF_ELEVATOR_LAMP = 2011;
+	public static final int MSG_ELEVATOR_STARTED = 2012;
 
 	
 	/*

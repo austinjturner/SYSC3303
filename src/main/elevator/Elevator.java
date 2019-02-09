@@ -77,10 +77,16 @@ public class Elevator implements Runnable {
 	
 	/**
 	 * For implementing Runnable interface.
+	 * On thread creation, sends a message to the scheduler to receive elevator's id, port and address.
 	 * Allows elevator to receive and respond to UDP messages indefinitely when run as a thread.
 	 */
 	@Override
 	public void run() {
+		try {
+			this.requester.sendRequest(Common.IP_SCHEDULER_SUBSYSTEM, Common.PORT_SCHEDULER_SUBSYSTEM, new ElevatorMessage(MessageAPI.MSG_ELEVATOR_STARTED, elevatorId, 0));
+		} catch (PacketException e) {
+			e.printStackTrace();
+		}
 		while(true) {
 			messageHandler(this.responder.receive());
 		}
@@ -259,7 +265,7 @@ public class Elevator implements Runnable {
 	 */
 	public void floorChangeAlert() {
 		try {
-			this.requester.sendRequest(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_SCHEDULER_SUBSYSTEM, new ElevatorMessage(MessageAPI.MSG_CURRENT_FLOOR, elevatorId, currentFloor));
+			this.requester.sendRequest(Common.IP_SCHEDULER_SUBSYSTEM, Common.PORT_SCHEDULER_SUBSYSTEM, new ElevatorMessage(MessageAPI.MSG_CURRENT_FLOOR, elevatorId, currentFloor));
 		} catch (PacketException e) {
 			e.printStackTrace();
 		}
