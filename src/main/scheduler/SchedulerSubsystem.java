@@ -145,7 +145,12 @@ public class SchedulerSubsystem extends Thread {
 	
 	public void sendClearElevatorButtonMessage(int elevatorID, int floorNum) {
 		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, 
-				new Message(MessageAPI.MSG_CLEAR_ELEVATOR_BUTTON, floorNum));
+				new Message(MessageAPI.MSG_TURN_OFF_ELEVATOR_LAMP, floorNum));
+	}
+	
+	public void sendSetElevatorButtonMessage(int elevatorID, int floorNum) {
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, Common.PORT_ELEVATOR_SUBSYSTEM, 
+				new Message(MessageAPI.MSG_TURN_ON_ELEVATOR_LAMP, floorNum));
 	}
 	
 	public void sendClearFloorButtonMessage(int floorNum, boolean goingUp) {
@@ -153,6 +158,7 @@ public class SchedulerSubsystem extends Thread {
 		sendMessage(Common.IP_FLOOR_SUBSYSTEM, Common.PORT_FLOOR_SUBSYSTEM, 
 				new FloorButtonClearMessage(floorNum, goingUp));
 	}
+	
 	
 	public void print(String s) {
 		System.out.println("[" + DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS").format(LocalDateTime.now()) + "][ SCHEDULER ] " + s);

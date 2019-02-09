@@ -38,6 +38,8 @@ class GotNextFloorState extends State {
 					this.stateMachine.elevatorID);			
 		}
 		
+		this.stateMachine.schedulerSubsystem.sendSetElevatorButtonMessage(0, targetFloor);
+		
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new MotorStartedState(this.stateMachine);
 	}
