@@ -75,10 +75,14 @@ public class FloorSubsystem {
 			byte[] msg = baos.toByteArray();		//the final message
 			message = new Message(MessageAPI.MSG_ELEVATOR_BUTTON_PRESSED, msg);	//Make message
 			
+			//TURN LAMP ON
+			
 			//send to Scheduler
 			System.out.println("Sending request to Scheduler containing:\n    -Floor that the request is coming from\n    -Request direction");
 			requester.sendRequest(address, schedulerPort, message);
 			System.out.println("Elevator is here.");
+			
+			//TURN LAMP OFF
 			
 			//make a message containing the destination floor
 			msg = Common.intToByteArray(inputs[i].destFloor);
