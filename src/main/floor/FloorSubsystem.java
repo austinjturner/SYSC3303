@@ -17,6 +17,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import src.main.net.Common;
+import src.main.net.Requester;
+import src.main.net.Message;
+import src.main.net.MessageAPI;
 
 public class FloorSubsystem {
 	
@@ -46,8 +49,7 @@ public class FloorSubsystem {
 		inputVar[] inputs = makeInput();
 		
 		//Initialize the stuff we'll be using
-		DatagramPacket packet;
-		DatagramSocket socket = new DatagramSocket(floorPort);
+		Requester requester = new Requester(floorPort);
 		ByteArrayOutputStream baos;
 		
 		for(int i = 0; i < inputs.length; i++) {
@@ -55,6 +57,7 @@ public class FloorSubsystem {
 			printInformation(inputs[i]);
 			
 			//Initialize
+			Message message;
 			baos = new ByteArrayOutputStream();		//for appending one byte array onto another
 			byte[] b = Common.intToByteArray(inputs[i].floor);		//Find the floor the request is being sent from
 			
@@ -70,36 +73,28 @@ public class FloorSubsystem {
 			baos.write(b);
 			baos.write(c);
 			byte[] msg = baos.toByteArray();		//the final message
-			packet = new DatagramPacket(msg, msg.length, address, schedulerPort);		//make it into a packet
+			message = new Message(MessageAPI.MSG_ELEVATOR_BUTTON_PRESSED, msg);	//Make message
 			
 			//send to Scheduler
 			System.out.println("Sending request to Scheduler containing:\n    -Floor that the request is coming from\n    -Request direction");
-			socket.send(packet);
-			
-			//delay so that we don't receive our own message
-			Thread.sleep(10);
-			
-			//receive packet once an elevator reaches this floor.
-			System.out.println("Waiting to receive response from Scheduler saying that elevator is here.");
-			socket.receive(packet);
-			Thread.sleep(20);
+			requester.sendRequest(address, schedulerPort, message);
+			System.out.println("Elevator is here.");
 			
 			//make a message containing the destination floor
 			msg = Common.intToByteArray(inputs[i].destFloor);
-			packet = new DatagramPacket(msg, msg.length, address, schedulerPort);
+			message = new Message(MessageAPI.MSG_FLOOR_BUTTON_PRESSED, msg);
 			System.out.println("Sending the destination floor to scheduler...");
-			socket.send(packet);
+			requester.sendRequest(address, schedulerPort, message);
 			
 			System.out.println();
 			System.out.println("Waiting 10 seconds to not overload the scheduler");
 			System.out.println();
 			
-			Thread.sleep(10000);		// Delay the messages being sent by 10 seconds
+			Thread.sleep(10000);		// 10 seconds between messages sent
 			
 		}
 		
-		socket.close();
-		
+		requester.close();
 	}
 	
 	private inputVar[] makeInput() throws Exception {
