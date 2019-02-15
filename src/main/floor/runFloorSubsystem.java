@@ -1,12 +1,8 @@
-package src.test.floor;
+package src.main.floor;
 
-
-import src.main.floor.FloorSubsystem;
-
-public class test {
+public class runFloorSubsystem {
 	public static void main(String args[]) throws Exception{
 		FloorSubsystem floor = new FloorSubsystem();
 		floor.run();
-		
 	}
 }

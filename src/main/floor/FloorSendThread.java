@@ -27,6 +27,7 @@ public class FloorSendThread extends Thread{
 		
 		for(int i = 0; i < msgArray.length; i++) {
 			
+			printLamps();
 			printInformation(msgArray[i]);
 			
 			//Make message
@@ -64,6 +65,16 @@ public class FloorSendThread extends Thread{
 			Thread.sleep(mmm);
 		} catch (InterruptedException e) {
 			System.exit(0);
+		}
+	}
+	
+	public void printLamps() {
+		System.out.println("Floor  Up       Down");
+		for(int i = 0; i < Common.numberOfFloors; i++) {
+			System.out.print(i+1);
+			System.out.print("     " + FloorSubsystem.lampUp[i] + "    ");
+			System.out.println(FloorSubsystem.lampDown[i]);
+			
 		}
 	}
 }
