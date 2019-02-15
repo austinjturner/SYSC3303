@@ -18,6 +18,7 @@ import src.main.net.PacketException;
 import src.main.net.RequestMessage;
 import src.main.net.Requester;
 import src.main.net.Responder;
+import src.main.settings.Settings;
 
 /**
  * Represents an elevator with common functionality to go up and down floors,
@@ -321,7 +322,7 @@ public class Elevator implements Runnable {
 	}
 	
     public void print(String s) {
-        System.out.println("[" + DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS").format(LocalDateTime.now()) + "][ ELEVATOR  ] " + s);
+        System.out.println("[" + DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS").format(LocalDateTime.now()) + "][ ELEVATOR " + this.elevatorId + " ] " + s);
     }
     
 	
@@ -343,7 +344,7 @@ public class Elevator implements Runnable {
 			while (motor != motorState.STOP) {
 				try {
 					// Simulated floor change time of 4.990 seconds
-					Thread.sleep(4990);
+					Thread.sleep(Settings.TIME_BETWEEN_FLOORS);
 					if(motor == motorState.DOWN) {
 						decrementFloor();
 					}
