@@ -43,6 +43,14 @@ public class FloorButtonClearMessage extends Message {
 		this.floorNumber = Common.byteArrayToIntAtIndex(msg.data, 1);
 	}
 	
+	public FloorButtonClearMessage(RequestMessage msg) {
+		super(msg.requestType);
+		
+		// Parse values from msg.data
+		this.goingUp = (msg.data[0] == 1 ? true: false);
+		this.floorNumber = Common.byteArrayToIntAtIndex(msg.data, 1);
+	}
+	
 	
 	/**
 	 * Overriding Message getData() to pass custom byte array.

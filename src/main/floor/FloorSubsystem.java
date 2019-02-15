@@ -10,38 +10,101 @@ package src.main.floor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import src.main.net.Common;
-import src.main.net.Requester;
-import src.main.net.Message;
-import src.main.net.MessageAPI;
 
 public class FloorSubsystem {
 	
 	private inputVar[] msgArray;
-	private InetAddress address;
-	private int schedulerPort;
-	private int floorPort;
 	//implement lamps at a later date
-	private boolean[] lamp;
+	public static boolean[] lampUp;		//on = true
+	public static boolean[] lampDown;		//on = true
 	private File txtLocation;
+	public static FloorSubsystem floorSub;
 	
 	
 	public FloorSubsystem() throws Exception{
-		address = InetAddress.getByName("localhost");
-		schedulerPort = Common.PORT_SCHEDULER_SUBSYSTEM;
-		floorPort = Common.PORT_FLOOR_SUBSYSTEM;
 		msgArray = new inputVar[10];
-		lamp = new boolean[5];
+		lampUp = new boolean[Common.numberOfFloors];
+		lampDown = new boolean[Common.numberOfFloors];
 		txtLocation = new File("src//main//text//input.txt");
+		floorSub = this;
+	}
+	
+	private inputVar[] makeInput() throws Exception {
+		//Initialize
+		BufferedReader br = new BufferedReader(new FileReader(txtLocation));
+		
+		String line;
+		int count = 0;
+		int index;
+		int index2;
+		
+		//Loop through each line, reading it's contents and making them into a msg array.
+		while ((line = br.readLine()) != null ) {
+			index = line.indexOf(" ");	// Find the first space that separates time from floor
+			
+			msgArray[count] = new inputVar();
+			msgArray[count].setTime(line.substring(0, index));	//Appends time
+			msgArray[count].setFloor(Integer.parseInt(line.substring(index+1, index+2)));	//Appends floor
+			
+			index = line.indexOf(" ", index+1);	//Finding where the 2nd space occurs
+			index2 = line.indexOf(" ", index+1);	//Finding where the 3rd space occurs
+			msgArray[count].setDirection(line.substring(index+1, index2));	//Append direction
+			msgArray[count].setDestFloor(Integer.parseInt(line.substring(index2+1, index2+2)));	//Appends destFloor
+			msgArray[count].setLength(index2+2);
+			count++;
+		}
+		br.close();
+		
+		return msgArray;
+	}
+	
+	//THIS IS LAZY AND INCOMPLETE. NEEDS REVISION!
+	private void verifyInput() throws Exception {
+		BufferedReader br = new BufferedReader(new FileReader(txtLocation));
+		String line = "";
+		int index = 0;
+		
+		while((line = br.readLine()) != null) {
+			if((line.length() < 17) & (line.length() > 21)) System.exit(0);		//If its not a valid size, exit
+			
+			for(int i = 0; i<3; i++) {		//finding the spaces, making sure they are present
+				index = line.indexOf(" ");
+				if(index == -1) System.exit(0);
+				line = line.substring(index+1);
+			}
+		}
+		br.close();
+	}
+	
+	public synchronized void setLamp(int floor, String direction, boolean on) {
+		if(direction == "up") {	//If they are going up
+			lampUp[floor] = on;
+		}
+		else {					//If they are going down
+			lampDown[floor] = on;
+		}
+		notifyAll();
 	}
 	
 	public void run() throws Exception{
+		//Initialize threads
+		FloorSendThread threadSend;
+		FloorReceiveThread threadReceive = new FloorReceiveThread();
+		
+		verifyInput();			//Check that inputs are valid
+		inputVar[] inputs = makeInput();			//make an array of messages
+		threadSend = new FloorSendThread(inputs);		//Initialize sendThread with array of messages
+		threadSend.start();								//start thread
+		threadReceive.start();							//start thread
+	}
+
+}
+
+
+/*public void run() throws Exception{
 		//Verify the validity of all the inputs
 		verifyInput();
 		
@@ -93,64 +156,8 @@ public class FloorSubsystem {
 			System.out.println();
 			System.out.println("Waiting 10 seconds to not overload the scheduler");
 			System.out.println();
-			
-			Thread.sleep(10000);		// 10 seconds between messages sent
-			
 		}
 		
 		requester.close();
 	}
-	
-	private inputVar[] makeInput() throws Exception {
-		//Initialize
-		BufferedReader br = new BufferedReader(new FileReader(txtLocation));
-		
-		String line;
-		int count = 0;
-		int index;
-		int index2;
-		
-		//Loop through each line, reading it's contents and making them into a msg array.
-		while ((line = br.readLine()) != null ) {
-			index = line.indexOf(" ");	// Find the first space that separates time from floor
-			
-			msgArray[count] = new inputVar();
-			msgArray[count].setTime(line.substring(0, index));	//Appends time
-			msgArray[count].setFloor(Integer.parseInt(line.substring(index+1, index+2)));	//Appends floor
-			
-			index = line.indexOf(" ", index+1);	//Finding where the 2nd space occurs
-			index2 = line.indexOf(" ", index+1);	//Finding where the 3rd space occurs
-			msgArray[count].setDirection(line.substring(index+1, index2));	//Append direction
-			msgArray[count].setDestFloor(Integer.parseInt(line.substring(index2+1, index2+2)));	//Appends destFloor
-			msgArray[count].setLength(index2+2);
-			count++;
-		}
-		br.close();
-		
-		return msgArray;
-	}
-	
-	//THIS IS LAZY AND INCOMPLETE. NEEDS REVISION!
-	private void verifyInput() throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader(txtLocation));
-		String line = "";
-		int index = 0;
-		
-		while((line = br.readLine()) != null) {
-			if((line.length() < 17) & (line.length() > 21)) System.exit(0);		//If its not a valid size, exit
-			
-			for(int i = 0; i<3; i++) {		//finding the spaces, making sure they are present
-				index = line.indexOf(" ");
-				if(index == -1) System.exit(0);
-				line = line.substring(index+1);
-			}
-		}
-		br.close();
-	}
-
-	private void printInformation(inputVar var){
-		System.out.print("The information about to be send to Scheduler: " + var.hh + ":" + var.mm + ":" + var.ss + "." + var.mmm + " " + var.floor + " " + var.direction + " " + var.destFloor + "\n");
-	}
-}
-
-//May need to remove the carriage return on String line at some point. Will wait to see if it becomes a problem.
+ */
