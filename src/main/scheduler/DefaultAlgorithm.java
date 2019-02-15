@@ -10,11 +10,18 @@ public class DefaultAlgorithm extends Algorithm {
 
 	@Override
 	public void handleFloorButtonEvent(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {
-		// TODO Auto-generated method stub
+		
+		boolean passDir; 
+		if (pickUpFloorNumber < dropOffFloorNumber) {
+			passDir = true;
+		} else {
+			passDir = false;
+		}
 		
 		// Iterating over the hashmap of statemachines to find a suitable elevator
 		for (Map.Entry<Integer, StateMachine> entry : stateMachineMap.entrySet()) {
-			if (entry.getValue().goingUp == goingUp) {
+			
+			if (entry.getValue().goingUp == passDir) {
 				// TO_DO if statement body needs to be finished, if statement for choosing elevators going in direction of floor
 				// Note may need to look at goingUp from floorButtonPressMessage
 			}
