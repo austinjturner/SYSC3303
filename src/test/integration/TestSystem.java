@@ -34,7 +34,7 @@ public class TestSystem {
 
 		schedulerSubsystem.start();
 		sleep(100);	
-		ElevatorSubsystem es = new ElevatorSubsystem();
+		new ElevatorSubsystem();	// This will create many threads
 		
 		// Wait for Elevator and Scheduler threads to stabilize
 		sleep(100);

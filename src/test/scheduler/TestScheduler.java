@@ -6,11 +6,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import java.net.*;
 import java.util.Map;
 
 import src.main.net.*;
-import src.main.scheduler.*;
 
 /*
  * @author Nic Howes

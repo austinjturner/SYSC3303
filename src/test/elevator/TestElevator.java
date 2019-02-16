@@ -2,18 +2,12 @@ package src.test.elevator;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import src.main.elevator.Elevator;
 import src.main.elevator.Elevator.motorState;
-import src.main.net.MessageAPI;
-import src.main.net.MockRequester;
-import src.main.net.Requester;
-import src.main.net.Responder;
-import src.main.net.messages.Message;
-import src.main.net.messages.MockRequestMessage;
-import src.main.net.messages.RequestMessage;
+import src.main.net.*;
+import src.main.net.messages.*;
 
 /*
  * @author nikolaerak

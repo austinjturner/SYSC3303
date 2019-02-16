@@ -37,9 +37,9 @@ public class DefaultAlgorithm extends Algorithm {
 			} else if (queueSize > 1) {
 				int nextFloor = entry.getValue().floorQueue.get(0).floorNum;
 				int nextNextFloor = entry.getValue().floorQueue.get(1).floorNum;
-				boolean elevatorIsGoingUp = nextFloor < nextNextFloor ? true : false;
+				boolean elevatorIsGoingUp = nextFloor < nextNextFloor;
 				
-				if (passDir == elevatorIsGoingUp) {
+				if (passDir == elevatorIsGoingUp && entry.getValue().floorQueue.size() < prefElevQueue) {
 					// Elevator is going is our direction
 					prefElevQueue = entry.getValue().floorQueue.size();
 					fastestFSM = entry.getKey();

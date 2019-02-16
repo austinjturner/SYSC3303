@@ -2,7 +2,6 @@ package src.main.scheduler.states;
 
 import src.main.scheduler.Destination;
 import src.main.scheduler.StateMachine;
-import src.main.scheduler.Destination.DestinationType;
 
 /**
  * State indicating the elevator motor has stopped.

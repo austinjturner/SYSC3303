@@ -8,27 +8,17 @@ import src.main.scheduler.Destination.DestinationType;
 
 public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 
-	private Random random;
 	private int FLOOR_BUFFER = 1;
 	
 	public ShortestLengthToCompleteAlgorithm(Map<Integer, StateMachine> stateMachineMap) {
 		super(stateMachineMap);
-		random = new Random();
 	}
 
 	
 	@Override
 	public void handleFloorButtonEvent(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {	
 		
-		int prefElevQueue = stateMachineMap.size() * 100;
-		int fastestFSM = random.nextInt(stateMachineMap.size()) + 1;
-		
-		boolean passDir; 
-		if (pickUpFloorNumber < dropOffFloorNumber) {
-			passDir = true;
-		} else {
-			passDir = false;
-		}
+		boolean passDir = pickUpFloorNumber < dropOffFloorNumber; 
 		
 		/*
 		 * Hold information about each possible elevator choice

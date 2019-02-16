@@ -9,6 +9,7 @@ import src.main.net.Common;
 public class TestFloor {
 	public static void main(String args[]) throws Exception{
 		//Initialize
+		@SuppressWarnings("resource")
 		DatagramSocket socket = new DatagramSocket(Common.PORT_SCHEDULER_SUBSYSTEM);	
 		DatagramPacket packet;
 		

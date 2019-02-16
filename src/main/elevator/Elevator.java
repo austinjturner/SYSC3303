@@ -1,20 +1,9 @@
 package src.main.elevator;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
-import java.util.Date;
-import java.util.Locale;
 
-import src.main.net.Common;
-import src.main.net.MessageAPI;
-import src.main.net.PacketException;
-import src.main.net.Requester;
-import src.main.net.Responder;
+import src.main.net.*;
 import src.main.net.messages.*;
 import src.main.settings.Settings;
 
@@ -102,7 +91,6 @@ public class Elevator implements Runnable {
 	public void messageHandler(RequestMessage message) {
 		int requestType = message.getRequestType();
 		boolean sendEmptyResponse = true;
-		ElevatorMessage responseMessage = null;
 		// Going through all possible cases for request messages, calling appropriate methods in response
 		switch (requestType) {
 			case MessageAPI.MSG_CLOSE_DOORS: 
