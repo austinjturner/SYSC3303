@@ -2,11 +2,9 @@ package src.main.floor;
 
 import java.net.InetAddress;
 
-import src.main.net.Common;
-import src.main.net.FloorButtonPressMessage;
-import src.main.net.Requester;
+import src.main.net.*;
+import src.main.net.messages.*;
 import src.main.settings.Settings;
-import src.main.net.PacketException;
 
 public class FloorSendThread extends Thread{
 	
@@ -23,7 +21,7 @@ public class FloorSendThread extends Thread{
 	
 	public void run(){
 		system = FloorSubsystem.floorSub;
-		Requester requester = new Requester(floorPort + 111);
+		Requester requester = new Requester();
 		FloorButtonPressMessage message;
 		
 		for(int i = 0; i < msgArray.length; i++) {
@@ -38,8 +36,15 @@ public class FloorSendThread extends Thread{
 				message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, false);
 			}
 			
-			//Before sending, delay according to the time-stamp
-			simulateTimestamp(msgArray[i].hh,msgArray[i].mm,msgArray[i].ss,msgArray[i].mmm);
+			//Before sending, delay according to the time-stamp if NOT first time
+			if (i != 0) {
+				simulateTimestamp(
+						msgArray[i].hh - msgArray[i - 1].hh,
+						msgArray[i].mm - msgArray[i - 1].mm,
+						msgArray[i].ss - msgArray[i - 1].ss,
+						msgArray[i].mmm - msgArray[i - 1].mmm);
+			}
+			
 
 			//set the appropriate lamp
 			system.setLamp(msgArray[i].floor, msgArray[i].direction, true);
@@ -60,10 +65,10 @@ public class FloorSendThread extends Thread{
 	
 	public void simulateTimestamp(int hh, int mm, int ss, int mmm){
 		try {
-			Thread.sleep(hh * 3600000);
-			Thread.sleep(mm * 60000);
-			Thread.sleep(ss * 1000);
-			Thread.sleep(mmm);
+			Thread.sleep((long) (hh * 3600000 * Settings.TIME_FACTOR));
+			Thread.sleep((long) (mm * 60000 * Settings.TIME_FACTOR));
+			Thread.sleep((long) (ss * 1000 * Settings.TIME_FACTOR));
+			Thread.sleep((long) (mmm * Settings.TIME_FACTOR));
 		} catch (InterruptedException e) {
 			System.exit(0);
 		}

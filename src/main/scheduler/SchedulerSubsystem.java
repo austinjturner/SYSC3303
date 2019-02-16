@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import src.main.net.*;
+import src.main.net.messages.*;
 import src.main.settings.Settings;
 
 /**
@@ -57,7 +58,6 @@ public class SchedulerSubsystem extends Thread {
 	 * receiving requests
 	 */
 	public void run() {
-
 		for (;;) {
 			messageHandle(this.responder.receive());
 		}
@@ -97,6 +97,9 @@ public class SchedulerSubsystem extends Thread {
 	
 	private void handleFloorButtonPressedMessage(FloorButtonPressMessage fbm) {
 		// This will need to feed into a scheduling algorithm
+		debug("Got new floor button press: [pickUp = " + fbm.getPickUpFloorNumber() +
+				"] [dropOff = " + fbm.getDropOffFloorNumber() + "]");
+		
 		this.algorithm.handleFloorButtonEvent(
 				fbm.getPickUpFloorNumber(), fbm.getDropOffFloorNumber(), fbm.getGoingUp());
 	}

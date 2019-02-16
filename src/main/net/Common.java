@@ -5,6 +5,8 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import src.main.net.messages.*;
+
 /**
  * This class contains common functions and constants for the src.net package
  * 

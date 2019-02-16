@@ -7,6 +7,9 @@ import java.net.*;
 import org.junit.Test;
 
 import src.main.net.*;
+import src.main.net.messages.FloorButtonPressMessage;
+import src.main.net.messages.Message;
+import src.main.net.messages.RequestMessage;
 
 public class TestFloorButtonMessage {
 	

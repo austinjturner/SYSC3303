@@ -5,8 +5,11 @@ import java.util.*;
 import org.junit.*;
 
 import src.main.elevator.Elevator;
+import src.main.elevator.ElevatorSubsystem;
+import src.main.floor.FloorSubsystem;
 import src.main.net.Common;
 import src.main.scheduler.*;
+import src.main.scheduler.states.WaitingState;
 
 public class TestSystem {
 	
@@ -23,13 +26,45 @@ public class TestSystem {
 	}
 	
 	
+	
+	@Test
+	public void testFullSystem() {
+		SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
+		
+
+		schedulerSubsystem.start();
+		sleep(100);	
+		ElevatorSubsystem es = new ElevatorSubsystem();
+		
+		// Wait for Elevator and Scheduler threads to stabilize
+		sleep(100);
+		
+		FloorSubsystem floor = null;
+		try {
+			floor = new FloorSubsystem();
+			floor.run();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for (;;) {
+			sleep(10000);
+		}
+	}
+	
+	
 	@Test
 	public void testSystemBasicUseCases() {
-	
-		System.out.println("=====================================");
-		System.out.println("HEY! This test is broken for now, until we wire up multiple elevators.");
-		System.out.println("=====================================");
-		System.out.println();
+		
+		class helpMe extends Thread {
+			public void run() {
+				TestThroughput tp = new TestThroughput();
+				tp.testThroughput();
+			}
+		}
+		new helpMe().start();
+
 		
 		Elevator elevator = new Elevator(elevatorID, Common.PORT_ELEVATOR_SUBSYSTEM, numFloors);
 		Thread elevatorThread = new Thread(elevator);

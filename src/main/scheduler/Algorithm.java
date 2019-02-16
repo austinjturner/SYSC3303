@@ -23,4 +23,8 @@ abstract class Algorithm {
 	public abstract void handleFloorSensorEvent(
 			int floorNumber, int elevatorID);
 	
+	SchedulerSubsystem getSchedulerSubsystem(){
+		// Assumes 1 elevator in map
+		return stateMachineMap.get(0).schedulerSubsystem;
+	}	
 }

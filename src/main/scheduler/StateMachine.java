@@ -3,6 +3,7 @@ package src.main.scheduler;
 import java.util.*;
 
 import src.main.net.*;
+import src.main.scheduler.states.State;
 
 /**
  * This class represents the schedulers view of a Elevator state machine.
@@ -52,28 +53,28 @@ public class StateMachine {
 		//schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
 	}
 	
-	public void elevatorReachedFloorEvent(int currentFloor) {
+	public synchronized void elevatorReachedFloorEvent(int currentFloor) {
 		this.currentFloor = currentFloor;
 		State nextState = this.state.elevatorReachedFloorEvent();
 		this.state = nextState;
 		go();
 	}
 	
-	public void elevatorButtonPressedEvent() {
+	public synchronized void elevatorButtonPressedEvent() {
 		State nextState = this.state.elevatorButtonPressedEvent();
 		printStateChange(nextState);
 		this.state = nextState;
 		go();
 	}
 	
-	public void enqueueFloorEvent() {
+	public synchronized void enqueueFloorEvent() {
 		State nextState = this.state.enqueueFloorEvent();
 		printStateChange(nextState);
 		this.state = nextState;
 		go();
 	}
 	
-	public void doorTimerEvent() {
+	public synchronized void doorTimerEvent() {
 		State nextState = this.state.doorTimerEvent();
 		printStateChange(nextState);
 		this.state = nextState;
@@ -83,7 +84,7 @@ public class StateMachine {
 	/**
 	 * Go until we reach a stable state
 	 */
-	public void go() {
+	private void go() {
 		for (;;) {
 			State currentState = this.state;
 			State nextState = this.state.defaultEvent();

@@ -1,5 +1,6 @@
 package src.test.scheduler;
 import src.main.scheduler.*;
+import src.main.scheduler.states.*;
 
 import static org.junit.Assert.*;
 

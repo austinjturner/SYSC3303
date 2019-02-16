@@ -6,15 +6,18 @@ import src.main.scheduler.Destination.DestinationType;
 
 public class DefaultAlgorithm extends Algorithm {
 
+	private Random random;
+	
 	public DefaultAlgorithm(Map<Integer, StateMachine> stateMachineMap) {
 		super(stateMachineMap);
+		random = new Random();
+		
 	}
 
 	@Override
-	public void handleFloorButtonEvent(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {
-		
-		int prefElevQueue = 20;
-		int fastestFSM = 0;
+	public void handleFloorButtonEvent(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {	
+		int prefElevQueue = stateMachineMap.size() * 100;
+		int fastestFSM = random.nextInt(stateMachineMap.size()) + 1;
 		
 		boolean passDir; 
 		if (pickUpFloorNumber < dropOffFloorNumber) {
@@ -25,23 +28,29 @@ public class DefaultAlgorithm extends Algorithm {
 		
 		// Iterating over the hashmap of statemachines to find a suitable elevator
 		for (Map.Entry<Integer, StateMachine> entry : stateMachineMap.entrySet()) {
-			
-			if (entry.getValue().goingUp == passDir) {
-				if (entry.getValue().floorQueue.size() < prefElevQueue) {
+			int queueSize = entry.getValue().floorQueue.size();
+			if (queueSize == 0) {
+				fastestFSM = entry.getKey();
+				break;
+			} else if (queueSize > 1) {
+				int nextFloor = entry.getValue().floorQueue.get(0).floorNum;
+				int nextNextFloor = entry.getValue().floorQueue.get(1).floorNum;
+				boolean elevatorIsGoingUp = nextFloor < nextNextFloor ? true : false;
+				
+				if (passDir == elevatorIsGoingUp) {
+					// Elevator is going is our direction
 					prefElevQueue = entry.getValue().floorQueue.size();
 					fastestFSM = entry.getKey();
 				}
 			}
+
 		}
 		
 		// Adding the floors to be visited to the fastest elevator's floorQueue
-		for (Map.Entry<Integer, StateMachine> entry : stateMachineMap.entrySet()) {
-			if (entry.getKey() == fastestFSM) {
-				entry.getValue().floorQueue.add(new Destination(pickUpFloorNumber, DestinationType.PICKUP));
-				entry.getValue().floorQueue.add(new Destination(dropOffFloorNumber, DestinationType.DROPOFF));
-			}
-		}
-		
+		StateMachine fsm = stateMachineMap.get(fastestFSM);
+		fsm.floorQueue.add(new Destination(pickUpFloorNumber, DestinationType.PICKUP));
+		fsm.floorQueue.add(new Destination(dropOffFloorNumber, DestinationType.DROPOFF));
+		fsm.enqueueFloorEvent();
 	}
 
 	

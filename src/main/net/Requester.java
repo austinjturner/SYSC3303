@@ -3,6 +3,8 @@ package src.main.net;
 import java.io.*;
 import java.net.*;
 
+import src.main.net.messages.Message;
+
 /**
  * The Requester class binds is used to send Messages to another part
  * of the sub-system, then return a response Message.

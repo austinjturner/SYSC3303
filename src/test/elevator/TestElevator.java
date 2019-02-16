@@ -7,13 +7,13 @@ import org.junit.Test;
 
 import src.main.elevator.Elevator;
 import src.main.elevator.Elevator.motorState;
-import src.main.net.Message;
 import src.main.net.MessageAPI;
-import src.main.net.MockRequestMessage;
 import src.main.net.MockRequester;
-import src.main.net.RequestMessage;
 import src.main.net.Requester;
 import src.main.net.Responder;
+import src.main.net.messages.Message;
+import src.main.net.messages.MockRequestMessage;
+import src.main.net.messages.RequestMessage;
 
 /*
  * @author nikolaerak

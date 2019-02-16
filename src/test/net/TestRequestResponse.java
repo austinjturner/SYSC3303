@@ -7,12 +7,12 @@ import java.net.UnknownHostException;
 
 import org.junit.Test;
 
-import src.main.net.Message;
 import src.main.net.MessageAPI;
 import src.main.net.PacketException;
-import src.main.net.RequestMessage;
 import src.main.net.Requester;
 import src.main.net.Responder;
+import src.main.net.messages.Message;
+import src.main.net.messages.RequestMessage;
 
 public class TestRequestResponse {
 

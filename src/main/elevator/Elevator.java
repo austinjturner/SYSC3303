@@ -11,13 +11,11 @@ import java.util.Date;
 import java.util.Locale;
 
 import src.main.net.Common;
-import src.main.net.ElevatorMessage;
-import src.main.net.Message;
 import src.main.net.MessageAPI;
 import src.main.net.PacketException;
-import src.main.net.RequestMessage;
 import src.main.net.Requester;
 import src.main.net.Responder;
+import src.main.net.messages.*;
 import src.main.settings.Settings;
 
 /**

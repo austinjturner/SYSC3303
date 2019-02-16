@@ -1,11 +1,9 @@
 package src.main.floor;
 
-import java.net.DatagramPacket;
 import java.net.InetAddress;
 
-import src.main.net.Common;
-import src.main.net.FloorButtonClearMessage;
-import src.main.net.Responder;
+import src.main.net.*;
+import src.main.net.messages.*;
 
 public class FloorReceiveThread extends Thread {
 	
@@ -16,7 +14,7 @@ public class FloorReceiveThread extends Thread {
 	private FloorSubsystem system;
 	
 	public FloorReceiveThread() {
-		
+		address = Common.IP_SCHEDULER_SUBSYSTEM;
 	}
 	
 	public void run(){
@@ -25,21 +23,23 @@ public class FloorReceiveThread extends Thread {
 		
 		while(true){
 			//Initialize
-			FloorButtonClearMessage message;
 			
 			//Receive message to change lamps
-			message = new FloorButtonClearMessage(responder.receive());
+			RequestMessage rm = responder.receive();
 			
-			//Send return message so other systems aren't kept waiting
-			DatagramPacket packet = new DatagramPacket(message.getData(), message.getData().length, address, schedulerPort);
-			responder.sendResponse(packet, message); 				//The contents of the message don't matter
+			// Get a FloorButtonClearMessage
+			FloorButtonClearMessage message = new FloorButtonClearMessage(rm);		
 			
 			//turn off specified lamp
 			if (message.getGoingUp()==true) {
 				system.setLamp(message.getFloorNumber(), "up", false);
-			}else {
-				system.setLamp(message.getFloorNumber(), "down", false);
+			} else {
+			 	system.setLamp(message.getFloorNumber(), "down", false);
 			}
+			
+			//Send return message so other systems aren't kept waiting
+			//The contents of the message don't matter
+			rm.sendResponse(new Message(MessageAPI.MSG_EMPTY_RESPONSE));
 		}
 	}
 }

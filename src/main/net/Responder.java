@@ -3,6 +3,9 @@ package src.main.net;
 import java.io.*;
 import java.net.*;
 
+import src.main.net.messages.Message;
+import src.main.net.messages.RequestMessage;
+
 /**
  * The Responder class is used to receive packets and return a Message
  * to the sender.

@@ -2,6 +2,8 @@ package src.main.net;
 
 import java.net.*;
 
+import src.main.net.messages.Message;
+
 /**
  * This class can be used to send mock requests with requiring
  * any other subsystem to be running.
