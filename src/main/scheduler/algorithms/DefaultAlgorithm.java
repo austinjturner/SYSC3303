@@ -1,7 +1,9 @@
-package src.main.scheduler;
+package src.main.scheduler.algorithms;
 
 import java.util.*;
 
+import src.main.scheduler.Destination;
+import src.main.scheduler.StateMachine;
 import src.main.scheduler.Destination.DestinationType;
 
 public class DefaultAlgorithm extends Algorithm {
@@ -11,9 +13,9 @@ public class DefaultAlgorithm extends Algorithm {
 	public DefaultAlgorithm(Map<Integer, StateMachine> stateMachineMap) {
 		super(stateMachineMap);
 		random = new Random();
-		
 	}
 
+	
 	@Override
 	public void handleFloorButtonEvent(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {	
 		int prefElevQueue = stateMachineMap.size() * 100;

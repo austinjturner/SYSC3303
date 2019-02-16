@@ -1,6 +1,9 @@
-package src.main.scheduler;
+package src.main.scheduler.algorithms;
 
 import java.util.*;
+
+import src.main.scheduler.SchedulerSubsystem;
+import src.main.scheduler.StateMachine;
 
 /**
  * This Algorithm interface is package scoped.
@@ -10,7 +13,7 @@ import java.util.*;
  * @author austinjturner
  *
  */
-abstract class Algorithm {
+public abstract class Algorithm {
 	Map<Integer, StateMachine> stateMachineMap;
 	
 	public Algorithm(Map<Integer, StateMachine> stateMachineMap) {

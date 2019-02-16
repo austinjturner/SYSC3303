@@ -7,6 +7,7 @@ import java.util.*;
 
 import src.main.net.*;
 import src.main.net.messages.*;
+import src.main.scheduler.algorithms.*;
 import src.main.settings.Settings;
 
 /**
@@ -45,7 +46,8 @@ public class SchedulerSubsystem extends Thread {
 		this.responder = responder;
 		this.elevatorPortMap = new HashMap<Integer, Integer>();
 		this.stateMachineMap = new HashMap<Integer, StateMachine>();
-		this.algorithm = new DefaultAlgorithm(this.stateMachineMap);
+		//this.algorithm = new DefaultAlgorithm(this.stateMachineMap);
+		this.algorithm = new ShortestLengthToCompleteAlgorithm(this.stateMachineMap);
 	}
 	
 	public SchedulerSubsystem() {

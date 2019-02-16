@@ -65,12 +65,13 @@ public class FloorSendThread extends Thread{
 	
 	public void simulateTimestamp(int hh, int mm, int ss, int mmm){
 		try {
-			Thread.sleep((long) (hh * 3600000 * Settings.TIME_FACTOR));
-			Thread.sleep((long) (mm * 60000 * Settings.TIME_FACTOR));
-			Thread.sleep((long) (ss * 1000 * Settings.TIME_FACTOR));
-			Thread.sleep((long) (mmm * Settings.TIME_FACTOR));
+			Thread.sleep((long) (Settings.TIME_FACTOR * (
+					hh * 3600000 +
+					mm * 60000 +
+					ss * 1000 +
+					mmm)));
 		} catch (InterruptedException e) {
-			System.exit(0);
+			e.printStackTrace();
 		}
 	}
 	

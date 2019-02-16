@@ -10,7 +10,7 @@ public class Settings {
 	
 	public static final float TIME_FACTOR = 1;		// 1/X times faster
 	
-	public static final String INPUT_FILE_PATH = "src//main//text//sam_input.txt";
+	public static final String INPUT_FILE_PATH = "src//main//text//austin_input.txt";
 	
 	
 	/*
@@ -23,7 +23,7 @@ public class Settings {
 	/*
 	 * Debug settings
 	 */
-	public static final boolean DEBUG_SCHEDULER = true;
+	public static final boolean DEBUG_SCHEDULER = false;
 	
 	
 	/*
