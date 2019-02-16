@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import src.main.net.Common;
 import src.main.net.FloorButtonPressMessage;
 import src.main.net.Requester;
+import src.main.settings.Settings;
 import src.main.net.PacketException;
 
 public class FloorSendThread extends Thread{
@@ -70,7 +71,7 @@ public class FloorSendThread extends Thread{
 	
 	public void printLamps() {
 		System.out.println("Floor  Up       Down");
-		for(int i = 0; i < Common.numberOfFloors; i++) {
+		for(int i = 0; i < Settings.NUMBER_OF_FLOORS; i++) {
 			System.out.print(i+1);
 			System.out.print("     " + FloorSubsystem.lampUp[i] + "    ");
 			System.out.println(FloorSubsystem.lampDown[i]);

@@ -18,8 +18,8 @@ public class ElevatorSubsystem extends Thread {
 	}
 	
 	private void createElevators() {
-		 for (int i = 1; i <= elevatorThreads.length; i++) {
-			 elevatorThreads[i] = new Thread(new Elevator(i, 0, Settings.NUMBER_OF_FLOORS,  new Requester(), new Responder()));
+		 for (int i = 0; i < elevatorThreads.length; i++) {
+			 elevatorThreads[i] = new Thread(new Elevator((i + 1), 0, Settings.NUMBER_OF_FLOORS,  new Requester(), new Responder()));
 			 elevatorThreads[i].start();
 		 }
 	}

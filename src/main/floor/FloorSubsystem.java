@@ -11,8 +11,7 @@ package src.main.floor;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
-
-import src.main.net.Common;
+import src.main.settings.Settings;
 
 public class FloorSubsystem {
 	
@@ -25,10 +24,18 @@ public class FloorSubsystem {
 	
 	
 	public FloorSubsystem() throws Exception{
-		msgArray = new inputVar[10];
-		lampUp = new boolean[Common.numberOfFloors];
-		lampDown = new boolean[Common.numberOfFloors];
-		txtLocation = new File("src//main//text//input.txt");
+		txtLocation = new File(Settings.INPUT_FILE_PATH);
+		
+		// used to count lines in file for creating msgArray with correct size		
+		BufferedReader reader = new BufferedReader(new FileReader(txtLocation));
+		int lineCount = 0;
+		while (reader.readLine() != null) lineCount++;
+		reader.close();
+		
+		msgArray = new inputVar[lineCount];
+		lampUp = new boolean[Settings.NUMBER_OF_FLOORS];
+		lampDown = new boolean[Settings.NUMBER_OF_FLOORS];
+	
 		floorSub = this;
 	}
 	

@@ -45,15 +45,7 @@ public class Common {
 	
 	// Number of bytes for int in Java
 	public static final int BYTES_PER_INT = 4;
-	
-	
-	// Number of Elevators
-	public static final int numberOfElevators = 4;
-	
-	// Number of Elevator Floors 
-	public static final int numberOfFloors = 6;
 
-	
 	/*
 	 * ==============================================================================
 	 *                              Common Functions
