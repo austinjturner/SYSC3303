@@ -1,4 +1,6 @@
-package src.main.net;
+package src.main.net.messages;
+
+import src.main.net.Common;
 
 /**
  * This class represents a message to transfer that

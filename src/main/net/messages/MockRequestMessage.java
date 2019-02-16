@@ -1,6 +1,9 @@
-package src.main.net;
+package src.main.net.messages;
 
 import java.net.*;
+
+import src.main.net.Common;
+import src.main.net.Responder;
 
 /**
  * This class can be used to send mock responses with requiring

@@ -1,4 +1,7 @@
-package src.main.net;
+package src.main.net.messages;
+
+import src.main.net.Common;
+import src.main.net.MessageAPI;
 
 /**
  * This class represents a message to transfer an integer
@@ -8,9 +11,9 @@ package src.main.net;
  * @author austinjturner
  *
  */
-public class FloorButtonPressMessage extends Message {
+public class FloorButtonClearMessage extends Message {
 
-	private int pickUpFloorNumber, dropOffFloorNumber;
+	private int floorNumber;
 	private boolean goingUp;
 	
 	
@@ -20,10 +23,9 @@ public class FloorButtonPressMessage extends Message {
 	 * @param floorNumber
 	 * @param goingUp
 	 */
-	public FloorButtonPressMessage(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {
-		super(MessageAPI.MSG_FLOOR_BUTTON_PRESSED);
-		this.pickUpFloorNumber = pickUpFloorNumber;
-		this.dropOffFloorNumber = dropOffFloorNumber;
+	public FloorButtonClearMessage(int floorNumber, boolean goingUp) {
+		super(MessageAPI.MSG_CLEAR_FLOOR_BUTTON);
+		this.floorNumber = floorNumber;
 		this.goingUp = goingUp;
 	}
 	
@@ -36,13 +38,20 @@ public class FloorButtonPressMessage extends Message {
 	 * 
 	 * @param msg
 	 */
-	public FloorButtonPressMessage(Message msg) {
+	public FloorButtonClearMessage(Message msg) {
 		super(msg.requestType);
 		
 		// Parse values from msg.data
 		this.goingUp = (msg.data[0] == 1 ? true : false);
-		this.pickUpFloorNumber = Common.byteArrayToIntAtIndex(msg.data, 1);
-		this.dropOffFloorNumber = Common.byteArrayToIntAtIndex(msg.data, 5);
+		this.floorNumber = Common.byteArrayToIntAtIndex(msg.data, 1);
+	}
+	
+	public FloorButtonClearMessage(RequestMessage msg) {
+		super(msg.requestType);
+		
+		// Parse values from msg.data
+		this.goingUp = (msg.data[0] == 1 ? true: false);
+		this.floorNumber = Common.byteArrayToIntAtIndex(msg.data, 1);
 	}
 	
 	
@@ -57,27 +66,19 @@ public class FloorButtonPressMessage extends Message {
 	public byte[] getData() {
 		byte[] data = new byte[9];
 		data[0] = (byte) (this.goingUp ? 1 : 0);		// byte represent boolean
-		Common.intToByteArrayAtIndex(this.pickUpFloorNumber, data, 1);	// pick up number
-		Common.intToByteArrayAtIndex(this.dropOffFloorNumber, data, 5);	// pick up number		
+		Common.intToByteArrayAtIndex(this.floorNumber, data, 1);	// pick up number
 		return data;
 	}
 	
 	
 	/**
-	 * @return pickUpFloorNumber
+	 * @return floorNumber
 	 */
-	public int getPickUpFloorNumber() {
-		return this.pickUpFloorNumber;
+	public int getFloorNumber() {
+		return this.floorNumber;
 	}
 	
-	/**
-	 * @return dropOffFloorNumber
-	 */
-	public int getDropOffFloorNumber() {
-		return this.dropOffFloorNumber;
-	}
-	
-	
+
 	/** 
 	 * @return goingUp
 	 */
