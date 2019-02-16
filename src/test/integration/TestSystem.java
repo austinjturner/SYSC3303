@@ -56,7 +56,7 @@ public class TestSystem {
 	
 	@Test
 	public void testSystemBasicUseCases() {
-		
+		/*
 		class helpMe extends Thread {
 			public void run() {
 				TestThroughput tp = new TestThroughput();
@@ -65,7 +65,7 @@ public class TestSystem {
 		}
 		new helpMe().start();
 
-		
+		*/
 		Elevator elevator = new Elevator(elevatorID, Common.PORT_ELEVATOR_SUBSYSTEM, numFloors);
 		Thread elevatorThread = new Thread(elevator);
 		elevatorThread.start();
