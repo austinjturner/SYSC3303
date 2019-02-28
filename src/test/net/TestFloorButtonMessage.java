@@ -7,6 +7,7 @@ import java.net.*;
 import org.junit.Test;
 
 import src.main.net.*;
+import src.main.net.MessageAPI.FaultType;
 import src.main.net.messages.FloorButtonPressMessage;
 import src.main.net.messages.Message;
 import src.main.net.messages.RequestMessage;
@@ -23,6 +24,8 @@ public class TestFloorButtonMessage {
 		int pickUpFloorNum = 6;
 		int dropOffFloorNum = 7;
 		boolean goingUp = true;
+		int faultFloorNum = 7;
+		FaultType faultType = FaultType.ElevatorFailedToStop;
 		
 		/**
 		 * This is the basic model for a server. It calls receive() in a loop,
@@ -43,6 +46,9 @@ public class TestFloorButtonMessage {
 						assertEquals(fbm.getPickUpFloorNumber(), pickUpFloorNum);
 						assertEquals(fbm.getDropOffFloorNumber(), dropOffFloorNum);
 						assertEquals(fbm.getGoingUp(), goingUp);
+						assertEquals(fbm.hasFault(), true);
+						assertEquals(fbm.getFaultType(), faultType);
+						assertEquals(fbm.getFaultFloorNumber(), faultFloorNum);
 						break;
 					}
 					
@@ -64,7 +70,7 @@ public class TestFloorButtonMessage {
 		 */
 		class TestClient extends Thread{
 			public void run(){
-				Message msgIn = new FloorButtonPressMessage(pickUpFloorNum, dropOffFloorNum, goingUp);
+				Message msgIn = new FloorButtonPressMessage(pickUpFloorNum, dropOffFloorNum, goingUp, faultFloorNum, faultType);
 				Message msgOut = null;
 				try {
 					msgOut = requester.sendRequest(InetAddress.getLocalHost(), responder.getPort(), msgIn);

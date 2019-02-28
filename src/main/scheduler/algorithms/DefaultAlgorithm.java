@@ -2,6 +2,7 @@ package src.main.scheduler.algorithms;
 
 import java.util.*;
 
+import src.main.net.MessageAPI.FaultType;
 import src.main.scheduler.Destination;
 import src.main.scheduler.StateMachine;
 import src.main.scheduler.Destination.DestinationType;
@@ -17,7 +18,9 @@ public class DefaultAlgorithm extends Algorithm {
 
 	
 	@Override
-	public void handleFloorButtonEvent(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp) {	
+	public void handleFloorButtonEvent(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp,
+			FaultType faultType, int faultFloorNumber) {	
+		
 		int prefElevQueue = stateMachineMap.size() * 100;
 		int fastestFSM = random.nextInt(stateMachineMap.size()) + 1;
 		
@@ -50,7 +53,7 @@ public class DefaultAlgorithm extends Algorithm {
 		
 		// Adding the floors to be visited to the fastest elevator's floorQueue
 		StateMachine fsm = stateMachineMap.get(fastestFSM);
-		fsm.floorQueue.add(new Destination(pickUpFloorNumber, DestinationType.PICKUP));
+		fsm.floorQueue.add(new Destination(pickUpFloorNumber, DestinationType.PICKUP, faultType, faultFloorNumber));
 		fsm.floorQueue.add(new Destination(dropOffFloorNumber, DestinationType.DROPOFF));
 		fsm.enqueueFloorEvent();
 	}

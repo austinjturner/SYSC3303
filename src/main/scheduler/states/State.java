@@ -48,4 +48,8 @@ public abstract class State {
 	public State doorTimerEvent() {
 		return this;
 	}
+	
+	public State floorTimerEvent(int previousFloor) {
+		return this;
+	}
 }

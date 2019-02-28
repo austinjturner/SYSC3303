@@ -37,6 +37,9 @@ public class MessageAPI {
 	public static final int MSG_TURN_ON_ELEVATOR_LAMP = 2010;
 	public static final int MSG_TURN_OFF_ELEVATOR_LAMP = 2011;
 	public static final int MSG_ELEVATOR_STARTED = 2012;
+	public static final int MSG_SIMULATE_FAULT = 2013;
+	public static final int MSG_SHUTDOWN_ELEVATOR = 2014;
+	public static final int MSG_GET_DOORS_STATE = 2015;
 
 	
 	/*
@@ -45,4 +48,14 @@ public class MessageAPI {
 	public static final int MSG_ELEVATOR_BUTTON_PRESSED = 3001;
 	public static final int MSG_FLOOR_BUTTON_PRESSED = 3002;
 	public static final int MSG_CLEAR_FLOOR_BUTTON = 3003;
+	
+	
+	/*
+	 * Fault Types
+	 */
+	public enum FaultType {
+		ElevatorFailedToStop,
+		ElevatorFailedToCloseDoors,
+		ElevatorFailedToOpenDoors
+	}
 }

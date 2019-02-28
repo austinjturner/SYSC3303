@@ -103,7 +103,8 @@ public class SchedulerSubsystem extends Thread {
 				"] [dropOff = " + fbm.getDropOffFloorNumber() + "]");
 		
 		this.algorithm.handleFloorButtonEvent(
-				fbm.getPickUpFloorNumber(), fbm.getDropOffFloorNumber(), fbm.getGoingUp());
+				fbm.getPickUpFloorNumber(), fbm.getDropOffFloorNumber(), fbm.getGoingUp(),
+				fbm.getFaultType(), fbm.getDropOffFloorNumber());
 	}
 	
 	private void handleFloorSensorMessage(ElevatorMessage em) {
@@ -129,12 +130,13 @@ public class SchedulerSubsystem extends Thread {
 	 * @param port
 	 * @param msg
 	 */
-	private void sendMessage(InetAddress addr, int port, Message msg) {
+	private Message sendMessage(InetAddress addr, int port, Message msg) {
 		try {
-			this.requester.sendRequest(addr, port, msg);
+			return this.requester.sendRequest(addr, port, msg);
 		} catch (PacketException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public void sendOpenDoorMessage(int elevatorID) {
@@ -170,6 +172,15 @@ public class SchedulerSubsystem extends Thread {
 	public void sendClearFloorButtonMessage(int floorNum, boolean goingUp) {
 		sendMessage(Common.IP_FLOOR_SUBSYSTEM, Common.PORT_FLOOR_SUBSYSTEM, 
 				new FloorButtonClearMessage(floorNum, goingUp));
+	}
+	
+	public void sendShutdownElevatorMessage(int elevatorID) {
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_SHUTDOWN_ELEVATOR));
+	}
+	
+	public boolean sendGetElevatorDoorsStateMessage(int elevatorID) {
+		Message msg = sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_GET_DOORS_STATE));
+		return msg.getValue() == 0;		// 0 => doors are closed   1 => doors are open
 	}
 	
 	

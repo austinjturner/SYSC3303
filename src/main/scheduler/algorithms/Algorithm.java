@@ -2,6 +2,7 @@ package src.main.scheduler.algorithms;
 
 import java.util.*;
 
+import src.main.net.MessageAPI.FaultType;
 import src.main.scheduler.SchedulerSubsystem;
 import src.main.scheduler.StateMachine;
 
@@ -21,7 +22,8 @@ public abstract class Algorithm {
 	}
 	
 	public abstract void handleFloorButtonEvent(
-			int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp);
+			int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp,
+			FaultType faultType, int faultFloorNumber);
 	
 	public abstract void handleFloorSensorEvent(
 			int floorNumber, int elevatorID);

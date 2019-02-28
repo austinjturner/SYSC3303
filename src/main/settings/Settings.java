@@ -20,6 +20,13 @@ public class Settings {
 	public static final int WAIT_TIME_OPEN_DOOR_AND_EXIT_ELEVATOR = (int) (10000 * TIME_FACTOR);
 	public static final int WAIT_TIME_CLOSE_DOOR = (int) (5000 * TIME_FACTOR);
 	
+	
+	/*
+	 * Scheduler settings
+	 */
+	public static final int MAX_TIME_BEFORE_DOOR_FAULT = (int) (1.25 * 1500 * TIME_FACTOR); // 25% after expected time
+	
+	
 	/*
 	 * Debug settings
 	 */

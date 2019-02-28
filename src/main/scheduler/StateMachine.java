@@ -3,6 +3,7 @@ package src.main.scheduler;
 import java.util.*;
 
 import src.main.net.*;
+import src.main.net.MessageAPI.FaultType;
 import src.main.scheduler.states.State;
 
 /**
@@ -23,6 +24,7 @@ public class StateMachine {
 	public State state;
 	public int elevatorID;
 	public boolean goingUp;
+	public String faultMessage;
 	
 	public StateMachine(int elevatorID, SchedulerSubsystem schedulerSubsystem) {
 		this.elevatorID = elevatorID;
@@ -32,6 +34,7 @@ public class StateMachine {
 		this.currentFloor = 1;
 		this.state = State.start(this);
 		this.goingUp = true;
+		this.faultMessage = null;
 	}
 	
 	public State getState() {
@@ -76,6 +79,13 @@ public class StateMachine {
 	
 	public synchronized void doorTimerEvent() {
 		State nextState = this.state.doorTimerEvent();
+		printStateChange(nextState);
+		this.state = nextState;
+		go();
+	}
+	
+	public synchronized void floorTimerEvent(int previousFloor) {
+		State nextState = this.state.floorTimerEvent(previousFloor);
 		printStateChange(nextState);
 		this.state = nextState;
 		go();
