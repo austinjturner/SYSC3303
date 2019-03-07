@@ -3,7 +3,7 @@
  *	Authored by:	Devon Daley
  *	Made For: 		SYSC 3303
  *	Iteration:		1
- * 	Last modified:	January 29th by Devon Daley
+ * 	Last modified:	March 8th by Devon Daley
 */
 
 package src.main.floor;
@@ -18,6 +18,10 @@ public class inputVar {
 	public String direction;
 	public int destFloor;
 	public int length;
+	
+	// For faults
+	public int faultFloor;
+	public int faultType;
 	
 	public inputVar() {
 		hh = 0;
@@ -54,5 +58,13 @@ public class inputVar {
 	
 	public void setLength(int len) {
 		length = len;
+	}
+	
+	public void setFaultType(int ft) {
+		faultType = ft;
+	}
+	
+	public void setFaultFloor(int ff) {
+		faultFloor = ff;
 	}
 }

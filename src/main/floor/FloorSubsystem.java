@@ -45,22 +45,39 @@ public class FloorSubsystem {
 		
 		String line;
 		int count = 0;
-		int index;
-		int index2;
+		int index[] = new int[6];
+		int len;
 		
 		//Loop through each line, reading it's contents and making them into a msg array.
 		while ((line = br.readLine()) != null ) {
-			index = line.indexOf(" ");	// Find the first space that separates time from floor
+			//Get length
+			len = line.length();
+			
+			//Find the index of all the spaces
+			index[0] = line.indexOf(" ");
+			index[1] = line.indexOf(" ", index[0]+1);
+			index[2] = line.indexOf(" ", index[1]+1);
+			index[3] = line.indexOf(" ", index[2]+1);
+			index[4] = line.indexOf(" ", index[3]+1);
+			index[5] = line.indexOf(" ", index[4]+1);
+			
+			msgArray[count].setLength(len);
 			
 			msgArray[count] = new inputVar();
-			msgArray[count].setTime(line.substring(0, index));	//Appends time
-			msgArray[count].setFloor(Integer.parseInt(line.substring(index+1, index+2)));	//Appends floor
+			msgArray[count].setTime(line.substring(0, index[0]));	//Appends time
+			msgArray[count].setFloor(Integer.parseInt(line.substring(index[0]+1, index[1])));	//Appends floor
+			msgArray[count].setDirection(line.substring(index[1]+1, index[2]));	//Append direction
 			
-			index = line.indexOf(" ", index+1);	//Finding where the 2nd space occurs
-			index2 = line.indexOf(" ", index+1);	//Finding where the 3rd space occurs
-			msgArray[count].setDirection(line.substring(index+1, index2));	//Append direction
-			msgArray[count].setDestFloor(Integer.parseInt(line.substring(index2+1, index2+2)));	//Appends destFloor
-			msgArray[count].setLength(index2+2);
+			//Check if a 4th space is found, meaning there are faults
+			if(index[3] == -1) {		//if no faults, then use len as last index
+				msgArray[count].setDestFloor(Integer.parseInt(line.substring(index[2]+1, len)));	//Appends destFloor
+			} else {			//if there are faults
+				msgArray[count].setDestFloor(Integer.parseInt(line.substring(index[2]+1, index[3])));	//Appends destFloor
+				msgArray[count].setFaultType(Integer.parseInt(line.substring(index[4]+1, index[5])));	//Appends faultType
+				msgArray[count].setFaultFloor(Integer.parseInt(line.substring(index[5]+1, len)));		//Appends faultFloor
+			}
+			
+			
 			count++;
 		}
 		br.close();
