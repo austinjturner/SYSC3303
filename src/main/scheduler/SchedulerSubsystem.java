@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import src.main.net.*;
+import src.main.net.MessageAPI.FaultType;
 import src.main.net.messages.*;
 import src.main.scheduler.algorithms.*;
 import src.main.settings.Settings;
@@ -169,6 +170,11 @@ public class SchedulerSubsystem extends Thread {
 				new Message(MessageAPI.MSG_TURN_ON_ELEVATOR_LAMP, floorNum));
 	}
 	
+	public void sendSimulateFaultMessage(int elevatorID, int floorNum, FaultType faultType) {
+		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), 
+				new SimulateFaultMessage(faultType, floorNum));
+	}
+	
 	public void sendClearFloorButtonMessage(int floorNum, boolean goingUp) {
 		sendMessage(Common.IP_FLOOR_SUBSYSTEM, Common.PORT_FLOOR_SUBSYSTEM, 
 				new FloorButtonClearMessage(floorNum, goingUp));
@@ -178,11 +184,20 @@ public class SchedulerSubsystem extends Thread {
 		sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_SHUTDOWN_ELEVATOR));
 	}
 	
+	/**
+	 * 
+	 * @param elevatorID
+	 * @return boolean indicating whether doors are open
+	 */
 	public boolean sendGetElevatorDoorsStateMessage(int elevatorID) {
 		Message msg = sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_GET_DOORS_STATE));
-		return msg.getValue() == 0;		// 0 => doors are closed   1 => doors are open
+		return msg.getValue() == 0;		// 0 => doors are open   1 => doors are closed
 	}
 	
+	
+	public boolean areElevatorDoorsClosed(int elevatorID) {
+		return !sendGetElevatorDoorsStateMessage(elevatorID);
+	}
 	
 	public void print(String s) {
 		System.out.println("[" + DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS").format(LocalDateTime.now()) + "][ SCHEDULER ] " + s);

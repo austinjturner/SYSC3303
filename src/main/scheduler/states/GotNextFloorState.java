@@ -1,5 +1,6 @@
 package src.main.scheduler.states;
 
+import src.main.scheduler.Destination;
 import src.main.scheduler.Destination.DestinationType;
 import src.main.scheduler.StateMachine;
 
@@ -29,8 +30,8 @@ class GotNextFloorState extends State {
 	@Override
 	public State defaultEvent() {	
 		int currentFloor = this.stateMachine.currentFloor;
-		int targetFloor = this.stateMachine.floorQueue.get(0).floorNum;
-		DestinationType dt = this.stateMachine.floorQueue.get(0).destinationType;
+		Destination dest = this.stateMachine.floorQueue.get(0);
+		int targetFloor = dest.floorNum;
 		
 		if (currentFloor < targetFloor) {
 			this.stateMachine.goingUp = true;
@@ -44,12 +45,22 @@ class GotNextFloorState extends State {
 		
 		// Set elevator lamp ONLY if someone is being dropped off.
 		// This represents them pressing the button inside the elevator.
-		if (dt == DestinationType.DROPOFF || dt == DestinationType.PICKUP_AND_DROPOFF) {
+		if (dest.destinationType == DestinationType.DROPOFF || dest.destinationType == DestinationType.PICKUP_AND_DROPOFF) {
 			this.stateMachine.schedulerSubsystem.sendSetElevatorButtonMessage(this.stateMachine.elevatorID, targetFloor);
 		}
 		
 		
+		/*
+		 * Detect if a fault should be simulated.
+		 * If detected, send message to elevator
+		 */
+		if (this.stateMachine.floorQueue.get(0).hasFault()) {
+			this.stateMachine.schedulerSubsystem.sendSimulateFaultMessage(
+					this.stateMachine.elevatorID, dest.faultFloorNumber, dest.faultType);
+		}
+		
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new MotorStartedState(this.stateMachine);
 	}
+	
 }

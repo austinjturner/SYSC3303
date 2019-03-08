@@ -44,4 +44,11 @@ public class Destination {
 		this.faultType = faultType;
 		this.faultFloorNumber = faultFloorNumber;
 	}
+	
+	/**
+	 * @return boolean representing whether or not this floor message contains a fault
+	 */
+	public boolean hasFault() {
+		return this.faultType != null;
+	}
 }
