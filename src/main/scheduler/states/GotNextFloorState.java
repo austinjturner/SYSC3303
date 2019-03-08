@@ -1,5 +1,6 @@
 package src.main.scheduler.states;
 
+import src.main.scheduler.Destination.DestinationType;
 import src.main.scheduler.StateMachine;
 
 /**
@@ -29,6 +30,7 @@ class GotNextFloorState extends State {
 	public State defaultEvent() {	
 		int currentFloor = this.stateMachine.currentFloor;
 		int targetFloor = this.stateMachine.floorQueue.get(0).floorNum;
+		DestinationType dt = this.stateMachine.floorQueue.get(0).destinationType;
 		
 		if (currentFloor < targetFloor) {
 			this.stateMachine.goingUp = true;
@@ -40,7 +42,12 @@ class GotNextFloorState extends State {
 					this.stateMachine.elevatorID);			
 		}
 		
-		this.stateMachine.schedulerSubsystem.sendSetElevatorButtonMessage(this.stateMachine.elevatorID, targetFloor);
+		// Set elevator lamp ONLY if someone is being dropped off.
+		// This represents them pressing the button inside the elevator.
+		if (dt == DestinationType.DROPOFF || dt == DestinationType.PICKUP_AND_DROPOFF) {
+			this.stateMachine.schedulerSubsystem.sendSetElevatorButtonMessage(this.stateMachine.elevatorID, targetFloor);
+		}
+		
 		
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new MotorStartedState(this.stateMachine);
