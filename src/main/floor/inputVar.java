@@ -8,6 +8,8 @@
 
 package src.main.floor;
 
+import src.main.net.MessageAPI.FaultType;
+
 public class inputVar {
 	
 	public int hh;		//hours
@@ -21,7 +23,7 @@ public class inputVar {
 	
 	// For faults
 	public int faultFloor;
-	public int faultType;
+	public FaultType faultType;
 	
 	public inputVar() {
 		hh = 0;
@@ -32,6 +34,8 @@ public class inputVar {
 		direction = "none";
 		destFloor = 0;
 		length = 0;
+		faultFloor = -1;
+		faultType = null;
 	}
 	
 	public void setTime(String time) {
@@ -60,7 +64,7 @@ public class inputVar {
 		length = len;
 	}
 	
-	public void setFaultType(int ft) {
+	public void setFaultType(FaultType ft) {
 		faultType = ft;
 	}
 	

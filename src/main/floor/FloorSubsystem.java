@@ -11,7 +11,18 @@ package src.main.floor;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
+
+import src.main.net.MessageAPI.FaultType;
 import src.main.settings.Settings;
+
+/*
+FAULTS
+
+0 -> ElevatorFailedToStop
+1 -> ElevatorFailedToCloseDoors
+2 -> ElevatorFailedToOpenDoors
+
+*/
 
 public class FloorSubsystem {
 	
@@ -47,6 +58,7 @@ public class FloorSubsystem {
 		int count = 0;
 		int index[] = new int[6];
 		int len;
+		FaultType type;
 		
 		//Loop through each line, reading it's contents and making them into a msg array.
 		while ((line = br.readLine()) != null ) {
@@ -61,19 +73,28 @@ public class FloorSubsystem {
 			index[4] = line.indexOf(" ", index[3]+1);
 			index[5] = line.indexOf(" ", index[4]+1);
 			
-			msgArray[count].setLength(len);
+			//Set fault type
+			if(Integer.parseInt(line.substring(index[4]+1, index[5])) == 0) {
+				type =  FaultType.ElevatorFailedToStop;
+			} else if (Integer.parseInt(line.substring(index[4]+1, index[5])) == 1) {
+				type =  FaultType.ElevatorFailedToCloseDoors;
+			} else { // == 2
+				type =  FaultType.ElevatorFailedToOpenDoors;
+			}
+			
 			
 			msgArray[count] = new inputVar();
 			msgArray[count].setTime(line.substring(0, index[0]));	//Appends time
 			msgArray[count].setFloor(Integer.parseInt(line.substring(index[0]+1, index[1])));	//Appends floor
 			msgArray[count].setDirection(line.substring(index[1]+1, index[2]));	//Append direction
+			msgArray[count].setLength(len);
 			
 			//Check if a 4th space is found, meaning there are faults
 			if(index[3] == -1) {		//if no faults, then use len as last index
 				msgArray[count].setDestFloor(Integer.parseInt(line.substring(index[2]+1, len)));	//Appends destFloor
 			} else {			//if there are faults
 				msgArray[count].setDestFloor(Integer.parseInt(line.substring(index[2]+1, index[3])));	//Appends destFloor
-				msgArray[count].setFaultType(Integer.parseInt(line.substring(index[4]+1, index[5])));	//Appends faultType
+				msgArray[count].setFaultType(type);	//Appends faultType
 				msgArray[count].setFaultFloor(Integer.parseInt(line.substring(index[5]+1, len)));		//Appends faultFloor
 			}
 			
@@ -124,64 +145,4 @@ public class FloorSubsystem {
 		threadSend.start();								//start thread
 		threadReceive.start();							//start thread
 	}
-
 }
-
-
-/*public void run() throws Exception{
-		//Verify the validity of all the inputs
-		verifyInput();
-		
-		//Import all inputs into an array
-		inputVar[] inputs = makeInput();
-		
-		//Initialize the stuff we'll be using
-		Requester requester = new Requester(floorPort);
-		ByteArrayOutputStream baos;
-		
-		for(int i = 0; i < inputs.length; i++) {
-			
-			printInformation(inputs[i]);
-			
-			//Initialize
-			Message message;
-			baos = new ByteArrayOutputStream();		//for appending one byte array onto another
-			byte[] b = Common.intToByteArray(inputs[i].floor);		//Find the floor the request is being sent from
-			
-			//Find the direction it's headed
-			byte[] c;
-			if(inputs[i].direction.toLowerCase() == "up") {
-				c = Common.intToByteArray((int) 1);
-			} else {
-				c = Common.intToByteArray((int) 0);
-			}
-			
-			//Make message containing the floor the request is coming from and the direction it's going
-			baos.write(b);
-			baos.write(c);
-			byte[] msg = baos.toByteArray();		//the final message
-			message = new Message(MessageAPI.MSG_ELEVATOR_BUTTON_PRESSED, msg);	//Make message
-			
-			//TURN LAMP ON
-			
-			//send to Scheduler
-			System.out.println("Sending request to Scheduler containing:\n    -Floor that the request is coming from\n    -Request direction");
-			requester.sendRequest(address, schedulerPort, message);
-			System.out.println("Elevator is here.");
-			
-			//TURN LAMP OFF
-			
-			//make a message containing the destination floor
-			msg = Common.intToByteArray(inputs[i].destFloor);
-			message = new Message(MessageAPI.MSG_FLOOR_BUTTON_PRESSED, msg);
-			System.out.println("Sending the destination floor to scheduler...");
-			requester.sendRequest(address, schedulerPort, message);
-			
-			System.out.println();
-			System.out.println("Waiting 10 seconds to not overload the scheduler");
-			System.out.println();
-		}
-		
-		requester.close();
-	}
- */
