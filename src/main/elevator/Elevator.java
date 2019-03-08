@@ -189,11 +189,17 @@ public class Elevator implements Runnable {
 	 * Interrupts the motor timer thread to stop calls incrementing or decrementing elevator's current floor.
 	 */
 	public void stop() {
+		
+		if(simulateStopFault == true && simulatedFaultFloor == currentFloor){
+			simulateStopFault = false;
+			return;
+		}
+		
 		this.motor = motorState.STOP;
 		if(motorTimerThread.isAlive()) {
 			motorTimerThread.interrupt();
 			print("Stopped...");
-		}	
+		}
 	}
 	
 	/**
@@ -220,6 +226,12 @@ public class Elevator implements Runnable {
 	 * Sets elevator door to  open.
 	 */
 	public void openDoor() {
+		
+		if(simulateDoorOpenFault == true && simulatedFaultFloor == currentFloor){
+			simulateStopFault = false;
+			return;
+		}
+		
 		this.doorOpen = true;
 		print("Door opened");
 	}
@@ -228,6 +240,12 @@ public class Elevator implements Runnable {
 	 * Closes elevator door
 	 */
 	public void closeDoor() {
+		
+		if(simulateDoorClosedFault == true && simulatedFaultFloor == currentFloor){
+			simulateStopFault = false;
+			return;
+		}
+		
 		this.doorOpen = false;
 		print("Door closed");
 	}
