@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import src.main.net.*;
+import src.main.net.MessageAPI.FaultType;
 import src.main.net.messages.*;
 import src.main.settings.Settings;
 
@@ -29,6 +30,13 @@ public class Elevator implements Runnable {
 	private Responder responder;
 	private Thread motorTimerThread;
 	private int numberOfFloors;
+	
+	// Elevator fault simulation
+	private boolean simulateStopFault;
+	private boolean simulateDoorClosedFault;
+	private boolean simulateDoorOpenFault;
+	int simulatedFaultFloor;
+	
 	/**
 	 * Constructor of the elevator.
 	 * 
@@ -129,6 +137,18 @@ public class Elevator implements Runnable {
 				clearButton(message.getValue());
 				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
+			case MessageAPI.MSG_SIMULATE_FAULT:  
+				SimulateFaultMessage faultMessage = new SimulateFaultMessage(message);
+				simulateFault(faultMessage.getFaultType(), faultMessage.getFaultFloorNumber());
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
+				break;
+			case MessageAPI.MSG_SHUTDOWN_ELEVATOR:  
+				stop();
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
+				break;
+			case MessageAPI.MSG_GET_DOORS_STATE:  
+				message.sendResponse(new ElevatorMessage(requestType, elevatorId, getDoorState()));
+				break;
 			case MessageAPI.MSG_CURRENT_FLOOR:
 				// If a floor is requested for the elevator, response must contain requested floor.
 				// Otherwise an empty message can be sent to acknowledge elevator received scheduler message.
@@ -140,6 +160,29 @@ public class Elevator implements Runnable {
 		if(sendEmptyResponse) {
 			message.sendResponse(new ElevatorMessage(MessageAPI.MSG_EMPTY_RESPONSE, elevatorId, 0));
 		}
+	}
+	
+	private void simulateFault(FaultType fault, int faultFloorNumber) {
+		this.simulatedFaultFloor = faultFloorNumber;
+		if(fault == FaultType.ElevatorFailedToStop) {
+			this.simulateStopFault = true;
+		}
+		else if(fault == FaultType.ElevatorFailedToCloseDoors) {
+			this.simulateDoorClosedFault = true;
+		}
+		else if(fault == FaultType.ElevatorFailedToOpenDoors){
+			this.simulateDoorOpenFault = true;
+		}
+		
+	}
+
+	/**
+	 * Returns value of door state, being open (1) or closed (0)
+	 * 
+	 * @return int value for door state
+	 */
+	private int getDoorState() {
+		return this.doorOpen ? 0: 1;
 	}
 	
 	/**
