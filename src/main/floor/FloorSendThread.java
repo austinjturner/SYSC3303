@@ -26,12 +26,16 @@ public class FloorSendThread extends Thread{
 		
 		for(int i = 0; i < msgArray.length; i++) {
 			
-			printLamps();
-			printInformation(msgArray[i]);
+			//printLamps();
+			//printInformation(msgArray[i]);
 			
 			//Make message
 			if(msgArray[i].direction == "up") {
-				message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, true);
+				if(msgArray[i].faultFloor == -1) {
+					message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, true);
+				}else {
+					message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, true, msgArray[i].faultFloor, msgArray[i].faultType);
+				}
 			} else {
 				message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, false);
 			}
@@ -50,7 +54,7 @@ public class FloorSendThread extends Thread{
 			system.setLamp(msgArray[i].floor, msgArray[i].direction, true);
 			
 			//send to Scheduler
-			System.out.println("Sending request to Scheduler containing:\n    -Floor that the request is coming from\n    -Request direction\n    -Destination floor\n");
+			//System.out.println("Sending request to Scheduler containing:\n    -Floor that the request is coming from\n    -Request direction\n    -Destination floor\n");
 			try {
 				requester.sendRequest(address, schedulerPort, message);
 			} catch (PacketException e) {e.printStackTrace();}
@@ -60,7 +64,7 @@ public class FloorSendThread extends Thread{
 	}
 	
 	private void printInformation(inputVar var){
-		System.out.print("The information about to be send to Scheduler: " + var.hh + ":" + var.mm + ":" + var.ss + "." + var.mmm + " " + var.floor + " " + var.direction + " " + var.destFloor + "\n");
+		System.out.print("The information about to be sent to Scheduler: " + var.hh + ":" + var.mm + ":" + var.ss + "." + var.mmm + " " + var.floor + " " + var.direction + " " + var.destFloor + "\n");
 	}
 	
 	public void simulateTimestamp(int hh, int mm, int ss, int mmm){
