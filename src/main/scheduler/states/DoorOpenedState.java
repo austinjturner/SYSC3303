@@ -43,7 +43,8 @@ public class DoorOpenedState extends State {
 				this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
 						this.stateMachine.elevatorID);
 			} else {
-				// keep looping until our doors are closed
+				this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(
+						this.stateMachine.elevatorID);
 			}
 		} 
 		

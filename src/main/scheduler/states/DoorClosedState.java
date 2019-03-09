@@ -39,10 +39,11 @@ class DoorClosedState extends State {
 		while (!(this.stateMachine.schedulerSubsystem.areElevatorDoorsClosed(this.stateMachine.elevatorID))) {
 			if (this.stateMachine.faultMessage == null) {
 				this.stateMachine.setFault(MessageAPI.FaultType.ElevatorFailedToCloseDoors);
-				this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
+				this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(
 						this.stateMachine.elevatorID);
 			} else {
-				// keep looping until our doors are closed
+				this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(
+						this.stateMachine.elevatorID);
 			}
 		} 
 		
