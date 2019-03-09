@@ -33,8 +33,8 @@ public class SimulateFaultMessage extends Message {
 	public SimulateFaultMessage(Message msg) {
 		super(MessageAPI.MSG_SIMULATE_FAULT);
 		
-		this.faultFloorNumber = Common.byteArrayToIntAtIndex(msg.data, 0);
-		int enumValue = Common.byteArrayToIntAtIndex(msg.data, 4);
+		this.faultFloorNumber = Common.byteArrayToIntAtIndex(msg.data, 4);
+		int enumValue = Common.byteArrayToIntAtIndex(msg.data, 0);
 		this.faultType = enumValue == nullFaultType ? null : FaultType.values()[enumValue];
 	}
 	

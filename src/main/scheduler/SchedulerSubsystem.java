@@ -103,9 +103,13 @@ public class SchedulerSubsystem extends Thread {
 		debug("Got new floor button press: [pickUp = " + fbm.getPickUpFloorNumber() +
 				"] [dropOff = " + fbm.getDropOffFloorNumber() + "]");
 		
+		debug(fbm.hasFault() ? 
+				"FaultType: " + fbm.getFaultType() + "  floorNumber: "  + fbm.getFaultFloorNumber() 
+				: "No fault");
+		
 		this.algorithm.handleFloorButtonEvent(
 				fbm.getPickUpFloorNumber(), fbm.getDropOffFloorNumber(), fbm.getGoingUp(),
-				fbm.getFaultType(), fbm.getDropOffFloorNumber());
+				fbm.getFaultType(), fbm.getFaultFloorNumber());
 	}
 	
 	private void handleFloorSensorMessage(ElevatorMessage em) {

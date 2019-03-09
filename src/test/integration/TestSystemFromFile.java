@@ -20,6 +20,10 @@ public class TestSystemFromFile {
 	
 	@Test
 	public void testFullSystem() {
+		
+		String testFilePath = "src//main//text//fault_simulation_input.txt";
+		//testFilePath = "src//main//text//parallel_elevators_input.txt";
+		
 		SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
 		
 		schedulerSubsystem.start();
@@ -31,7 +35,7 @@ public class TestSystemFromFile {
 		
 		FloorSubsystem floor = null;
 		try {
-			floor = new FloorSubsystem();
+			floor = new FloorSubsystem(testFilePath);
 			floor.run();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -137,7 +137,7 @@ public class Elevator implements Runnable {
 				clearButton(message.getValue());
 				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
-			case MessageAPI.MSG_SIMULATE_FAULT:  
+			case MessageAPI.MSG_SIMULATE_FAULT:
 				SimulateFaultMessage faultMessage = new SimulateFaultMessage(message);
 				simulateFault(faultMessage.getFaultType(), faultMessage.getFaultFloorNumber());
 				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
@@ -188,8 +188,7 @@ public class Elevator implements Runnable {
 	/**
 	 * Interrupts the motor timer thread to stop calls incrementing or decrementing elevator's current floor.
 	 */
-	public void stop() {
-		
+	public void stop() {		
 		if(simulateStopFault == true && simulatedFaultFloor == currentFloor){
 			simulateStopFault = false;
 			return;
@@ -295,9 +294,15 @@ public class Elevator implements Runnable {
 	 */
 	public synchronized void incrementFloor() {
 		if(this.currentFloor < this.numberOfFloors) {
-			this.currentFloor += 1;
-			print("At floor: " + this.currentFloor);
-			floorChangeAlert();
+			if(simulateStopFault == true && simulatedFaultFloor == currentFloor){
+				simulateStopFault = false;
+				System.out.println("here3");
+				return;
+			} else {
+				this.currentFloor += 1;
+				print("At floor: " + this.currentFloor);
+				floorChangeAlert();
+			}
 		}
 	}
 	
@@ -306,9 +311,15 @@ public class Elevator implements Runnable {
 	 */
 	public synchronized void decrementFloor() {
 		if(this.currentFloor > 1) {
-			this.currentFloor -= 1;
-			print("At floor: " + this.currentFloor);
-			floorChangeAlert();
+			if(simulateStopFault == true && simulatedFaultFloor == currentFloor){
+				simulateStopFault = false;
+				System.out.println("here4");
+				return;
+			} else {
+				this.currentFloor -= 1;
+				print("At floor: " + this.currentFloor);
+				floorChangeAlert();
+			}
 		}
 	}
 	

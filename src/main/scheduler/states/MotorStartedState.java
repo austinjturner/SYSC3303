@@ -28,7 +28,7 @@ public class MotorStartedState extends State {
 	
 	private void startFloorWaitTimer() {
 		new FloorWaitTimer(this.stateMachine, Settings.MAX_TIME_BEFORE_DOOR_FAULT, 
-				this.stateMachine.currentFloor);
+				this.stateMachine.currentFloor).start();
 	}
 	
 	
@@ -53,7 +53,7 @@ public class MotorStartedState extends State {
 					this.stateMachine.elevatorID);
 			return new MotorStoppedState(this.stateMachine);
 		} else {
-			return this;
+			return new MotorStartedState(this.stateMachine);
 		}
 	}
 	
@@ -64,7 +64,6 @@ public class MotorStartedState extends State {
 	 */
 	@Override
 	public State floorTimerEvent(int previousFloor) {
-
 		if (previousFloor == this.stateMachine.currentFloor) {
 			/*
 			 * FAULT DETECTED

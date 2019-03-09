@@ -10,6 +10,7 @@ package src.main.floor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Arrays;
 import java.io.File;
 
 import src.main.net.MessageAPI.FaultType;
@@ -34,8 +35,12 @@ public class FloorSubsystem {
 	public static FloorSubsystem floorSub;
 	
 	
-	public FloorSubsystem() throws Exception{
-		txtLocation = new File(Settings.INPUT_FILE_PATH);
+	public FloorSubsystem() throws Exception {
+		this(Settings.INPUT_FILE_PATH);
+	}
+	
+	public FloorSubsystem(String txtLocation) throws Exception {
+		this.txtLocation = new File(txtLocation);
 		
 		// used to count lines in file for creating msgArray with correct size		
 		BufferedReader reader = new BufferedReader(new FileReader(txtLocation));
@@ -75,13 +80,12 @@ public class FloorSubsystem {
 			
 			//Set fault type
 			if(Integer.parseInt(line.substring(index[4]+1, index[5])) == 0) {
-				type =  FaultType.ElevatorFailedToStop;
+				type = FaultType.ElevatorFailedToStop;
 			} else if (Integer.parseInt(line.substring(index[4]+1, index[5])) == 1) {
 				type =  FaultType.ElevatorFailedToCloseDoors;
 			} else { // == 2
 				type =  FaultType.ElevatorFailedToOpenDoors;
 			}
-			
 			
 			msgArray[count] = new inputVar();
 			msgArray[count].setTime(line.substring(0, index[0]));	//Appends time

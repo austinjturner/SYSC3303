@@ -33,6 +33,15 @@ class GotNextFloorState extends State {
 		Destination dest = this.stateMachine.floorQueue.get(0);
 		int targetFloor = dest.floorNum;
 		
+		/*
+		 * Detect if a fault should be simulated.
+		 * If detected, send message to elevator
+		 */
+		if (dest.hasFault()) {
+			this.stateMachine.schedulerSubsystem.sendSimulateFaultMessage(
+					this.stateMachine.elevatorID, dest.faultFloorNumber, dest.faultType);
+		}
+		
 		if (currentFloor < targetFloor) {
 			this.stateMachine.goingUp = true;
 			this.stateMachine.schedulerSubsystem.sendMotorUpMessage(
@@ -50,14 +59,7 @@ class GotNextFloorState extends State {
 		}
 		
 		
-		/*
-		 * Detect if a fault should be simulated.
-		 * If detected, send message to elevator
-		 */
-		if (this.stateMachine.floorQueue.get(0).hasFault()) {
-			this.stateMachine.schedulerSubsystem.sendSimulateFaultMessage(
-					this.stateMachine.elevatorID, dest.faultFloorNumber, dest.faultType);
-		}
+
 		
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new MotorStartedState(this.stateMachine);

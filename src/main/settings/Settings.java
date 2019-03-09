@@ -10,7 +10,7 @@ public class Settings {
 	
 	public static final float TIME_FACTOR = 1;		// 1/X times faster
 	
-	public static final String INPUT_FILE_PATH = "src//main//text//austin_input.txt";
+	public static final String INPUT_FILE_PATH = "src//main//text//parallel_elevators_input.txt";
 	
 	
 	/*
@@ -24,7 +24,7 @@ public class Settings {
 	/*
 	 * Scheduler settings
 	 */
-	public static final int MAX_TIME_BEFORE_DOOR_FAULT = (int) (1.25 * 1500 * TIME_FACTOR); // 25% after expected time
+	public static final int MAX_TIME_BEFORE_DOOR_FAULT = (int) (1.25 * TIME_BETWEEN_FLOORS); // 25% after expected time
 	
 	
 	/*

@@ -16,7 +16,7 @@ public class FloorSendThread extends Thread{
 	
 	public FloorSendThread(inputVar[] msgs) throws Exception{
 		msgArray = msgs;
-		address = InetAddress.getByName("localhost");
+		address = Common.IP_SCHEDULER_SUBSYSTEM;
 	}
 	
 	public void run(){
@@ -30,14 +30,11 @@ public class FloorSendThread extends Thread{
 			//printInformation(msgArray[i]);
 			
 			//Make message
-			if(msgArray[i].direction == "up") {
-				if(msgArray[i].faultFloor == -1) {
-					message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, true);
-				}else {
-					message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, true, msgArray[i].faultFloor, msgArray[i].faultType);
-				}
+			if(msgArray[i].faultFloor == -1) {
+				message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, msgArray[i].direction.equals("up"));
 			} else {
-				message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, false);
+				message = new FloorButtonPressMessage(msgArray[i].floor, msgArray[i].destFloor, msgArray[i].direction.equals("up"),
+						msgArray[i].faultFloor, msgArray[i].faultType);
 			}
 			
 			//Before sending, delay according to the time-stamp if NOT first time

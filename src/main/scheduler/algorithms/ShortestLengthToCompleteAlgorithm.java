@@ -156,8 +156,10 @@ public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 		// Adding the floors to be visited to the fastest elevator's floorQueue
 		StateMachine fsm = stateMachineMap.get(bestIndex + 1);	// elevatorID 1-indexed
 		
-		fsm.floorQueue.add(startIndex[bestIndex], new Destination(pickUpFloorNumber, DestinationType.PICKUP, faultType, faultFloorNumber));
-		fsm.floorQueue.add(endIndex[bestIndex] + 1, new Destination(dropOffFloorNumber, DestinationType.DROPOFF));
+		fsm.floorQueue.add(startIndex[bestIndex], new Destination(
+				pickUpFloorNumber, DestinationType.PICKUP, faultType, faultFloorNumber));
+		fsm.floorQueue.add(endIndex[bestIndex] + 1, new Destination(
+				dropOffFloorNumber, DestinationType.DROPOFF));
 		
 		consolidateQueue(fsm.floorQueue);
 		fsm.enqueueFloorEvent();
