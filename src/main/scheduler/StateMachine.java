@@ -56,6 +56,17 @@ public class StateMachine {
 		//schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
 	}
 	
+	// setting the fault for the elevator and printing he error occured
+	public void setFault(FaultType ft) {
+		this.faultMessage = ft.name();
+		System.out.println("Error: Fault" + ft.name() + " Occured");
+	}
+	
+	// clearing the elevator of its fault
+	public void clearFault() {
+		this.faultMessage = null;
+	}
+	
 	public synchronized void elevatorReachedFloorEvent(int currentFloor) {
 		this.currentFloor = currentFloor;
 		State nextState = this.state.elevatorReachedFloorEvent();

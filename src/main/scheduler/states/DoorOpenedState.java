@@ -2,6 +2,7 @@ package src.main.scheduler.states;
 
 import src.main.scheduler.StateMachine;
 import src.main.settings.Settings;
+import src.main.net.MessageAPI;
 
 /**
  * State representing the elevator with door opened.
@@ -36,8 +37,16 @@ public class DoorOpenedState extends State {
 	 * @return State Returns next state for the elevator.
 	 */
 	public State doorTimerEvent() {
+		while (this.stateMachine.schedulerSubsystem.areElevatorDoorsClosed(this.stateMachine.elevatorID)) {
+			if (this.stateMachine.faultMessage == null) {
+				this.stateMachine.setFault(MessageAPI.FaultType.ElevatorFailedToOpenDoors);
+			} else {
+				// keep looping until our doors are closed
+			}
+		} 
+		
 		this.stateMachine.dequeue();
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new FloorDequeuedState(this.stateMachine);
-	}
+		}
 }
