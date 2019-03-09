@@ -45,6 +45,10 @@ public class DoorOpenedState extends State {
 			}
 		} 
 		
+		if (this.stateMachine.faultMessage != null) {
+			this.stateMachine.clearFault();
+		}
+		
 		this.stateMachine.dequeue();
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new FloorDequeuedState(this.stateMachine);
