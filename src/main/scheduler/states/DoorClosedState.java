@@ -24,7 +24,7 @@ class DoorClosedState extends State {
 	}
 	
 	private void startDoorWaitTimer() {
-		new DoorWaitTimer(this.stateMachine, Settings.WAIT_TIME_OPEN_DOOR_AND_EXIT_ELEVATOR).start();
+		new DoorWaitTimer(this.stateMachine, Settings.WAIT_TIME_CLOSE_DOOR).start();
 	}
 
 	/**
@@ -46,6 +46,10 @@ class DoorClosedState extends State {
 						this.stateMachine.elevatorID);
 			}
 		} 
+		
+		if (this.stateMachine.faultMessage != null) {
+			this.stateMachine.clearFault();
+		}
 		
 		if (this.stateMachine.floorQueue.isEmpty()) {
 			return new WaitingState(this.stateMachine);
