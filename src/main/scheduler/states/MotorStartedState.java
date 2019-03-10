@@ -1,5 +1,6 @@
 package src.main.scheduler.states;
 
+import src.main.net.MessageAPI;
 import src.main.scheduler.StateMachine;
 import src.main.settings.Settings;
 
@@ -70,7 +71,7 @@ public class MotorStartedState extends State {
 			 * Moving to FailedState
 			 */
 			shutdownElevator();
-			//this.stateMachine.setFault("Missed expected floor arrival");
+			this.stateMachine.setFault(MessageAPI.FaultType.ElevatorFailedToStop);
 			return new FailedState(this.stateMachine);
 		}
 		

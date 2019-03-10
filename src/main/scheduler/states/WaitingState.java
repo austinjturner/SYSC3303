@@ -1,5 +1,6 @@
 package src.main.scheduler.states;
 
+import src.main.scheduler.Destination;
 import src.main.scheduler.StateMachine;
 
 /**
@@ -27,10 +28,22 @@ public class WaitingState extends State {
 	 */
 	@Override
 	public State enqueueFloorEvent() {
+		Destination dest = this.stateMachine.getQueueFront();;
+		int targetFloor = dest.floorNum;
 		int currentFloor = this.stateMachine.currentFloor;
-		int targetFloor = this.stateMachine.getQueueFront().floorNum;
+		
+
 		
 		if (currentFloor == targetFloor) {
+			/*
+			 * Detect if a fault should be simulated.
+			 * If detected, send message to elevator
+			 */
+			if (dest.hasFault()) {
+				this.stateMachine.schedulerSubsystem.sendSimulateFaultMessage(
+						this.stateMachine.elevatorID, dest.faultFloorNumber, dest.faultType);
+			}
+			
 			this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
 					this.stateMachine.elevatorID);
 			return new DoorOpenedState(this.stateMachine);

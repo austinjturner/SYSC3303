@@ -37,23 +37,17 @@ public class DoorOpenedState extends State {
 	 * @return State Returns next state for the elevator.
 	 */
 	public State doorTimerEvent() {
-		while (this.stateMachine.schedulerSubsystem.areElevatorDoorsClosed(this.stateMachine.elevatorID)) {
-			if (this.stateMachine.faultMessage == null) {
-				this.stateMachine.setFault(MessageAPI.FaultType.ElevatorFailedToOpenDoors);
-				this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
-						this.stateMachine.elevatorID);
-			} else {
-				this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(
-						this.stateMachine.elevatorID);
-			}
+		if (this.stateMachine.schedulerSubsystem.areElevatorDoorsClosed(this.stateMachine.elevatorID)) {
+			this.stateMachine.setFault(MessageAPI.FaultType.ElevatorFailedToOpenDoors);
+			this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
+					this.stateMachine.elevatorID);
+			return new DoorOpenedState(this.stateMachine);
 		} 
 		
-		if (this.stateMachine.faultMessage != null) {
-			this.stateMachine.clearFault();
-		}
-		
+		this.stateMachine.clearFault();
+			
 		this.stateMachine.dequeue();
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
 		return new FloorDequeuedState(this.stateMachine);
-		}
+	}
 }

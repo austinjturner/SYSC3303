@@ -30,7 +30,7 @@ class GotNextFloorState extends State {
 	@Override
 	public State defaultEvent() {	
 		int currentFloor = this.stateMachine.currentFloor;
-		Destination dest = this.stateMachine.floorQueue.get(0);
+		Destination dest = this.stateMachine.getQueueFront();
 		int targetFloor = dest.floorNum;
 		
 		/*

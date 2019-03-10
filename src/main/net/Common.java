@@ -102,8 +102,8 @@ public class Common {
 	
 	
 	// Convert a byte array to a Message
-	public static Message bytesToMsg(byte[] b) {
-		byte[] data = new byte[b.length - Common.BYTES_PER_INT];
+	public static Message bytesToMsg(byte[] b, int length) {
+		byte[] data = new byte[length - Common.BYTES_PER_INT];
 		for (int i = 0; i < data.length; i++) {
 			data[i] = b[i + Common.BYTES_PER_INT];
 		}

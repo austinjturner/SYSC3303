@@ -97,6 +97,6 @@ public class Requester {
 			throw new PacketException("Network failure.");
 		}
 		
-		return Common.bytesToMsg(data);
+		return Common.bytesToMsg(data, receivePacket.getLength());
 	}
 }

@@ -193,14 +193,14 @@ public class SchedulerSubsystem extends Thread {
 	 * @param elevatorID
 	 * @return boolean indicating whether doors are open
 	 */
-	public boolean sendGetElevatorDoorsStateMessage(int elevatorID) {
+	public int sendGetElevatorDoorsStateMessage(int elevatorID) {
 		Message msg = sendMessage(Common.IP_ELEVATOR_SUBSYSTEM, elevatorPortMap.get(elevatorID), new Message(MessageAPI.MSG_GET_DOORS_STATE));
-		return msg.getValue() == 0;		// 0 => doors are open   1 => doors are closed
+		return msg.getValue();		// 0 => doors are open   1 => doors are closed
 	}
 	
 	
 	public boolean areElevatorDoorsClosed(int elevatorID) {
-		return !sendGetElevatorDoorsStateMessage(elevatorID);
+		return sendGetElevatorDoorsStateMessage(elevatorID) == 1;
 	}
 	
 	public void print(String s) {

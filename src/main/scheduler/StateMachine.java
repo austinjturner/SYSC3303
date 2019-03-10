@@ -4,6 +4,7 @@ import java.util.*;
 
 import src.main.net.*;
 import src.main.net.MessageAPI.FaultType;
+import src.main.scheduler.states.FailedState;
 import src.main.scheduler.states.State;
 
 /**
@@ -59,12 +60,19 @@ public class StateMachine {
 	// setting the fault for the elevator and printing he error occured
 	public void setFault(FaultType ft) {
 		this.faultMessage = ft.name();
-		System.out.println("Error: Fault" + ft.name() + " Occured");
+		this.schedulerSubsystem.print("Error: Fault" + ft.name() + " Occured");
 	}
 	
 	// clearing the elevator of its fault
 	public void clearFault() {
+		if (this.faultMessage != null) {
+			this.schedulerSubsystem.print("Recovered from fault: " + faultMessage);
+		}
 		this.faultMessage = null;
+	}
+	
+	public boolean isSchedulable() {
+		return !(this.state instanceof FailedState);
 	}
 	
 	public synchronized void elevatorReachedFloorEvent(int currentFloor) {

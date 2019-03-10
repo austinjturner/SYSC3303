@@ -36,21 +36,15 @@ class DoorClosedState extends State {
 		String s = new String(getStateName());
 		this.stateMachine.schedulerSubsystem.debug("This is transition state: " + s);
 		
-		while (!(this.stateMachine.schedulerSubsystem.areElevatorDoorsClosed(this.stateMachine.elevatorID))) {
-			if (this.stateMachine.faultMessage == null) {
-				this.stateMachine.setFault(MessageAPI.FaultType.ElevatorFailedToCloseDoors);
-				this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(
-						this.stateMachine.elevatorID);
-			} else {
-				this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(
-						this.stateMachine.elevatorID);
-			}
-		} 
 		
-		if (this.stateMachine.faultMessage != null) {
-			this.stateMachine.clearFault();
+		if (!this.stateMachine.schedulerSubsystem.areElevatorDoorsClosed(this.stateMachine.elevatorID)) {
+			this.stateMachine.setFault(MessageAPI.FaultType.ElevatorFailedToCloseDoors);
+			this.stateMachine.schedulerSubsystem.sendCloseDoorMessage(
+					this.stateMachine.elevatorID);
+			return new DoorClosedState(this.stateMachine);
 		}
 		
+		this.stateMachine.clearFault();
 		if (this.stateMachine.floorQueue.isEmpty()) {
 			return new WaitingState(this.stateMachine);
 		} else {

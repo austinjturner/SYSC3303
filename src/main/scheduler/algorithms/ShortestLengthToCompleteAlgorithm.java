@@ -145,6 +145,12 @@ public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 		 */
 		int bestIndex = 0;
 		for (int i = 1; i < distanceToComplete.length; i++) {
+			
+			// Check if state machine is schedulable
+			if (!stateMachineMap.get(i + 1).isSchedulable()) {
+				continue;
+			}
+			
 			if (distanceToComplete[i] >= 0 && (
 					distanceToComplete[bestIndex] < 0 || 
 					distanceToComplete[i] < distanceToComplete[bestIndex])) {

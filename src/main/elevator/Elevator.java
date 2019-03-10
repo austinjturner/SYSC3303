@@ -101,7 +101,7 @@ public class Elevator implements Runnable {
 		boolean sendEmptyResponse = true;
 		// Going through all possible cases for request messages, calling appropriate methods in response
 		switch (requestType) {
-			case MessageAPI.MSG_CLOSE_DOORS: 
+			case MessageAPI.MSG_CLOSE_DOORS:
 				closeDoor();
 				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
@@ -147,7 +147,8 @@ public class Elevator implements Runnable {
 				message.sendResponse(new ElevatorMessage(requestType, elevatorId, 0));
 				break;
 			case MessageAPI.MSG_GET_DOORS_STATE:  
-				message.sendResponse(new ElevatorMessage(requestType, elevatorId, getDoorState()));
+				message.sendResponse(
+						new Message(MessageAPI.MSG_EMPTY_RESPONSE, getDoorState()));
 				break;
 			case MessageAPI.MSG_CURRENT_FLOOR:
 				// If a floor is requested for the elevator, response must contain requested floor.
@@ -158,7 +159,7 @@ public class Elevator implements Runnable {
 		}
 		
 		if(sendEmptyResponse) {
-			message.sendResponse(new ElevatorMessage(MessageAPI.MSG_EMPTY_RESPONSE, elevatorId, 0));
+			//message.sendResponse(new ElevatorMessage(MessageAPI.MSG_EMPTY_RESPONSE, elevatorId, 0));
 		}
 	}
 	
@@ -177,7 +178,7 @@ public class Elevator implements Runnable {
 	}
 
 	/**
-	 * Returns value of door state, being open (1) or closed (0)
+	 * Returns value of door state, being open (0) or closed (1)
 	 * 
 	 * @return int value for door state
 	 */
@@ -188,7 +189,7 @@ public class Elevator implements Runnable {
 	/**
 	 * Interrupts the motor timer thread to stop calls incrementing or decrementing elevator's current floor.
 	 */
-	public void stop() {		
+	public void stop() {
 		if(simulateStopFault == true && simulatedFaultFloor == currentFloor){
 			simulateStopFault = false;
 			return;
@@ -225,12 +226,10 @@ public class Elevator implements Runnable {
 	 * Sets elevator door to  open.
 	 */
 	public void openDoor() {
-		
 		if(simulateDoorOpenFault == true && simulatedFaultFloor == currentFloor){
-			simulateStopFault = false;
+			simulateDoorOpenFault = false;
 			return;
 		}
-		
 		this.doorOpen = true;
 		print("Door opened");
 	}
@@ -241,7 +240,7 @@ public class Elevator implements Runnable {
 	public void closeDoor() {
 		
 		if(simulateDoorClosedFault == true && simulatedFaultFloor == currentFloor){
-			simulateStopFault = false;
+			simulateDoorClosedFault = false;
 			return;
 		}
 		
@@ -296,7 +295,6 @@ public class Elevator implements Runnable {
 		if(this.currentFloor < this.numberOfFloors) {
 			if(simulateStopFault == true && simulatedFaultFloor == currentFloor){
 				simulateStopFault = false;
-				System.out.println("here3");
 				return;
 			} else {
 				this.currentFloor += 1;
@@ -313,7 +311,6 @@ public class Elevator implements Runnable {
 		if(this.currentFloor > 1) {
 			if(simulateStopFault == true && simulatedFaultFloor == currentFloor){
 				simulateStopFault = false;
-				System.out.println("here4");
 				return;
 			} else {
 				this.currentFloor -= 1;
