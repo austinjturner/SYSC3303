@@ -6,7 +6,7 @@ public class Settings {
 	 * System settings
 	 */
 	public static final int NUMBER_OF_ELEVATORS = 4;
-	public static final int NUMBER_OF_FLOORS = 10;
+	public static final int NUMBER_OF_FLOORS = 22;
 	
 	public static final float TIME_FACTOR = 1;		// 1/X times faster
 	

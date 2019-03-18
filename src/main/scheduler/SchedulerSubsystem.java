@@ -71,7 +71,7 @@ public class SchedulerSubsystem extends Thread {
 	 * 
 	 * @param rm
 	 */
-	private void messageHandle(RequestMessage rm) {
+	protected void messageHandle(RequestMessage rm) {
 
 		int requestType = rm.getRequestType();
 		

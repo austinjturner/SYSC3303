@@ -5,6 +5,7 @@ import org.junit.Test;
 import src.main.elevator.ElevatorSubsystem;
 import src.main.floor.FloorSubsystem;
 import src.main.scheduler.SchedulerSubsystem;
+import src.main.scheduler.SchedulerSubsystemProfiler;
 
 public class TestSystemFromFile {
 	
@@ -21,10 +22,13 @@ public class TestSystemFromFile {
 	@Test
 	public void testFullSystem() {
 		
-		String testFilePath = "src//main//text//fault_simulation_input.txt";
-		//testFilePath = "src//main//text//parallel_elevators_input.txt";
+		//String testFilePath = "src//main//text//fault_simulation_input.txt";
+		String testFilePath = "src//main//text//parallel_elevators_input.txt";
 		
-		SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
+		String csvFilePath = "src//main//text//"+System.currentTimeMillis()+"_profile_output.csv";
+		
+		//SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
+		SchedulerSubsystemProfiler schedulerSubsystem = new SchedulerSubsystemProfiler();
 		
 		schedulerSubsystem.start();
 		sleep(100);	
@@ -43,6 +47,7 @@ public class TestSystemFromFile {
 		
 		for (;;) {
 			sleep(10000);
+			schedulerSubsystem.generateCSV(csvFilePath);
 		}
 	}
 }
