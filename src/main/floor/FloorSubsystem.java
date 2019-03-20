@@ -49,8 +49,8 @@ public class FloorSubsystem {
 		reader.close();
 		
 		msgArray = new inputVar[lineCount];
-		lampUp = new boolean[Settings.NUMBER_OF_FLOORS];
-		lampDown = new boolean[Settings.NUMBER_OF_FLOORS];
+		lampUp = new boolean[Settings.NUMBER_OF_FLOORS + 1];
+		lampDown = new boolean[Settings.NUMBER_OF_FLOORS + 1];
 	
 		floorSub = this;
 	}

@@ -74,7 +74,6 @@ public class SchedulerSubsystem extends Thread {
 	protected void messageHandle(RequestMessage rm) {
 
 		int requestType = rm.getRequestType();
-		
 		switch (requestType) {
 		
 		case MessageAPI.MSG_FLOOR_BUTTON_PRESSED:
@@ -89,6 +88,7 @@ public class SchedulerSubsystem extends Thread {
 		default:
 			print("ERROR: Unexpected message received by scheduler");
 		}
+		
 		
 		rm.sendResponse(new Message(MessageAPI.MSG_EMPTY_RESPONSE));
 	}
@@ -124,6 +124,10 @@ public class SchedulerSubsystem extends Thread {
 		// Should we check if elevator already exists?
 		this.elevatorPortMap.put(em.getElevatorID(), em.getValue());
 		this.stateMachineMap.put(em.getElevatorID(), new StateMachine(em.getElevatorID(), this));
+	}
+	
+	public void checkElevatorWaiting() {
+		this.algorithm.handleElevatorWaiting();
 	}
 	
 	

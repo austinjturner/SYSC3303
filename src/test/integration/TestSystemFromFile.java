@@ -4,8 +4,7 @@ import org.junit.Test;
 
 import src.main.elevator.ElevatorSubsystem;
 import src.main.floor.FloorSubsystem;
-import src.main.scheduler.SchedulerSubsystem;
-import src.main.scheduler.SchedulerSubsystemProfiler;
+import src.main.scheduler.*;
 
 public class TestSystemFromFile {
 	
@@ -22,10 +21,45 @@ public class TestSystemFromFile {
 	@Test
 	public void testFullSystem() {
 		
-		//String testFilePath = "src//main//text//fault_simulation_input.txt";
-		String testFilePath = "src//main//text//parallel_elevators_input.txt";
+		String testFilePath = "src//main//text//fault_simulation_input.txt";
+		//String testFilePath = "src//main//text//parallel_elevators_input.txt";
 		
-		String csvFilePath = "src//main//text//"+System.currentTimeMillis()+"_profile_output.csv";
+		//SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
+		SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
+		
+		schedulerSubsystem.start();
+		sleep(100);	
+		new ElevatorSubsystem();	// This will create many threads
+		
+		// Wait for Elevator and Scheduler threads to stabilize
+		sleep(100);
+		
+		FloorSubsystem floor = null;
+		try {
+			floor = new FloorSubsystem(testFilePath);
+			floor.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		for (;;) {
+			sleep(100000);
+		}
+	}
+	
+	
+	@Test
+	public void testFullSystemWithProfiling() {
+		
+		//String testFilePath = "src//main//text//fault_simulation_input.txt";
+		//String testFilePath = "src//main//text//parallel_elevators_input.txt";
+		
+		String rootName = "random_100_file_1";
+		String trialNumber = "trial_1";
+		
+		String testFilePath = "src//main//text//"+rootName+"_input.txt";
+		
+		String csvFilePath = "src//main//text//"+rootName+"_"+trialNumber+"_"+System.currentTimeMillis()+"_profile_output.csv";
 		
 		//SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
 		SchedulerSubsystemProfiler schedulerSubsystem = new SchedulerSubsystemProfiler();
@@ -46,7 +80,7 @@ public class TestSystemFromFile {
 		}
 		
 		for (;;) {
-			sleep(10000);
+			sleep(100000);
 			schedulerSubsystem.generateCSV(csvFilePath);
 		}
 	}

@@ -32,8 +32,6 @@ public class WaitingState extends State {
 		int targetFloor = dest.floorNum;
 		int currentFloor = this.stateMachine.currentFloor;
 		
-
-		
 		if (currentFloor == targetFloor) {
 			/*
 			 * Detect if a fault should be simulated.

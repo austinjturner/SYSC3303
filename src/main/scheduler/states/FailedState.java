@@ -20,7 +20,8 @@ public class FailedState extends State {
 	}
 	
 	private void printErrorMessage() {
-		this.stateMachine.schedulerSubsystem.print("ERROR: State machine in an unrecoverable state");
+		this.stateMachine.schedulerSubsystem.print("ERROR: State machine "+
+				this.stateMachine.elevatorID+" in an unrecoverable state");
 	}
 
 	public State defaultEvent() {

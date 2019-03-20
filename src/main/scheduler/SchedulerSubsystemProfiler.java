@@ -20,7 +20,7 @@ public class SchedulerSubsystemProfiler extends SchedulerSubsystem {
 	private List<Long> floorReachedRequestTimes = new ArrayList<>();
 	
 	@Override
-	protected void messageHandle(RequestMessage rm) {
+	protected synchronized void messageHandle(RequestMessage rm) {
 		long startTime = System.nanoTime();
 		
 		
@@ -37,9 +37,10 @@ public class SchedulerSubsystemProfiler extends SchedulerSubsystem {
 			floorReachedRequestTimes.add(System.nanoTime() - startTime);
 			break;
 		}
+
 	}
 	
-	public void generateCSV(String filename) {
+	public synchronized void generateCSV(String filename) {
 	    BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new FileWriter(filename));

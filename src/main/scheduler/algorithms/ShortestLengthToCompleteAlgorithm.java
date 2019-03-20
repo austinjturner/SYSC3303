@@ -5,7 +5,9 @@ import java.util.*;
 import src.main.net.MessageAPI.FaultType;
 import src.main.scheduler.Destination;
 import src.main.scheduler.StateMachine;
+import src.main.scheduler.states.WaitingState;
 import src.main.scheduler.Destination.DestinationType;
+import src.main.settings.Settings;
 
 public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 
@@ -15,6 +17,23 @@ public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 		super(stateMachineMap);
 	}
 
+	/**
+	 * Send any waiting elevators to the ground floor
+	 */
+	@Override
+	public void handleElevatorWaiting() {
+		for (Map.Entry<Integer, StateMachine> entry : stateMachineMap.entrySet()) {
+			StateMachine fsm = entry.getValue();
+			if (fsm.getState() instanceof WaitingState 
+					&& fsm.floorQueue.size() == 0
+					&& fsm.currentFloor != 1) {
+				// Send it to ground
+				fsm.floorQueue.add(
+						new Destination(1, DestinationType.WAIT));
+				fsm.enqueueFloorEvent();
+			}
+		}
+	}
 	
 	@Override
 	public void handleFloorButtonEvent(int pickUpFloorNumber, int dropOffFloorNumber, boolean goingUp,
@@ -33,7 +52,6 @@ public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 		
 		// Iterating over the hashmap of statemachines to find a suitable elevator
 		for (Map.Entry<Integer, StateMachine> entry : stateMachineMap.entrySet()) {
-			
 			/*
 			 * 3 Cases based off current state of elevator and passenger start floor and direction
 			 */
@@ -144,10 +162,17 @@ public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 		 * CURRENTLY --> just find min distance
 		 */
 		int bestIndex = 0;
+		
 		for (int i = 1; i < distanceToComplete.length; i++) {
 			
 			// Check if state machine is schedulable
 			if (!stateMachineMap.get(i + 1).isSchedulable()) {
+				continue;
+			}
+			
+			// Check if we need to update the first item in an existing queue.
+			// This CAN NOT be guaranteed
+			if(startIndex[i] == 0 && stateMachineMap.get(i + 1).floorQueue.size() > 0) {
 				continue;
 			}
 			
@@ -156,6 +181,26 @@ public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 					distanceToComplete[i] < distanceToComplete[bestIndex])) {
 				bestIndex = i;
 			}
+		}
+		
+		// Check that we found a valid elevator
+		if (!stateMachineMap.get(bestIndex + 1).isSchedulable() ||
+				distanceToComplete[bestIndex] < 0 ||
+				(startIndex[bestIndex] == 0 && stateMachineMap.get(bestIndex + 1).floorQueue.size() > 0)) {
+			
+			this.getSchedulerSubsystem().print("WARNING: Default scheduling for request required");
+			
+			// Default scheduling
+			// Append to end of elevator 1
+			StateMachine fsm = stateMachineMap.get(1);
+			fsm.floorQueue.add(new Destination(
+					pickUpFloorNumber, DestinationType.PICKUP, faultType, faultFloorNumber));
+			fsm.floorQueue.add(new Destination(
+					dropOffFloorNumber, DestinationType.DROPOFF));
+			
+			consolidateQueue(fsm.floorQueue);
+			fsm.enqueueFloorEvent();
+			return;
 		}
 		
 		

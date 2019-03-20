@@ -120,6 +120,7 @@ public class StateMachine {
 			
 			if (currentState.getClass() == nextState.getClass()) {
 				//schedulerSubsystem.debug("Remaining in state: " + currentState.getStateName());
+				this.schedulerSubsystem.checkElevatorWaiting();
 				break;
 			} else {
 				//schedulerSubsystem.debug("Leaving state:      " + currentState.getStateName());

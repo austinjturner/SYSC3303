@@ -42,7 +42,16 @@ class GotNextFloorState extends State {
 					this.stateMachine.elevatorID, dest.faultFloorNumber, dest.faultType);
 		}
 		
-		if (currentFloor < targetFloor) {
+		// Determine whether to go up, down, or not move at all
+		if (currentFloor == targetFloor) {
+			this.stateMachine.goingUp = false;
+			this.stateMachine.schedulerSubsystem.debug("This is transition state: " + getStateName());
+			
+			this.stateMachine.schedulerSubsystem.sendOpenDoorMessage(
+					this.stateMachine.elevatorID);
+			
+			return new DoorOpenedState(this.stateMachine);
+		} else if (currentFloor < targetFloor) {
 			this.stateMachine.goingUp = true;
 			this.stateMachine.schedulerSubsystem.sendMotorUpMessage(
 					this.stateMachine.elevatorID);
