@@ -54,8 +54,8 @@ public class TestSystemFromFile {
 		//String testFilePath = "src//main//text//fault_simulation_input.txt";
 		//String testFilePath = "src//main//text//parallel_elevators_input.txt";
 		
-		String rootName = "random_100_file_1";
-		String trialNumber = "trial_1";
+		String rootName = "random_30_file_3";
+		String trialNumber = "trial_2";
 		
 		String testFilePath = "src//main//text//"+rootName+"_input.txt";
 		
@@ -80,8 +80,11 @@ public class TestSystemFromFile {
 		}
 		
 		for (;;) {
-			sleep(100000);
+			int seconds = 1000;
+			int minutes = 60 * seconds;
+			sleep(15 * minutes);
 			schedulerSubsystem.generateCSV(csvFilePath);
+			break;
 		}
 	}
 }

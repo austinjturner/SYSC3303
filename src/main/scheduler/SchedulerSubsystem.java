@@ -123,8 +123,13 @@ public class SchedulerSubsystem extends Thread {
 	private void handleElevatorStartedMessage(ElevatorMessage em) {
 		// Should we check if elevator already exists?
 		this.elevatorPortMap.put(em.getElevatorID(), em.getValue());
-		this.stateMachineMap.put(em.getElevatorID(), new StateMachine(em.getElevatorID(), this));
+		this.stateMachineMap.put(em.getElevatorID(), buildNewStateMachine(em.getElevatorID()));
 	}
+	
+	protected StateMachine buildNewStateMachine(int elevatorID) {
+		return new StateMachine(elevatorID, this);
+	}
+	
 	
 	public void checkElevatorWaiting() {
 		this.algorithm.handleElevatorWaiting();

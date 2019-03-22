@@ -31,12 +31,5 @@ public class Settings {
 	 * Debug settings
 	 */
 	public static final boolean DEBUG_SCHEDULER = false;
-	
-	
-	/*
-	 * Testing settings
-	 */
-	public static final int THROUGHPUT_TEST_NUMBER_OF_PASSENGERS = 100;
-	public static final int THROUGHPUT_TEST_PASSENGER_FREQUENCY_PER_MINUTE = 3;
 
 }

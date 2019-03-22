@@ -11,9 +11,17 @@ import src.main.settings.Settings;
 
 public class TestFileGenerator {
 	
+	
+	/*
+	 * Testing settings
+	 */
+	public static final int THROUGHPUT_TEST_NUMBER_OF_PASSENGERS = 30;
+	public static final int THROUGHPUT_TEST_PASSENGER_FREQUENCY_PER_MINUTE = 3;
+	
+	
 	public static void main(String[] args) {
-		String testFilePath = "src//main//text//random_100_file_3_input.txt";
-		generateTestInputFile(testFilePath, LocalDateTime.now());
+		String testFilePath = "src//main//text//random_30_file_3_input.txt";
+		generateTestInputFile(testFilePath, LocalDateTime.now().plusHours(5));
 	}
 	
 	public static void generateTestInputFile(String filename, LocalDateTime startTime) {
@@ -26,10 +34,10 @@ public class TestFileGenerator {
 		}
 		
 		// Distribution of simulated passengers
-		double timeDeltaMean = 1000 * 60 / Settings.THROUGHPUT_TEST_PASSENGER_FREQUENCY_PER_MINUTE;
+		double timeDeltaMean = 1000 * 60 / THROUGHPUT_TEST_PASSENGER_FREQUENCY_PER_MINUTE;
 		double timeDeltaSigma = timeDeltaMean / 3;
 		
-		for (int i = 0; i < Settings.THROUGHPUT_TEST_NUMBER_OF_PASSENGERS; i++) {
+		for (int i = 0; i < THROUGHPUT_TEST_NUMBER_OF_PASSENGERS; i++) {
 			
 			/*
 			 * Step 1: Get timestamp
