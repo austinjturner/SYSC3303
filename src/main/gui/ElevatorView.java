@@ -3,6 +3,7 @@ package src.main.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -25,7 +26,6 @@ public class ElevatorView extends JFrame {
 
 		super("Elevator Subsystem");
 		elevatorSubsystem = new JButton[22][4];
-
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(1000, 1000);
 		this.setLayout(new GridLayout(22,4));
@@ -47,6 +47,16 @@ public class ElevatorView extends JFrame {
 		}
 
 		this.setVisible(true);
+	}
+
+	//add listener for exit menu item
+	public void addExitListener(ActionListener actionListener){
+		exit.addActionListener(actionListener);
+	}
+
+	//exit gui
+	public void exitClicked(){
+		System.exit(0);
 	}
 
 }
