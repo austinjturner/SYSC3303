@@ -1,7 +1,7 @@
 package src.main.gui;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 public class ElevatorView extends JFrame {
@@ -18,9 +19,8 @@ public class ElevatorView extends JFrame {
 	private JButton[][] elevatorSubsystem;
 	private JMenuBar bar;
 	private JMenu menu;
-	private JMenuItem reset;
 	private JMenuItem exit;
-	//variable for the model.
+	private JPanel panel;
 
 	public ElevatorView() {
 
@@ -28,7 +28,7 @@ public class ElevatorView extends JFrame {
 		elevatorSubsystem = new JButton[22][4];
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(1000, 1000);
-		this.setLayout(new GridLayout(22,4));
+		panel = new JPanel(new GridLayout(22,4));
 
 		//add menu bar and menu items
 		bar = new JMenuBar();
@@ -45,24 +45,25 @@ public class ElevatorView extends JFrame {
 			for(int b = 0; b<4 ;b++){
 				if(b==0){
 					elevatorSubsystem[a][b] = new JButton(String.format("%d", a+1));
-					add(elevatorSubsystem[a][b]);
+					panel.add(elevatorSubsystem[a][b]);
 				}
 				if(b==1){
 					elevatorSubsystem[a][b] = new JButton("");
-					add(elevatorSubsystem[a][b]);
+					panel.add(elevatorSubsystem[a][b]);
 				}
 				if(b==2){
 					elevatorSubsystem[a][b] = new JButton("UP");
-					add(elevatorSubsystem[a][b]);
+					panel.add(elevatorSubsystem[a][b]);
 				}
 				if(b==3){
 					elevatorSubsystem[a][b] = new JButton("DOWN");
-					add(elevatorSubsystem[a][b]);
+					panel.add(elevatorSubsystem[a][b]);
 				}
 			}
 		}
 
-
+		this.setContentPane(panel);
+		this.pack();
 		this.setVisible(true);
 	}
 
