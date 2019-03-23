@@ -42,9 +42,26 @@ public class ElevatorView extends JFrame {
 
 		//add direction arrows for floors
 		for(int a = 21; a>=0; a--){
-			elevatorSubsystem[a][0] = new JButton(String.format("%d", a+1));
-			add(elevatorSubsystem[a][0]);
+			for(int b = 0; b<4 ;b++){
+				if(b==0){
+					elevatorSubsystem[a][b] = new JButton(String.format("%d", a+1));
+					add(elevatorSubsystem[a][b]);
+				}
+				if(b==1){
+					elevatorSubsystem[a][b] = new JButton("");
+					add(elevatorSubsystem[a][b]);
+				}
+				if(b==2){
+					elevatorSubsystem[a][b] = new JButton("UP");
+					add(elevatorSubsystem[a][b]);
+				}
+				if(b==3){
+					elevatorSubsystem[a][b] = new JButton("DOWN");
+					add(elevatorSubsystem[a][b]);
+				}
+			}
 		}
+
 
 		this.setVisible(true);
 	}
