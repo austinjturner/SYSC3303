@@ -6,14 +6,21 @@ import java.awt.event.ActionListener;
 public class Controller implements ActionListener{
 
 	private ElevatorView view;
-	
+
 	public Controller(){
-		 view = new ElevatorView();
-		 view.addExitListener(this);
+		view = new ElevatorView();
+		view.addExitListener(this);
+		view.addButtonListener(this);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		
+		//if exit was pressed update view
+		if(event.getActionCommand().equals("Exit")){
+			view.exitClicked();
+		}
+		
+		//add logic for elevator buttons and stuff here
 	}
 }
