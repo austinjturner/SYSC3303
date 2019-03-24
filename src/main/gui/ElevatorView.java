@@ -7,16 +7,20 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 public class ElevatorView extends JFrame {
 
 	private JButton[][] elevatorSubsystem;
+	private JLabel[] elevatorRepresentation;
 	private JMenuBar bar;
 	private JMenu menu;
 	private JMenuItem exit;
@@ -25,7 +29,8 @@ public class ElevatorView extends JFrame {
 	public ElevatorView() {
 
 		super("Elevator Subsystem");
-		elevatorSubsystem = new JButton[22][4];
+		elevatorSubsystem = new JButton[22][3];
+		elevatorRepresentation = new JLabel[22];
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(1000, 1000);
 		panel = new JPanel(new GridLayout(22,4));
@@ -48,18 +53,22 @@ public class ElevatorView extends JFrame {
 					panel.add(elevatorSubsystem[a][b]);
 				}
 				if(b==1){
-					elevatorSubsystem[a][b] = new JButton("");
-					panel.add(elevatorSubsystem[a][b]);
-				}
-				if(b==2){
 					elevatorSubsystem[a][b] = new JButton("UP");
 					panel.add(elevatorSubsystem[a][b]);
 				}
-				if(b==3){
+				if(b==2){
 					elevatorSubsystem[a][b] = new JButton("DOWN");
 					panel.add(elevatorSubsystem[a][b]);
 				}
 			}
+			if(a == 0) {
+				elevatorRepresentation[a] = new JLabel("[ X ]", SwingConstants.CENTER);
+			}
+			else {
+				elevatorRepresentation[a] = new JLabel(" | ", SwingConstants.CENTER);
+			}
+			
+			panel.add(elevatorRepresentation[a]);
 		}
 
 		this.setContentPane(panel);
@@ -75,7 +84,7 @@ public class ElevatorView extends JFrame {
 	//add listener for exit menu item
 	public void addButtonListener(ActionListener actionListener){
 		for(int i = 0; i<22; i++){
-			for(int j = 0; j<4; j++){
+			for(int j = 0; j<3; j++){
 				elevatorSubsystem[i][j].addActionListener(actionListener);
 			}
 		}
