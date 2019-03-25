@@ -10,7 +10,6 @@ public class Controller implements ActionListener{
 	public Controller(){
 		view = new ElevatorView();
 		view.addExitListener(this);
-		view.addButtonListener(this);
 	}
 
 	@Override
@@ -21,6 +20,5 @@ public class Controller implements ActionListener{
 			view.exitClicked();
 		}
 		
-		//add logic for elevator buttons and stuff here
 	}
 }
