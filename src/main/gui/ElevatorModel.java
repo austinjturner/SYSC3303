@@ -1,5 +1,7 @@
 package src.main.gui;
 
+import src.main.settings.Settings;
+
 public class ElevatorModel {
 
 	private int[] currentFloor;
@@ -7,9 +9,9 @@ public class ElevatorModel {
 	private String[] error;
 
 	public ElevatorModel() {
-		currentFloor = new int[4];
-		direction = new int[4];
-		error = new String[4];
+		currentFloor = new int[Settings.NUMBER_OF_ELEVATORS];
+		direction = new int[Settings.NUMBER_OF_ELEVATORS];
+		error = new String[Settings.NUMBER_OF_ELEVATORS];
 	}
 
 	public void setCurrentFloor(int index, int value){

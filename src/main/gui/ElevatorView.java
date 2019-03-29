@@ -20,6 +20,8 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 
+import src.main.settings.Settings;
+
 public class ElevatorView extends JFrame {
 
 	private JLabel[] elevatorRepresentation;
@@ -31,11 +33,11 @@ public class ElevatorView extends JFrame {
 	public ElevatorView(ElevatorModel model) {
 
 		super("Elevator Subsystem");
-		elevatorRepresentation = new JLabel[4];
+		elevatorRepresentation = new JLabel[Settings.NUMBER_OF_ELEVATORS];
 		Border border = BorderFactory.createLineBorder(Color.BLUE, 5);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(1000, 1000);
-		panel = new JPanel(new GridLayout(1,4));
+		panel = new JPanel(new GridLayout(1,Settings.NUMBER_OF_ELEVATORS));
 
 		//add menu bar and menu items
 		bar = new JMenuBar();
@@ -48,7 +50,7 @@ public class ElevatorView extends JFrame {
 		menu.add(exit);
 
 		//add Elevator labels
-		for(int a = 0; a<4; a++){
+		for(int a = 0; a<Settings.NUMBER_OF_ELEVATORS; a++){
 			elevatorRepresentation[a] = new JLabel(String.format("Elevator %d", a+1), SwingConstants.CENTER);
 			elevatorRepresentation[a].setBorder(border);
 			panel.add(elevatorRepresentation[a]);
@@ -74,7 +76,7 @@ public class ElevatorView extends JFrame {
 	 */
 	public void udpateUI(ElevatorModel model) {
 
-		for(int i = 0; i <4; i++){
+		for(int i = 0; i <Settings.NUMBER_OF_ELEVATORS; i++){
 			//elevatorRepresentation[i]
 		}
 	}
