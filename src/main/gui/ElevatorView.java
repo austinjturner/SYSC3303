@@ -1,10 +1,12 @@
 package src.main.gui;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -16,24 +18,24 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
 
 public class ElevatorView extends JFrame {
 
-	private JButton[][] elevatorSubsystem;
 	private JLabel[] elevatorRepresentation;
 	private JMenuBar bar;
 	private JMenu menu;
 	private JMenuItem exit;
 	private JPanel panel;
 
-	public ElevatorView() {
+	public ElevatorView(ElevatorModel model) {
 
 		super("Elevator Subsystem");
-		elevatorSubsystem = new JButton[22][3];
-		elevatorRepresentation = new JLabel[22];
+		elevatorRepresentation = new JLabel[4];
+		Border border = BorderFactory.createLineBorder(Color.BLUE, 5);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(1000, 1000);
-		panel = new JPanel(new GridLayout(22,4));
+		panel = new JPanel(new GridLayout(1,4));
 
 		//add menu bar and menu items
 		bar = new JMenuBar();
@@ -45,29 +47,10 @@ public class ElevatorView extends JFrame {
 		exit = new JMenuItem("Exit");
 		menu.add(exit);
 
-		//add direction arrows for floors
-		for(int a = 21; a>=0; a--){
-			for(int b = 0; b<4 ;b++){
-				if(b==0){
-					elevatorSubsystem[a][b] = new JButton(String.format("%d", a+1));
-					panel.add(elevatorSubsystem[a][b]);
-				}
-				if(b==1){
-					elevatorSubsystem[a][b] = new JButton("UP");
-					panel.add(elevatorSubsystem[a][b]);
-				}
-				if(b==2){
-					elevatorSubsystem[a][b] = new JButton("DOWN");
-					panel.add(elevatorSubsystem[a][b]);
-				}
-			}
-			if(a == 0) {
-				elevatorRepresentation[a] = new JLabel("[ X ]", SwingConstants.CENTER);
-			}
-			else {
-				elevatorRepresentation[a] = new JLabel(" | ", SwingConstants.CENTER);
-			}
-			
+		//add Elevator labels
+		for(int a = 0; a<4; a++){
+			elevatorRepresentation[a] = new JLabel(String.format("Elevator %d", a+1), SwingConstants.CENTER);
+			elevatorRepresentation[a].setBorder(border);
 			panel.add(elevatorRepresentation[a]);
 		}
 
@@ -85,12 +68,15 @@ public class ElevatorView extends JFrame {
 	public void exitClicked(){
 		System.exit(0);
 	}
-	
+
 	/**
 	 * refresh the view with the new state of the model
 	 */
-	public void refresh() {
-		
+	public void udpateUI(ElevatorModel model) {
+
+		for(int i = 0; i <4; i++){
+			//elevatorRepresentation[i]
+		}
 	}
 
 }

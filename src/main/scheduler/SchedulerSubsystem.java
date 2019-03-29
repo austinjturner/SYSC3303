@@ -5,6 +5,8 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import src.main.gui.Controller;
+import src.main.gui.ElevatorModel;
 import src.main.net.*;
 import src.main.net.MessageAPI.FaultType;
 import src.main.net.messages.*;
@@ -42,6 +44,9 @@ public class SchedulerSubsystem extends Thread {
 	private Map<Integer, Integer> elevatorPortMap;			// Key is elevatorID, values are portNumber
 	private Map<Integer, StateMachine> stateMachineMap;		// Key is elevatorID, values are stateMachine
 	
+	private ElevatorModel model;
+	private Controller GUIController;
+	
 	public SchedulerSubsystem(Requester requester, Responder responder) {
 		this.requester = requester;
 		this.responder = responder;
@@ -61,6 +66,7 @@ public class SchedulerSubsystem extends Thread {
 	 * receiving requests
 	 */
 	public void run() {
+		GUIController = new Controller(model);
 		for (;;) {
 			messageHandle(this.responder.receive());
 		}

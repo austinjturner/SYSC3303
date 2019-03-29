@@ -82,7 +82,7 @@ public class TestSystemFromFile {
 		for (;;) {
 			int seconds = 1000;
 			int minutes = 60 * seconds;
-			sleep(15 * minutes);
+			sleep(1 * minutes);
 			schedulerSubsystem.generateCSV(csvFilePath);
 			break;
 		}
