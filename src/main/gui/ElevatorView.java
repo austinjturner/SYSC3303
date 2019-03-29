@@ -81,18 +81,16 @@ public class ElevatorView extends JFrame {
 		exit.addActionListener(actionListener);
 	}
 
-	//add listener for exit menu item
-	public void addButtonListener(ActionListener actionListener){
-		for(int i = 0; i<22; i++){
-			for(int j = 0; j<3; j++){
-				elevatorSubsystem[i][j].addActionListener(actionListener);
-			}
-		}
-	}
-
 	//exit gui
 	public void exitClicked(){
 		System.exit(0);
+	}
+	
+	/**
+	 * refresh the view with the new state of the model
+	 */
+	public void refresh() {
+		
 	}
 
 }
