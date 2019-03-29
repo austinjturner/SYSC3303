@@ -49,7 +49,8 @@ public class ElevatorView extends JFrame {
 
 		//add Elevator labels
 		for(int a = 0; a<4; a++){
-			elevatorRepresentation[a] = new JLabel(String.format("Elevator %d", a+1), SwingConstants.CENTER);
+			elevatorRepresentation[a] = new JLabel(String.format("<html>Elevator %d <br/> Current Floor: %d <br/> Going up? %b <br/> error: %s"
+					, a+1, model.getCurrentFloor(a), model.isGoingUp(a), model.getError(a)), SwingConstants.CENTER);
 			elevatorRepresentation[a].setBorder(border);
 			panel.add(elevatorRepresentation[a]);
 		}

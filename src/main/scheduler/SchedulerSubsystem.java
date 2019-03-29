@@ -54,10 +54,12 @@ public class SchedulerSubsystem extends Thread {
 		this.stateMachineMap = new HashMap<Integer, StateMachine>();
 		//this.algorithm = new DefaultAlgorithm(this.stateMachineMap);
 		this.algorithm = new ShortestLengthToCompleteAlgorithm(this.stateMachineMap);
+		setModel();
 	}
 	
 	public SchedulerSubsystem() {
 		this(new Requester(), new Responder(Common.PORT_SCHEDULER_SUBSYSTEM));
+		setModel();
 	}
 
 	
@@ -69,6 +71,15 @@ public class SchedulerSubsystem extends Thread {
 		GUIController = new Controller(model);
 		for (;;) {
 			messageHandle(this.responder.receive());
+		}
+	}
+	
+	public synchronized void setModel(){
+		model = new ElevatorModel();
+		for(StateMachine state: stateMachineMap.values()) {
+			model.setCurrentFloor(state.elevatorID, state.currentFloor);
+			model.setDirection(state.elevatorID, state.goingUp);
+			model.setError(state.elevatorID, state.faultMessage);
 		}
 	}
 	
