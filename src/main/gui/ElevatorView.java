@@ -78,7 +78,8 @@ public class ElevatorView extends JFrame {
 	public void udpateUI(ElevatorModel model) {
 
 		for(int i = 0; i <Settings.NUMBER_OF_ELEVATORS; i++){
-			//elevatorRepresentation[i]
+			elevatorRepresentation[i] = new JLabel(String.format("<html>Elevator %d <br/> Current Floor: %d <br/> Going up? %b <br/> error: %s"
+					, i+1, model.getCurrentFloor(i), model.isGoingUp(i), model.getError(i)), SwingConstants.CENTER);
 		}
 	}
 
