@@ -7,8 +7,8 @@ public class Controller implements ActionListener{
 
 	private ElevatorView view;
 
-	public Controller(){
-		view = new ElevatorView();
+	public Controller(ElevatorModel model){
+		view = new ElevatorView(model);
 		view.addExitListener(this);
 	}
 
