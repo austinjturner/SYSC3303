@@ -50,8 +50,9 @@ public class ElevatorView extends JFrame {
 		menu.add(exit);
 
 		//add Elevator labels
-		for(int a = 0; a < Settings.NUMBER_OF_ELEVATORS; a++){
-			elevatorRepresentation[a] = new JLabel(String.format("Elevator %d", a+1), SwingConstants.CENTER);
+		for(int a = 0; a<Settings.NUMBER_OF_ELEVATORS; a++){
+			elevatorRepresentation[a] = new JLabel(String.format("<html>Elevator %d <br/> Current Floor: %d <br/> Going up? %b <br/> error: %s"
+					, a+1, model.getCurrentFloor(a), model.isGoingUp(a), model.getError(a)), SwingConstants.CENTER);
 			elevatorRepresentation[a].setBorder(border);
 			panel.add(elevatorRepresentation[a]);
 		}
@@ -77,7 +78,8 @@ public class ElevatorView extends JFrame {
 	public void updateUI(ElevatorModel model) {
 
 		for(int i = 0; i <Settings.NUMBER_OF_ELEVATORS; i++){
-			//elevatorRepresentation[i]
+			elevatorRepresentation[i] = new JLabel(String.format("<html>Elevator %d <br/> Current Floor: %d <br/> Going up? %b <br/> error: %s"
+					, i+1, model.getCurrentFloor(i), model.isGoingUp(i), model.getError(i)), SwingConstants.CENTER);
 		}
 	}
 

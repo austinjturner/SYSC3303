@@ -54,8 +54,8 @@ public class TestSystemFromFile {
 		//String testFilePath = "src//main//text//fault_simulation_input.txt";
 		//String testFilePath = "src//main//text//parallel_elevators_input.txt";
 		
-		String rootName = "random_30_file_1";
-		String trialNumber = "trial_1";
+		String rootName = "random_30_file_3";
+		String trialNumber = "trial_2";
 		
 		String testFilePath = "src//main//text//"+rootName+"_input.txt";
 		
