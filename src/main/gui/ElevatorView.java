@@ -34,7 +34,7 @@ public class ElevatorView extends JFrame {
 
 		super("Elevator Subsystem");
 		elevatorRepresentation = new JLabel[Settings.NUMBER_OF_ELEVATORS];
-		Border border = BorderFactory.createLineBorder(Color.BLUE, 5);
+		Border border = BorderFactory.createLineBorder(Color.BLUE, 1 + Settings.NUMBER_OF_ELEVATORS);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(1000, 1000);
 		panel = new JPanel(new GridLayout(1,Settings.NUMBER_OF_ELEVATORS));
@@ -50,7 +50,7 @@ public class ElevatorView extends JFrame {
 		menu.add(exit);
 
 		//add Elevator labels
-		for(int a = 0; a<Settings.NUMBER_OF_ELEVATORS; a++){
+		for(int a = 0; a < Settings.NUMBER_OF_ELEVATORS; a++){
 			elevatorRepresentation[a] = new JLabel(String.format("Elevator %d", a+1), SwingConstants.CENTER);
 			elevatorRepresentation[a].setBorder(border);
 			panel.add(elevatorRepresentation[a]);
@@ -74,7 +74,7 @@ public class ElevatorView extends JFrame {
 	/**
 	 * refresh the view with the new state of the model
 	 */
-	public void udpateUI(ElevatorModel model) {
+	public void updateUI(ElevatorModel model) {
 
 		for(int i = 0; i <Settings.NUMBER_OF_ELEVATORS; i++){
 			//elevatorRepresentation[i]
