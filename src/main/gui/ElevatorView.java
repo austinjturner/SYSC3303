@@ -29,6 +29,7 @@ public class ElevatorView extends JFrame {
 	private JMenu menu;
 	private JMenuItem exit;
 	private JPanel panel;
+	private ElevatorModel model;
 
 	public ElevatorView(ElevatorModel model) {
 
@@ -75,12 +76,19 @@ public class ElevatorView extends JFrame {
 	/**
 	 * refresh the view with the new state of the model
 	 */
-	public void updateUI(ElevatorModel model) {
-
+	public void updateUI(ElevatorModel newModel) {
+		JPanel updatedPanel = new JPanel(new GridLayout(1,Settings.NUMBER_OF_ELEVATORS));
 		for(int i = 0; i <Settings.NUMBER_OF_ELEVATORS; i++){
 			elevatorRepresentation[i] = new JLabel(String.format("<html>Elevator %d <br/> Current Floor: %d <br/> Going up? %b <br/> error: %s"
-					, i+1, model.getCurrentFloor(i), model.isGoingUp(i), model.getError(i)), SwingConstants.CENTER);
+					, i+1, newModel.getCurrentFloor(i), newModel.isGoingUp(i), newModel.getError(i)), SwingConstants.CENTER);
+			updatedPanel.add(elevatorRepresentation[i]);
 		}
+		this.getContentPane().remove(this.panel);
+		this.setContentPane(updatedPanel);
+		this.invalidate();
+		this.validate();
 	}
+	
+
 
 }

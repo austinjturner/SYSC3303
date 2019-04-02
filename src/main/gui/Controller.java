@@ -11,6 +11,10 @@ public class Controller implements ActionListener{
 		view = new ElevatorView(model);
 		view.addExitListener(this);
 	}
+	
+	public void updateView(ElevatorModel model) {
+		view.updateUI(model);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {

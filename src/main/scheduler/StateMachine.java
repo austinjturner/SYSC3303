@@ -118,6 +118,9 @@ public class StateMachine {
 			State currentState = this.state;
 			State nextState = this.state.defaultEvent();
 			
+			// Gui update trigger
+			this.schedulerSubsystem.updateModel();
+			
 			if (currentState.getClass() == nextState.getClass()) {
 				//schedulerSubsystem.debug("Remaining in state: " + currentState.getStateName());
 				this.schedulerSubsystem.checkElevatorWaiting();
@@ -126,6 +129,7 @@ public class StateMachine {
 				//schedulerSubsystem.debug("Leaving state:      " + currentState.getStateName());
 				//schedulerSubsystem.debug("Entering state:     " + nextState.getStateName());
 				this.state = nextState;
+
 			}
 		}
 	}

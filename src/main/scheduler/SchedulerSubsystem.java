@@ -77,10 +77,19 @@ public class SchedulerSubsystem extends Thread {
 	public synchronized void setModel(){
 		model = new ElevatorModel();
 		for(StateMachine state: stateMachineMap.values()) {
-			model.setCurrentFloor(state.elevatorID, state.currentFloor);
-			model.setDirection(state.elevatorID, state.goingUp);
-			model.setError(state.elevatorID, state.faultMessage);
+			model.setCurrentFloor(state.elevatorID - 1, state.currentFloor);
+			model.setDirection(state.elevatorID - 1, state.goingUp);
+			model.setError(state.elevatorID - 1, state.faultMessage);
 		}
+	}
+	
+	public void updateModel() {
+		for(StateMachine state: stateMachineMap.values()) {
+			model.setCurrentFloor(state.elevatorID - 1, state.currentFloor);
+			model.setDirection(state.elevatorID - 1, state.goingUp);
+			model.setError(state.elevatorID - 1, state.faultMessage);
+		}
+		this.GUIController.updateView(this.model);
 	}
 	
 	/**
@@ -89,7 +98,7 @@ public class SchedulerSubsystem extends Thread {
 	 * @param rm
 	 */
 	protected void messageHandle(RequestMessage rm) {
-
+		
 		int requestType = rm.getRequestType();
 		switch (requestType) {
 		
@@ -105,9 +114,9 @@ public class SchedulerSubsystem extends Thread {
 		default:
 			print("ERROR: Unexpected message received by scheduler");
 		}
-		
-		
+				
 		rm.sendResponse(new Message(MessageAPI.MSG_EMPTY_RESPONSE));
+	
 	}
 	
 	public Map<Integer, StateMachine> getStateMachineMap() {
