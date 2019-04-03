@@ -116,7 +116,6 @@ public class ElevatorView extends JFrame {
 			if (newModel.getError(a) != null) {
 				errorMsg1 = "FAULT: "+newModel.getError(a);
 				textColor = Color.RED;
-				errorMsg2 = "Unrecoverable Failure";
 				if (newModel.getError(a).contains("FailedToStop")) {
 					errorMsg2 = "Unrecoverable Failure";
 				}
