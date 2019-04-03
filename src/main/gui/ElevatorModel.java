@@ -6,11 +6,13 @@ public class ElevatorModel {
 
 	private int[] currentFloor;
 	private boolean[] goingUp;
+	private boolean[] moving;
 	private String[] error;
 
 	public ElevatorModel() {
 		currentFloor = new int[Settings.NUMBER_OF_ELEVATORS];
 		goingUp = new boolean[Settings.NUMBER_OF_ELEVATORS];
+		moving = new boolean[Settings.NUMBER_OF_ELEVATORS];
 		error = new String[Settings.NUMBER_OF_ELEVATORS];
 	}
 	
@@ -20,6 +22,10 @@ public class ElevatorModel {
 	
 	public void setDirection(int index, boolean value) {
 		goingUp[index] = value;
+	}
+	
+	public void setMoving(int index, boolean value) {
+		moving[index] = value;
 	}
 	
 	public void setError(int index, String value) {
@@ -32,6 +38,10 @@ public class ElevatorModel {
 	
 	public boolean isGoingUp(int index) {
 		return goingUp[index];
+	}
+	
+	public boolean getMoving(int index) {
+		return moving[index];
 	}
 	
 	public String getError(int index) {

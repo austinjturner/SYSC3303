@@ -11,6 +11,8 @@ import src.main.net.*;
 import src.main.net.MessageAPI.FaultType;
 import src.main.net.messages.*;
 import src.main.scheduler.algorithms.*;
+import src.main.scheduler.states.DoorOpenedState;
+import src.main.scheduler.states.MotorStartedState;
 import src.main.settings.Settings;
 
 /**
@@ -79,6 +81,7 @@ public class SchedulerSubsystem extends Thread {
 		for(StateMachine state: stateMachineMap.values()) {
 			model.setCurrentFloor(state.elevatorID - 1, state.currentFloor);
 			model.setDirection(state.elevatorID - 1, state.goingUp);
+			model.setMoving(state.elevatorID - 1, state.state instanceof MotorStartedState);
 			model.setError(state.elevatorID - 1, state.faultMessage);
 		}
 	}
@@ -87,6 +90,7 @@ public class SchedulerSubsystem extends Thread {
 		for(StateMachine state: stateMachineMap.values()) {
 			model.setCurrentFloor(state.elevatorID - 1, state.currentFloor);
 			model.setDirection(state.elevatorID - 1, state.goingUp);
+			model.setMoving(state.elevatorID - 1, state.state instanceof MotorStartedState);
 			model.setError(state.elevatorID - 1, state.faultMessage);
 		}
 		this.GUIController.updateView(this.model);
