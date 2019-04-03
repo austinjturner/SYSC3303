@@ -26,7 +26,7 @@ public class ElevatorView extends JFrame {
 	 */
 	public ElevatorView(ElevatorModel model) {
 		super("Elevator Subsystem");
-		this.setPreferredSize(new Dimension(1250, 400));
+		this.setPreferredSize(new Dimension(300 * Settings.NUMBER_OF_ELEVATORS, 400));
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		//add menu bar and menu items
@@ -77,28 +77,27 @@ public class ElevatorView extends JFrame {
 			sb.append("<html>");
 			sb.append("<table border='0'>");
 			sb.append("<tr>");
-			sb.append("<td colspan=\"2\" align='center'><span style=\"font-size: 150%\">Elevator "+(a+1)+"</span></td>");
+			sb.append("<td colspan=\"2\" align='center'><span style=\"font-size: 150%\">Elevator "
+						+(a+1)+"</span></td>");
 			sb.append(lineRow);
 			
 			/*
 			 * Display floor number
 			 */
-			sb.append("<td align='center'>Current Floor:</td>");
-			sb.append("<td align='center'>"+newModel.getCurrentFloor(a)+"</td>");
-			sb.append("</tr>");
 			sb.append("<tr>");
-			
+			sb.append("<td align='center'><span style=\"font-size: 500%\">"+
+					newModel.getCurrentFloor(a)+"</span></td>");
+
 			/*
 			 * Display elevator direction
 			 */
-			sb.append("<td align='center'>Direction:</td>");
+			char dir = '↓';
 			if (!newModel.getMoving(a)) {
-				sb.append("<td align='center'>Stopped</td>");
-			} else if(newModel.isGoingUp(a)) {
-				sb.append("<td align='center'>Going Up</td>");
-			} else {
-				sb.append("<td align='center'>Going Down</td>");
+				dir = '-';
+			} else if (newModel.isGoingUp(a)) {
+				dir = '↑';
 			}
+			sb.append("<td align='center'><span style=\"font-size: 500%\">"+dir+"</span></td>");
 			sb.append("</tr>");
 			sb.append(emptyRow);
 			sb.append("<tr>");
@@ -157,7 +156,8 @@ public class ElevatorView extends JFrame {
 	/**
 	 * The ScreenTimer ensures that we do not re-draw the screen more than
 	 * once ever MAX_SCREEN_REFRESH_TIME_MS milliseconds.
-	 * This prevents flickering in the GUI
+	 * 
+	 * This prevents flickering in the GUI.
 	 * 
 	 * @author austinjturner
 	 *
