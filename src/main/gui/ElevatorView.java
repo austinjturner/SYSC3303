@@ -99,7 +99,7 @@ public class ElevatorView extends JFrame {
 			if (newModel.getError(a) != null) {
 				dir = 'X';  // If in error state, show X instead of direction
 			} else if (!newModel.getMoving(a)) {
-				dir = '-';
+				dir = '—';
 			} else if (newModel.isGoingUp(a)) {
 				dir = '↑';
 			}
