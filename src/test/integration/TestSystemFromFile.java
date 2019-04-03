@@ -21,7 +21,7 @@ public class TestSystemFromFile {
 	@Test
 	public void testFullSystem() {
 		
-		String testFilePath = "src//main//text//fault_simulation_input.txt";
+		String testFilePath = "src//main//text//fault_simulation_for_gui_input.txt";
 		//String testFilePath = "src//main//text//parallel_elevators_input.txt";
 		
 		//SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
