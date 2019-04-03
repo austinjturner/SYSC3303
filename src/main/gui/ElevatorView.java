@@ -26,8 +26,8 @@ public class ElevatorView extends JFrame {
 	 */
 	public ElevatorView(ElevatorModel model) {
 		super("Elevator Subsystem");
-		this.setPreferredSize(new Dimension(300 * Settings.NUMBER_OF_ELEVATORS, 400));
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.setPreferredSize(new Dimension(300 * Settings.NUMBER_OF_ELEVATORS, 400));
 
 		//add menu bar and menu items
 		bar = new JMenuBar();
@@ -55,6 +55,10 @@ public class ElevatorView extends JFrame {
 		}
 		this.latestModel = null;
 		
+		// If user has resized, do not override
+		if (this.getSize().height > 0 &&  this.getSize().width > 0) {
+			this.setPreferredSize(this.getSize());
+		}
 		JPanel updatedPanel = new JPanel(new GridLayout(1,Settings.NUMBER_OF_ELEVATORS));
 		Border border = BorderFactory.createLineBorder(Color.BLACK, 1 + Settings.NUMBER_OF_ELEVATORS);
 		
@@ -92,7 +96,9 @@ public class ElevatorView extends JFrame {
 			 * Display elevator direction
 			 */
 			char dir = '↓';
-			if (!newModel.getMoving(a)) {
+			if (newModel.getError(a) != null) {
+				dir = 'X';  // If in error state, show X instead of direction
+			} else if (!newModel.getMoving(a)) {
 				dir = '-';
 			} else if (newModel.isGoingUp(a)) {
 				dir = '↑';
@@ -100,23 +106,27 @@ public class ElevatorView extends JFrame {
 			sb.append("<td align='center'><span style=\"font-size: 500%\">"+dir+"</span></td>");
 			sb.append("</tr>");
 			sb.append(emptyRow);
-			sb.append("<tr>");
 			
 			
 			/*
 			 * Display errors
 			 */
-			if (newModel.getError(a) == null) {
-				sb.append(emptyRow);
-			} else {
-				sb.append("<td colspan=\"2\" align='center'>FAULT: "+newModel.getError(a)+"</td>");
+			String errorMsg1 = "&nbsp;";  // HTML space char
+			String errorMsg2 = "&nbsp;";  // HTML space char
+			if (newModel.getError(a) != null) {
+				errorMsg1 = "FAULT: "+newModel.getError(a);
 				textColor = Color.RED;
+				errorMsg2 = "Unrecoverable Failure";
 				if (newModel.getError(a).contains("FailedToStop")) {
-					sb.append("</tr><tr>");
-					sb.append("<td colspan=\"2\" align='center'><span style=\"font-size: 150%\">Unrecoverable Failure</span></td>");
+					errorMsg2 = "Unrecoverable Failure";
 				}
 			}
+			sb.append("<tr>");
+			sb.append("<td colspan=\"2\" align='center'>"+errorMsg1+"</td>");
+			sb.append("</tr><tr>");
+			sb.append("<td colspan=\"2\" align='center'><span style=\"font-size: 150%\">"+errorMsg2+"</span></td>");
 			sb.append("</tr>");
+			
 			sb.append("</table>");
 			sb.append("</html>");
 			
