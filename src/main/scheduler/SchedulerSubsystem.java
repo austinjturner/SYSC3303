@@ -251,4 +251,13 @@ public class SchedulerSubsystem extends Thread {
 			print(s);
 		}
 	}
+	
+	/**
+	 * Main method to launch subsystem independently
+	 * @param args
+	 */
+	public static void main(String []args) {
+		SchedulerSubsystem schedulerSubsystem = new SchedulerSubsystem();
+		schedulerSubsystem.start();
+	}
 }

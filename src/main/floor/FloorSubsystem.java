@@ -13,7 +13,9 @@ import java.io.FileReader;
 import java.util.Arrays;
 import java.io.File;
 
+import src.main.elevator.ElevatorSubsystem;
 import src.main.net.MessageAPI.FaultType;
+import src.main.scheduler.SchedulerSubsystem;
 import src.main.settings.Settings;
 
 /*
@@ -148,5 +150,19 @@ public class FloorSubsystem {
 		threadSend = new FloorSendThread(inputs);		//Initialize sendThread with array of messages
 		threadSend.start();								//start thread
 		threadReceive.start();							//start thread
+	}
+	
+	/**
+	 * Main method to launch subsystem independently
+	 * @param args
+	 */
+	public static void main(String []args) {
+		String testFilePath = "src//main//text//fault_simulation_for_gui_input.txt";
+		try {
+			FloorSubsystem floor = new FloorSubsystem(testFilePath);
+			floor.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
