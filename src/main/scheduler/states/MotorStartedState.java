@@ -26,13 +26,18 @@ public class MotorStartedState extends State {
 		startFloorWaitTimer();
 	}
 
-	
+
+	/**
+	 * Helper function to start a new floor wait timer thread
+	 */
 	private void startFloorWaitTimer() {
 		new FloorWaitTimer(this.stateMachine, Settings.MAX_TIME_BEFORE_DOOR_FAULT, 
 				this.stateMachine.currentFloor).start();
 	}
 	
-	
+	/**
+	 * Helper function to shutdown an elevator
+	 */
 	private void shutdownElevator() {
 		this.stateMachine.schedulerSubsystem.sendShutdownElevatorMessage(
 				this.stateMachine.elevatorID);

@@ -3,6 +3,11 @@ package src.main.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class represents a controller for the GUI subsystem.
+ * 
+ * @author Nikola
+ */
 public class Controller implements ActionListener{
 
 	private ElevatorView view;

@@ -5,12 +5,25 @@ import java.net.InetAddress;
 import src.main.net.*;
 import src.main.net.messages.*;
 
+/**
+ * This class represents a thread within the floor subsystem. This thread
+ * is responsible for receiving messages from the scheduler, then
+ * taking the appropriate action in response.
+ * 
+ * It must be synchronized with the rest of the subsystems data structures.
+ * 
+ * @author Devon
+ *
+ */
 public class FloorReceiveThread extends Thread {
 	
-	public inputVar[] msgArray;
-	public InetAddress address;
-	public int schedulerPort = Common.PORT_SCHEDULER_SUBSYSTEM;
-	public int floorPort = Common.PORT_FLOOR_SUBSYSTEM;
+	// Package scoped fields for subsystem
+	inputVar[] msgArray;
+	InetAddress address;
+	int schedulerPort = Common.PORT_SCHEDULER_SUBSYSTEM;
+	int floorPort = Common.PORT_FLOOR_SUBSYSTEM;
+	
+	// Private field
 	private FloorSubsystem system;
 	
 	public FloorReceiveThread() {

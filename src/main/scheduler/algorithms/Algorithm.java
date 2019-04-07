@@ -7,9 +7,11 @@ import src.main.scheduler.SchedulerSubsystem;
 import src.main.scheduler.StateMachine;
 
 /**
- * This Algorithm interface is package scoped.
+ * This class represents an algorithm that the scheduler subsystem
+ * will use to schedule all elevators.
  * 
- * 
+ * This class is abstract, and must be implemented by a concrete class
+ * to supply the logic for the system.
  * 
  * @author austinjturner
  *

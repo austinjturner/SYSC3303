@@ -6,14 +6,33 @@ import src.main.net.*;
 import src.main.net.messages.*;
 import src.main.settings.Settings;
 
+/**
+ * This class represents a thread within the floor subsystem. This thread
+ * is responsible for sending messages to the scheduler. These messages are
+ * triggered by events parsed from the simulation test file.
+ * 
+ * It must be synchronized with the rest of the subsystems data structures.
+ * 
+ * @author Devon
+ *
+ */
 public class FloorSendThread extends Thread{
 	
-	public inputVar[] msgArray;
-	public InetAddress address;
-	public int schedulerPort = Common.PORT_SCHEDULER_SUBSYSTEM;
-	public int floorPort = Common.PORT_FLOOR_SUBSYSTEM;
+	// Package scoped fields
+	inputVar[] msgArray;
+	InetAddress address;
+	int schedulerPort = Common.PORT_SCHEDULER_SUBSYSTEM;
+	int floorPort = Common.PORT_FLOOR_SUBSYSTEM;
+	
+	// Private field
 	private FloorSubsystem system;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param msgs to simulate by sending messages to scheduler
+	 * @throws Exception
+	 */
 	public FloorSendThread(inputVar[] msgs) throws Exception{
 		msgArray = msgs;
 		address = Common.IP_SCHEDULER_SUBSYSTEM;
@@ -25,9 +44,6 @@ public class FloorSendThread extends Thread{
 		FloorButtonPressMessage message;
 		
 		for(int i = 0; i < msgArray.length; i++) {
-			
-			//printLamps();
-			//printInformation(msgArray[i]);
 			
 			//Make message
 			if(msgArray[i].faultFloor == -1) {
@@ -51,7 +67,6 @@ public class FloorSendThread extends Thread{
 			system.setLamp(msgArray[i].floor, msgArray[i].direction, true);
 			
 			//send to Scheduler
-			//System.out.println("Sending request to Scheduler containing:\n    -Floor that the request is coming from\n    -Request direction\n    -Destination floor\n");
 			try {
 				requester.sendRequest(address, schedulerPort, message);
 			} catch (PacketException e) {e.printStackTrace();}
@@ -60,10 +75,15 @@ public class FloorSendThread extends Thread{
 		requester.close();
 	}
 	
-	private void printInformation(inputVar var){
-		System.out.print("The information about to be sent to Scheduler: " + var.hh + ":" + var.mm + ":" + var.ss + "." + var.mmm + " " + var.floor + " " + var.direction + " " + var.destFloor + "\n");
-	}
 	
+	/**
+	 * Handle time in simulation by sleeping between messages.
+	 * 
+	 * @param hh 	number of hours
+	 * @param mm 	number of minutes
+	 * @param ss 	number of seconds
+	 * @param mmm 	number of millisecond
+	 */
 	public void simulateTimestamp(int hh, int mm, int ss, int mmm){
 		try {
 			Thread.sleep((long) (Settings.TIME_FACTOR * (
@@ -76,6 +96,10 @@ public class FloorSendThread extends Thread{
 		}
 	}
 	
+	
+	/**
+	 * Helper to print lamp state to console.
+	 */
 	public void printLamps() {
 		System.out.println("Floor  Up       Down");
 		for(int i = 0; i < Settings.NUMBER_OF_FLOORS; i++) {

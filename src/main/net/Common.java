@@ -30,7 +30,6 @@ public class Common {
 	 * Statically initializing the InetAdddress object for each subsystem
 	 * If we get an error here, System.exit(1)
 	 * 
-	 * Is this code too bad!?
 	 */
 	static {
 		try {

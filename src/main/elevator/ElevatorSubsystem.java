@@ -17,6 +17,10 @@ public class ElevatorSubsystem {
 		createElevators();
 	}
 	
+	
+	/**
+	 * Create an elevator thread for each required from Settings.NUMBER_OF_ELEVATORS
+	 */
 	private void createElevators() {
 		 for (int i = 0; i < elevatorThreads.length; i++) {
 			 elevatorThreads[i] = new Thread(new Elevator((i + 1), 0, Settings.NUMBER_OF_FLOORS,  new Requester(), new Responder()));
@@ -24,6 +28,11 @@ public class ElevatorSubsystem {
 		 }
 	}
 	
+	
+	/**
+	 * Main function
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new ElevatorSubsystem();
 	}

@@ -11,11 +11,20 @@ import src.main.net.*;
 import src.main.net.MessageAPI.FaultType;
 import src.main.net.messages.*;
 import src.main.scheduler.algorithms.*;
-import src.main.scheduler.states.DoorOpenedState;
-import src.main.scheduler.states.MotorStartedState;
+import src.main.scheduler.states.*;
 import src.main.settings.Settings;
 
 /**
+ * 
+ * This class is responsible for handling all messages for the input and
+ * output of the scheduler subsystem.
+ * 
+ * It is also responsible for creating and updating the elevator state
+ * machines required for the system.
+ * 
+ * As this class contains all required information to display in the GUI,
+ * it is also responsible for launching the GUI subsystem and updating its
+ * model instance.
  * 
  * ====================== MESSAGES =========================
  * 
@@ -54,7 +63,6 @@ public class SchedulerSubsystem extends Thread {
 		this.responder = responder;
 		this.elevatorPortMap = new HashMap<Integer, Integer>();
 		this.stateMachineMap = new HashMap<Integer, StateMachine>();
-		//this.algorithm = new DefaultAlgorithm(this.stateMachineMap);
 		this.algorithm = new ShortestLengthToCompleteAlgorithm(this.stateMachineMap);
 		setModel();
 	}
@@ -76,6 +84,10 @@ public class SchedulerSubsystem extends Thread {
 		}
 	}
 	
+	
+	/**
+	 * Synchronized method to initialize the model for the GUI
+	 */
 	public synchronized void setModel(){
 		model = new ElevatorModel();
 		for(StateMachine state: stateMachineMap.values()) {
@@ -86,6 +98,10 @@ public class SchedulerSubsystem extends Thread {
 		}
 	}
 	
+	
+	/**
+	 * Synchronized method to update the model for the GUI
+	 */
 	public void updateModel() {
 		for(StateMachine state: stateMachineMap.values()) {
 			model.setCurrentFloor(state.elevatorID - 1, state.currentFloor);
@@ -123,6 +139,11 @@ public class SchedulerSubsystem extends Thread {
 	
 	}
 	
+	
+	/**
+	 * Getter for the map of state machines
+	 * @return map of state machines
+	 */
 	public Map<Integer, StateMachine> getStateMachineMap() {
 		return this.stateMachineMap;
 	}

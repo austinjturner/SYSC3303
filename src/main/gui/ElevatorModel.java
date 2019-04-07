@@ -2,6 +2,13 @@ package src.main.gui;
 
 import src.main.settings.Settings;
 
+/**
+ * This class represents the model for the GUI to display. 
+ * It holds any relevant information to display for a given elevator.
+ * This includes: currentFloor, goingUp, moving and error.
+ * 
+ * @author Nikola
+ */
 public class ElevatorModel {
 
 	private int[] currentFloor;

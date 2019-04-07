@@ -1,5 +1,13 @@
 package src.main.scheduler;
 
+/**
+ * 
+ * This class extends the StateMachine with the addition abilities to 
+ * record how long method calls into the state transitions take
+ * 
+ * @author austinjturner
+ *
+ */
 public class StateMachineProfiler extends StateMachine {
 
 	private SchedulerSubsystemProfiler ssp;

@@ -7,6 +7,13 @@ import src.main.scheduler.Destination;
 import src.main.scheduler.StateMachine;
 import src.main.scheduler.Destination.DestinationType;
 
+/**
+ * This Algorithm places new requests for an elevator into the queue of
+ * whichever elevator has the fewest requests in its queue.
+ * 
+ * @author Nic
+ *
+ */
 public class DefaultAlgorithm extends Algorithm {
 
 	private Random random;

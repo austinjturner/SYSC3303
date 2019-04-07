@@ -3,14 +3,33 @@ package src.main.scheduler.algorithms;
 import java.util.*;
 
 import src.main.net.MessageAPI.FaultType;
-import src.main.scheduler.Destination;
-import src.main.scheduler.StateMachine;
-import src.main.scheduler.states.WaitingState;
+import src.main.scheduler.*;
+import src.main.scheduler.states.*;
 import src.main.scheduler.Destination.DestinationType;
-import src.main.settings.Settings;
 
+/**
+ * This Algorithm calculates the distance it would take each elevator to
+ * reach the target floor if it were scheduled to it. It then chooses the
+ * elevator with the shortest distance to complete the request.
+ * 
+ * If an appropriate elevator can not be easily found, this algorithm will
+ * default to queuing the request to the first elevator. 
+ * This should not happen often.
+ * 
+ * One shortcoming of this algorithm is that it does not take into account
+ * the time required for each stop on the path of the elevator. This could 
+ * be improved by weighing the distance against the number of stops.
+ * 
+ * @author austinjturner
+ *
+ */
 public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 
+	/*
+	 * This FLOOR_BUFFER represents a minimum distance the floor must be away 
+	 * in order to preempt the scheduling. Otherwise, the scheduler can miss
+	 * elevator floor reached events.
+	 */
 	private int FLOOR_BUFFER = 1;
 	
 	public ShortestLengthToCompleteAlgorithm(Map<Integer, StateMachine> stateMachineMap) {
@@ -217,6 +236,12 @@ public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 	}
 
 	
+	/**
+	 * Helper method to combine situations where a person is exiting and entering an elevator
+	 * at the same time.
+	 * 
+	 * @param list current elevator queue
+	 */
 	private void consolidateQueue(List<Destination> list) {
 		for (int i = 0; i < list.size() - 1; i++) {
 			Destination nextFloor = list.get(i);
@@ -237,6 +262,7 @@ public class ShortestLengthToCompleteAlgorithm extends Algorithm {
 			}
 		}
 	}
+	
 	
 	/**
 	 * This method might not need to do anything else.

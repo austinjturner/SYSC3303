@@ -8,6 +8,14 @@ import javax.swing.border.Border;
 
 import src.main.settings.Settings;
 
+/**
+ * This class represents a JFrame that displays the GUI on the screen.
+ * It provides the representation for all ElevatorModel classes required for 
+ * the elevators defined in Settings.NUMBER_OF_ELEVATORS
+ *
+ * @author Sam English
+ *
+ */
 public class ElevatorView extends JFrame {
 	
 	private static final long serialVersionUID = 1L;  // Fixes compiler warning

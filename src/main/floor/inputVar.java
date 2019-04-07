@@ -10,6 +10,12 @@ package src.main.floor;
 
 import src.main.net.MessageAPI.FaultType;
 
+/**
+ * This class represents a line in the simulation file.
+ * 
+ * @author Devon
+ * 
+ */
 public class inputVar {
 	
 	public int hh;		//hours

@@ -46,6 +46,14 @@ public class FloorButtonClearMessage extends Message {
 		this.floorNumber = Common.byteArrayToIntAtIndex(msg.data, 1);
 	}
 	
+	/**
+	 * Build FloorButtonClearMessage from Message
+	 * 
+	 * Use a Message instance to parse the floorNum value.
+	 * Errors will be thrown if the Message is invalid
+	 * 
+	 * @param msg
+	 */
 	public FloorButtonClearMessage(RequestMessage msg) {
 		super(msg.requestType);
 		

@@ -10,12 +10,9 @@ package src.main.floor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.Arrays;
 import java.io.File;
 
-import src.main.elevator.ElevatorSubsystem;
 import src.main.net.MessageAPI.FaultType;
-import src.main.scheduler.SchedulerSubsystem;
 import src.main.settings.Settings;
 
 /*
@@ -27,6 +24,14 @@ FAULTS
 
 */
 
+/**
+ * This class represents the scheduler subsystem.
+ * 
+ * It is responsible for parsing the text file, and creating the threads
+ * for receiving and sending messages.
+ * 
+ * @author Devon
+ */
 public class FloorSubsystem {
 	
 	private inputVar[] msgArray;
@@ -112,7 +117,6 @@ public class FloorSubsystem {
 		return msgArray;
 	}
 	
-	//THIS IS LAZY AND INCOMPLETE. NEEDS REVISION!
 	private void verifyInput() throws Exception {
 		BufferedReader br = new BufferedReader(new FileReader(txtLocation));
 		String line = "";
